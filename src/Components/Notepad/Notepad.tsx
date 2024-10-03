@@ -9,34 +9,27 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { PlusCircle, Edit, Trash2 } from "lucide-react";
-import { AddNoteModal } from "./Modal/AddNoteModal";
+import AddNoteModal from "./Modal/AddNoteModal";
 
-// This would typically come from my app's state management or API
+// This would typically come from  app's state management or API
 const initialNotes = [
   {
     id: 1,
     title: "Shopping List",
-    content: "Milk, Eggs, Bread",
+    content: "<p>Milk, Eggs, Bread</p>",
     color: "bg-pink-100",
   },
   {
     id: 2,
     title: "Meeting Notes",
-    content: "Discuss Q4 goals",
+    content: "<p>Discuss Q4 goals</p>",
     color: "bg-blue-100",
   },
-  { id: 3, title: "Ideas", content: "New app features", color: "bg-green-100" },
   {
-    id: 4,
-    title: "Books to Read",
-    content: "1984, To Kill a Mockingbird",
-    color: "bg-yellow-100",
-  },
-  {
-    id: 5,
-    title: "Workout Plan",
-    content: "Monday: Cardio, Tuesday: Strength",
-    color: "bg-purple-100",
+    id: 3,
+    title: "Ideas",
+    content: "<p>New app features</p>",
+    color: "bg-green-100",
   },
 ];
 
@@ -53,25 +46,26 @@ const colorOptions = [
   "bg-cyan-100",
 ];
 
-export default function Notepad() {
+export default function NotePad() {
   const [notes, setNotes] = useState(initialNotes);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
-  // --- for opening modal to add new note
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleAddNote = () => {
-    // This would typically open to 'Add Note' modal
-    setIsModalOpen(true);
-    console.log("Navigate to Add Note page");
+  const handleAddNote = (title: string, content: string) => {
+    const newNote = {
+      id: Date.now(),
+      title,
+      content,
+      color: getRandomColor(),
+    };
+    setNotes([...notes, newNote]);
   };
 
   const handleEditNote = (id: number) => {
-    // This would typically navigate to  EditNote page
+    // This would typically navigate to EditNote page or open an edit modal
     console.log("Edit note", id);
   };
 
   const handleDeleteNote = (id: number) => {
-    // This would typically delete the note from backend
     setNotes(notes.filter((note) => note.id !== id));
   };
 
@@ -88,7 +82,7 @@ export default function Notepad() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <Card
           className="flex flex-col justify-center items-center cursor-pointer hover:bg-muted transition-colors duration-300"
-          onClick={handleAddNote}
+          onClick={() => setIsAddModalOpen(true)}
         >
           <CardContent className="flex flex-col items-center py-8">
             <PlusCircle className="h-12 w-12 mb-4 text-muted-foreground" />
@@ -107,7 +101,7 @@ export default function Notepad() {
               <CardTitle>{note.title}</CardTitle>
             </CardHeader>
             <CardContent className="flex-grow">
-              <p className="text-muted-foreground">{note.content}</p>
+              <div dangerouslySetInnerHTML={{ __html: note.content }} />
             </CardContent>
             <CardFooter className="flex justify-end space-x-2">
               <Button
@@ -138,7 +132,12 @@ export default function Notepad() {
           </p>
         </div>
       )}
-      <AddNoteModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+
+      <AddNoteModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onAddNote={handleAddNote}
+      />
     </div>
   );
 }
