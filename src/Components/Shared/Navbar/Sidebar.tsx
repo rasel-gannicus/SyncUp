@@ -14,6 +14,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { GiNotebook } from "react-icons/gi";
 
 const Sidebar = () => {
   return (
@@ -42,14 +43,14 @@ const Sidebar = () => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                href="#"
+                href="/notepad"
                 className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
               >
-                <ShoppingCart className="h-5 w-5" />
-                <span className="sr-only">Orders</span>
+                <GiNotebook className="h-5 w-5" />
+                <span className="sr-only">Add Note</span>
               </Link>
             </TooltipTrigger>
-            <TooltipContent side="right">Orders</TooltipContent>
+            <TooltipContent side="right">Add Note</TooltipContent>
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
