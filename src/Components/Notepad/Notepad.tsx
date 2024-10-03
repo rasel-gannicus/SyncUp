@@ -51,6 +51,7 @@ export default function NotePad() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   const handleAddNote = (title: string, content: string) => {
+    console.log(content)
     const newNote = {
       id: Date.now(),
       title,
@@ -79,7 +80,7 @@ export default function NotePad() {
         <h1 className="text-3xl font-bold">My Notes</h1>
       </header>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         <Card
           className="flex flex-col justify-center items-center cursor-pointer hover:bg-muted transition-colors duration-300"
           onClick={() => setIsAddModalOpen(true)}
