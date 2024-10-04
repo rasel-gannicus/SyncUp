@@ -1,5 +1,5 @@
+"use client";
 import { useState, useEffect } from "react";
-import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,6 +10,7 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
+import QuillEditor from "../QuillEditor/QuillEditor";
 
 interface AddNoteModalProps {
   isOpen: boolean;
@@ -83,14 +84,11 @@ export default function AddNoteModal({
             />
           </div>
           <div className="flex-grow overflow-hidden">
-            <ReactQuill
-              theme="snow"
-              value={content}
-              onChange={setContent}
+            <QuillEditor
+              content={content}
+              setContent={setContent}
               modules={modules}
               formats={formats}
-              placeholder="Write your note here..."
-              className="h-full"
             />
           </div>
           <DialogFooter className="mt-4">

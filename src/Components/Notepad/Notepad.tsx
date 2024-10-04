@@ -51,7 +51,7 @@ export default function NotePad() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   const handleAddNote = (title: string, content: string) => {
-    console.log(content)
+    console.log(content);
     const newNote = {
       id: Date.now(),
       title,
@@ -129,7 +129,7 @@ export default function NotePad() {
       {notes.length === 0 && (
         <div className="text-center py-10">
           <p className="text-xl text-muted-foreground">
-            No notes yet. Click on 'Add a new note' to get started!
+            {`No notes yet. Click on 'Add a new note' to get started!`}
           </p>
         </div>
       )}

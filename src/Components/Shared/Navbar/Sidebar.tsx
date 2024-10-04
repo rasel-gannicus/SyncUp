@@ -5,7 +5,6 @@ import {
   Package,
   Package2,
   Settings,
-  ShoppingCart,
   Users2,
 } from "lucide-react";
 import {

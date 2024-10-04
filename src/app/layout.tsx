@@ -1,19 +1,9 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import "./globals.css";
 import { Wrapper } from "@/components/Shared/Navbar/Wrapper";
-import { Inter, Josefin_Sans, Poppins, Ubuntu } from "next/font/google";
+import {  Ubuntu } from "next/font/google";
+import  { Toaster } from 'react-hot-toast';
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
 
 export const metadata: Metadata = {
   title: "Daily Apps",
@@ -35,7 +25,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${ubuntu.className} antialiased`}>
-        <Wrapper children={children} />
+        <Wrapper> {children} </Wrapper>
+        <Toaster />
       </body>
     </html>
   );

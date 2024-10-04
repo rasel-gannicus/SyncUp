@@ -7,12 +7,10 @@ import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import auth from "@/utils/firebase.init";
 import { toast } from "react-hot-toast";
 import SocialLogin from "../Social Login/SocialLogin";
-import Link from "next/link";
 
-export default function Register() {
+export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [password, setPassword] = useState("");
-  const [rePassword, setRePassword] = useState("");
   const [email, setEmail] = useState("");
 
   // Firebase hook for creating a user with email and password
@@ -22,13 +20,6 @@ export default function Register() {
   // Function to handle form submission for registration
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-
-    // Check if passwords match
-    if (password !== rePassword) {
-      return toast.error("Passwords do not match", {
-        position: "bottom-right",
-      });
-    }
 
     // Check if password meets minimum length requirement
     if (password.length < 6) {
@@ -54,7 +45,7 @@ export default function Register() {
 
   // Use effect hook to manage toast messages based on loading, error, and user states
   useEffect(() => {
-    let toastId : any ;
+    let toastId: any;
     // Show a loading toast while account creation is in progress
     if (loading) {
       toastId = toast.loading("Creating account...", {
@@ -80,34 +71,13 @@ export default function Register() {
       <div className="bg-white/80 backdrop-blur-md rounded-xl shadow-xl overflow-hidden max-w-md w-full">
         <div className="p-8">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-800">
-              Create an account
-            </h1>
+            <h1 className="text-3xl font-bold text-gray-800">Login</h1>
             <p className="text-gray-600 mt-2">
               Keep your progress in one place!
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-2">
-              <Label
-                htmlFor="name"
-                className="text-sm font-medium text-gray-700"
-              >
-                Full Name
-              </Label>
-              <Input
-                id="name"
-                placeholder="John Doe"
-                type="text"
-                autoCapitalize="none"
-                autoComplete="name"
-                autoCorrect="off"
-                disabled={isLoading}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              />
-            </div>
             <div className="space-y-2">
               <Label
                 htmlFor="email"
@@ -149,26 +119,7 @@ export default function Register() {
                 className="w-full px-3 py-2 border border-gray-300 rounded-md"
               />
             </div>
-            <div className="space-y-2">
-              <Label
-                htmlFor="rePassword"
-                className="text-sm font-medium text-gray-700"
-              >
-                Confirm Password
-              </Label>
-              <Input
-                id="rePassword"
-                value={rePassword}
-                onChange={(e) => setRePassword(e.target.value)}
-                placeholder="••••••••"
-                type="password"
-                autoCapitalize="none"
-                autoComplete="new-password"
-                disabled={isLoading}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              />
-            </div>
+
             <Button
               type="submit"
               className={`w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold py-3 rounded-md hover:from-purple-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-all duration-300 ${
@@ -176,24 +127,20 @@ export default function Register() {
               }`}
               disabled={loading}
             >
-              {loading ? (
-                <h2>Loading...</h2>
-              ) : (
-                "Register"
-              )}
+              {loading ? <h2>Loading...</h2> : "Login"}
             </Button>
           </form>
 
           <SocialLogin isLoading={isLoading} />
 
           <p className="mt-6 text-center text-sm text-gray-600">
-            Already have an account?{" "}
-            <Link
-              href="/login"
+            {`Don't have an account ? `}
+            <a
+              href="#"
               className="font-medium text-indigo-600 hover:text-indigo-500"
             >
-              Log in
-            </Link>
+               Sign in
+            </a>
           </p>
         </div>
       </div>

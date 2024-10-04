@@ -1,10 +1,11 @@
-import Notepad from '@/components/Notepad/Notepad';
+
+import NotePad from '@/components/Notepad/Notepad';
 import React from 'react';
 
 const page = () => {
     return (
         <div>
-            <Notepad /> 
+            <NotePad /> 
         </div>
     );
 };
