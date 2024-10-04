@@ -1,3 +1,4 @@
+import { useAddUserToDbMutation } from "@/Redux/features/user/userApi";
 import { Button } from "@/components/ui/button";
 import auth from "@/utils/firebase.init";
 import { Github } from "lucide-react";
@@ -16,11 +17,45 @@ export default function SocialLogin({ isLoading }: { isLoading: boolean }) {
   const [signInWithGithub, gitUser, gitLoading, gitError] =
     useSignInWithGithub(auth);
 
+  const [addUserToDb] = useAddUserToDbMutation();
+
+  const handleUser = async (user: any, provider: string) => {
+    if (user) {
+      try {
+        const response = await addUserToDb({
+          user: {
+            ...user,
+            name: user.displayName || "",
+            email: user.email,
+            uid: user.uid,
+            provider: provider,
+          },
+        });
+
+        if ("error" in response) {
+          throw new Error("Failed to save user data to database");
+        }
+        console.log({response})
+
+        toast.success(`Successfully signed in with ${provider}!`);
+      } catch (error) {
+        console.error("Error saving user data:", error);
+        toast.error(`Error saving user data after ${provider} sign-in`);
+      }
+    }
+  };
+
   useEffect(() => {
     // console.log({ gitUser, gitLoading, gitError });
     if (!loading && !gitLoading && (error || gitError)) {
       console.log({ error, gitError });
       toast.error(gitError?.code || error?.code || "An error happened");
+    }
+    if (!loading && !gitLoading && !error && !gitError && gitUser) {
+      handleUser(gitUser, "Github");
+    }
+    if (!loading && !gitLoading && !error && !gitError && user) {
+      handleUser(user, "Google");
     }
   }, [gitUser, gitLoading, gitError, user, loading, error]);
   return (

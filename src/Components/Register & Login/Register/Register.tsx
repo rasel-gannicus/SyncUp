@@ -48,10 +48,14 @@ export default function Register() {
       // Attempt to create user with email and password using Firebase
       const result = await createUserWithEmailAndPassword(email, password);
       if (result?.user) {
-        const result2 = await addUserToMongoDB({
-          user: result.user,
+        const response = await addUserToMongoDB({
+          user: {...user,
+            email: result.user.email,
+            uid: result.user.uid,
+            provider: 'email',
+          }
         });
-        if (!result2.data.userId) {
+        if (!response.data.userId) {
           throw new Error("Failed to save user data to database");
         }
         toast.success("Account created and data saved successfully!", {
@@ -113,6 +117,7 @@ export default function Register() {
               <Input
                 id="name"
                 placeholder="John Doe"
+                name="name"
                 type="text"
                 autoCapitalize="none"
                 autoComplete="name"
