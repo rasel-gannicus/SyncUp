@@ -1,7 +1,7 @@
-import dynamic from 'next/dynamic';
-import React from 'react';
+import dynamic from "next/dynamic";
+import React from "react";
 
-const ReactQuill = dynamic(() => import('react-quill'), {
+const ReactQuill = dynamic(() => import("react-quill"), {
   ssr: false,
   loading: () => <p>Loading editor...</p>,
 });
@@ -13,7 +13,12 @@ interface QuillEditorProps {
   formats: string[];
 }
 
-const QuillEditor: React.FC<QuillEditorProps> = ({ content, setContent, modules, formats }) => {
+const QuillEditor: React.FC<QuillEditorProps> = ({
+  content,
+  setContent,
+  modules,
+  formats,
+}) => {
   return (
     <ReactQuill
       theme="snow"
@@ -22,7 +27,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({ content, setContent, modules,
       modules={modules}
       formats={formats}
       placeholder="Write your note here..."
-      className="h-full"
+      className="h-[80%]"
     />
   );
 };

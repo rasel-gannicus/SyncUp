@@ -7,6 +7,7 @@ import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import auth from "@/utils/firebase.init";
 import { toast } from "react-hot-toast";
 import SocialLogin from "../Social Login/SocialLogin";
+import Link from "next/link";
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
@@ -135,12 +136,12 @@ export default function Login() {
 
           <p className="mt-6 text-center text-sm text-gray-600">
             {`Don't have an account ? `}
-            <a
-              href="#"
+            <Link
+              href="/register"
               className="font-medium text-indigo-600 hover:text-indigo-500"
             >
                Sign in
-            </a>
+            </Link>
           </p>
         </div>
       </div>

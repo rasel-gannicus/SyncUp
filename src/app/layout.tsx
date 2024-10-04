@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Wrapper } from "@/components/Shared/Navbar/Wrapper";
-import {  Ubuntu } from "next/font/google";
-import  { Toaster } from 'react-hot-toast';
-
+import { Ubuntu } from "next/font/google";
+import { Toaster } from "react-hot-toast";
+import ReduxProvider from "@/Redux/Wrapper/ReduxProvider";
 
 export const metadata: Metadata = {
   title: "Daily Apps",
@@ -23,11 +23,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${ubuntu.className} antialiased`}>
-        <Wrapper> {children} </Wrapper>
-        <Toaster />
-      </body>
-    </html>
+    <ReduxProvider>
+      <html lang="en">
+        <body className={`${ubuntu.className} antialiased`}>
+          <Wrapper> {children} </Wrapper>
+          <Toaster />
+        </body>
+      </html>
+    </ReduxProvider>
   );
 }

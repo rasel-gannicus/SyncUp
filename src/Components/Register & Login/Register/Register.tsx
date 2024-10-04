@@ -8,6 +8,7 @@ import auth from "@/utils/firebase.init";
 import { toast } from "react-hot-toast";
 import SocialLogin from "../Social Login/SocialLogin";
 import Link from "next/link";
+import { useAddUserToDbMutation } from "@/Redux/features/user/userApi";
 
 export default function Register() {
   const [isLoading, setIsLoading] = useState(false);
@@ -18,6 +19,11 @@ export default function Register() {
   // Firebase hook for creating a user with email and password
   const [createUserWithEmailAndPassword, user, loading, error] =
     useCreateUserWithEmailAndPassword(auth);
+
+  const [
+    addUserToMongoDB,
+    { data, isLoading: isLoadingMongoDB, error: errorMongoDB },
+  ] = useAddUserToDbMutation();
 
   // Function to handle form submission for registration
   const handleSubmit = async (event: React.SyntheticEvent) => {
@@ -40,21 +46,29 @@ export default function Register() {
     setIsLoading(true);
     try {
       // Attempt to create user with email and password using Firebase
-      await createUserWithEmailAndPassword(email, password);
+      const result = await createUserWithEmailAndPassword(email, password);
+      if (result?.user) {
+        const result2 = await addUserToMongoDB({
+          user: result.user,
+        });
+        if (!result2.data.userId) {
+          throw new Error("Failed to save user data to database");
+        }
+        toast.success("Account created and data saved successfully!", {
+          position: "bottom-right",
+        });
+      }
     } catch (err) {
-      // Log any errors that occur during account creation
       console.error(err);
-      // Display an error toast if account creation fails
       toast.error("Error creating account", { position: "bottom-right" });
     } finally {
-      // Set loading state to false regardless of success or failure
       setIsLoading(false);
     }
   };
 
   // Use effect hook to manage toast messages based on loading, error, and user states
   useEffect(() => {
-    let toastId : any ;
+    let toastId: any;
     // Show a loading toast while account creation is in progress
     if (loading) {
       toastId = toast.loading("Creating account...", {
@@ -176,11 +190,7 @@ export default function Register() {
               }`}
               disabled={loading}
             >
-              {loading ? (
-                <h2>Loading...</h2>
-              ) : (
-                "Register"
-              )}
+              {loading ? <h2>Loading...</h2> : "Register"}
             </Button>
           </form>
 
