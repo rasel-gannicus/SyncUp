@@ -197,7 +197,7 @@ function Register() {
               }`}
               disabled={loading}
             >
-              {loading ? <h2>Loading...</h2> : "Register"}
+              {loading ? <LoadingSpinner /> : "Register"}
             </Button>
           </form>
 

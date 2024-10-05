@@ -10,6 +10,9 @@ import {
 } from "@/components/ui/card";
 import { PlusCircle, Edit, Trash2 } from "lucide-react";
 import AddNoteModal from "./Modal/AddNoteModal";
+import { useAddNoteMutation } from "@/Redux/features/notes/noteApi";
+import { useAuthState } from "@/utils/Route Protection/useAuthState";
+import { toast } from "react-hot-toast";
 
 // This would typically come from  app's state management or API
 const initialNotes = [
@@ -50,15 +53,25 @@ export default function NotePad() {
   const [notes, setNotes] = useState(initialNotes);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
+  const { user, loading } = useAuthState();
+  console.log("🚀 ~ NotePad ~ user:", user);
+
+  const [addNoteToDb, { data, isLoading, error }] = useAddNoteMutation();
+
   const handleAddNote = (title: string, content: string) => {
-    console.log(content);
+    if (!user) {
+      toast.error("You need to login first to save notes");
+      return ;
+    }
     const newNote = {
       id: Date.now(),
       title,
       content,
       color: getRandomColor(),
+      uid :  user.uid,
     };
     setNotes([...notes, newNote]);
+    addNoteToDb({ note: newNote });
   };
 
   const handleEditNote = (id: number) => {

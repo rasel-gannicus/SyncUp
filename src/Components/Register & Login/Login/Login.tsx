@@ -9,6 +9,7 @@ import { toast } from "react-hot-toast";
 import SocialLogin from "../Social Login/SocialLogin";
 import Link from "next/link";
 import { withAuthRedirect } from "@/utils/Route Protection/RouteProtection";
+import { LoadingSpinner } from "@/utils/Loading Spinner/LoadingSpinner";
 
 function Login() {
   const [isLoading, setIsLoading] = useState(false);
@@ -129,7 +130,7 @@ function Login() {
               }`}
               disabled={loading}
             >
-              {loading ? <h2>Loading...</h2> : "Login"}
+              {loading ? <LoadingSpinner /> : "Login"}
             </Button>
           </form>
 

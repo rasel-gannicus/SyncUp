@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthState } from '@/utils/Route Protection/useAuthState';
+import { LoadingSpinner } from '@/utils/Loading Spinner/LoadingSpinner';
 
 export function AuthWrapper({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -19,7 +20,7 @@ export function AuthWrapper({ children }: { children: React.ReactNode }) {
   }, [user, loading, router]);
 
   if (loading) {
-    return <div>Loading...</div>; // Or your custom loading component
+    return <LoadingSpinner />; // Or your custom loading component
   }
 
   return <>{children}</>;

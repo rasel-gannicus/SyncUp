@@ -95,7 +95,9 @@ export default function AddNoteModal({
             <Button type="button" variant="outline" onClick={onClose}>
               Cancel
             </Button>
-            <Button type="submit">Add Note</Button>
+            <Button className="bg-purple-700" type="submit">
+              Add Note
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

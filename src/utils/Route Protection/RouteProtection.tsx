@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthState } from './useAuthState';
+import { LoadingSpinner } from '../Loading Spinner/LoadingSpinner';
 
 export function withAuthProtection(WrappedComponent: React.ComponentType, redirectPath = '/login') {
   return function WithAuthProtection(props: any) {
@@ -16,7 +17,7 @@ export function withAuthProtection(WrappedComponent: React.ComponentType, redire
     }, [user, loading, router]);
 
     if (loading) {
-      return <div>Loading...</div>;
+      return <LoadingSpinner />;
     }
 
     if (user) {
@@ -39,7 +40,7 @@ export function withAuthRedirect(WrappedComponent: React.ComponentType, redirect
     }, [user, loading, router]);
 
     if (loading) {
-      return <div>Loading...</div>;
+      return <LoadingSpinner />;
     }
 
     if (!user) {
