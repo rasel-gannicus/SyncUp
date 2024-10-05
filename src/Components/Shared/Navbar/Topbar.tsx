@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -30,8 +31,20 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import profileImg from "@/assets/img/profile-svgrepo-com.svg";
+import { useState } from "react";
+import { DeleteConfirmationModal } from "@/utils/Modals/DeleteConfirmationModal";
+import { useAuthState } from "@/utils/Route Protection/useAuthState";
+import { useRouter } from "next/navigation";
 
 const Topbar = () => {
+  const [isModal, setIsModal] = useState(false);
+
+  const { user, loading } = useAuthState();
+
+  console.log("🚀 ~ Topbar ~ user:", user);
+  const navigate = useRouter() ;
+
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
       <Sheet>
@@ -123,7 +136,7 @@ const Topbar = () => {
             className="overflow-hidden rounded-full"
           >
             <Image
-              src="/placeholder-user.jpg"
+              src={profileImg}
               width={36}
               height={36}
               alt="Avatar"
@@ -135,11 +148,16 @@ const Topbar = () => {
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem>Settings</DropdownMenuItem>
-          <DropdownMenuItem>Support</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => navigate.push('/secretPage')} className="text-red-600 font-bold">Secret Page</DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Logout</DropdownMenuItem>
+          {user ? <DropdownMenuItem onClick={() => setIsModal(true)}>
+            Logout
+          </DropdownMenuItem> : <DropdownMenuItem onClick={() => navigate.push('/login')}>
+            Login
+          </DropdownMenuItem>}
         </DropdownMenuContent>
       </DropdownMenu>
+      <DeleteConfirmationModal isModal={isModal} setIsModal={setIsModal} />
     </header>
   );
 };

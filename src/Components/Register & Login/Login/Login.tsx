@@ -3,20 +3,21 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { useCreateUserWithEmailAndPassword, useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import auth from "@/utils/firebase.init";
 import { toast } from "react-hot-toast";
 import SocialLogin from "../Social Login/SocialLogin";
 import Link from "next/link";
+import { withAuthRedirect } from "@/utils/Route Protection/RouteProtection";
 
-export default function Login() {
+function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
 
   // Firebase hook for creating a user with email and password
-  const [createUserWithEmailAndPassword, user, loading, error] =
-    useCreateUserWithEmailAndPassword(auth);
+  const [signIn, user, loading, error] =
+    useSignInWithEmailAndPassword(auth);
 
   // Function to handle form submission for registration
   const handleSubmit = async (event: React.SyntheticEvent) => {
@@ -32,7 +33,7 @@ export default function Login() {
     setIsLoading(true);
     try {
       // Attempt to create user with email and password using Firebase
-      await createUserWithEmailAndPassword(email, password);
+      await signIn(email, password);
     } catch (err) {
       // Log any errors that occur during account creation
       console.error(err);
@@ -49,17 +50,17 @@ export default function Login() {
     let toastId: any;
     // Show a loading toast while account creation is in progress
     if (loading) {
-      toastId = toast.loading("Creating account...", {
+      toastId = toast.loading("Logging in...", {
         position: "bottom-right",
       });
       // Show an error toast if an error occurs during account creation
     } else if (error) {
-      toast.error(error.message || "Error creating account", {
+      toast.error(error.message || "Error Logging in", {
         position: "bottom-right",
       });
       // Show a success toast if the account is created successfully
     } else if (user) {
-      toast.success("Account created successfully!", {
+      toast.success("Logged in successfully!", {
         position: "bottom-right",
       });
     }
@@ -140,7 +141,7 @@ export default function Login() {
               href="/register"
               className="font-medium text-indigo-600 hover:text-indigo-500"
             >
-               Sign in
+              Sign in
             </Link>
           </p>
         </div>
@@ -148,3 +149,5 @@ export default function Login() {
     </div>
   );
 }
+
+export default withAuthRedirect(Login);

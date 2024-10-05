@@ -1,5 +1,5 @@
-import Sidebar from "./Sidebar";
-import Topbar from "./Topbar";
+import Sidebar from "./Navbar/Sidebar";
+import Topbar from "./Navbar/Topbar";
 
 export function Wrapper({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
@@ -7,9 +7,7 @@ export function Wrapper({ children }: Readonly<{ children: React.ReactNode }>) {
       <Sidebar />
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
         <Topbar />
-        <main className="grid ">
-          {children}
-        </main>
+        <main className="grid ">{children}</main>
       </div>
     </div>
   );

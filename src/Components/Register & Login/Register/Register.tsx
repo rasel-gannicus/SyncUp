@@ -9,8 +9,9 @@ import { toast } from "react-hot-toast";
 import SocialLogin from "../Social Login/SocialLogin";
 import Link from "next/link";
 import { useAddUserToDbMutation } from "@/Redux/features/user/userApi";
+import { withAuthProtection } from "@/utils/Route Protection/RouteProtection";
 
-export default function Register() {
+function Register() {
   const [isLoading, setIsLoading] = useState(false);
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
@@ -49,11 +50,12 @@ export default function Register() {
       const result = await createUserWithEmailAndPassword(email, password);
       if (result?.user) {
         const response = await addUserToMongoDB({
-          user: {...user,
+          user: {
+            ...user,
             email: result.user.email,
             uid: result.user.uid,
-            provider: 'email',
-          }
+            provider: "email",
+          },
         });
         if (!response.data.userId) {
           throw new Error("Failed to save user data to database");
@@ -215,3 +217,5 @@ export default function Register() {
     </div>
   );
 }
+
+export default Register;
