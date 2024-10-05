@@ -42,7 +42,6 @@ const Topbar = () => {
 
   const { user, loading } = useAuthState();
 
-  console.log("🚀 ~ Topbar ~ user:", user);
   const navigate = useRouter() ;
 
   return (

@@ -30,7 +30,7 @@ export default function RootLayout({
           <AuthWrapper>
             <Wrapper> {children} </Wrapper>
           </AuthWrapper>
-          <Toaster />
+          <Toaster position="bottom-center" />
         </body>
       </html>
     </ReduxProvider>

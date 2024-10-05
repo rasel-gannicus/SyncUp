@@ -10,9 +10,11 @@ import {
 } from "@/components/ui/card";
 import { PlusCircle, Edit, Trash2 } from "lucide-react";
 import AddNoteModal from "./Modal/AddNoteModal";
-import { useAddNoteMutation } from "@/Redux/features/notes/noteApi";
+import { useAddNoteMutation, useDeleteNoteMutation } from "@/Redux/features/notes/noteApi";
 import { useAuthState } from "@/utils/Route Protection/useAuthState";
 import { toast } from "react-hot-toast";
+import { useGetUserQuery } from "@/Redux/features/user/userApi";
+import { LoadingSpinnerCustom } from "@/utils/Loading Spinner/LoadingSpinner";
 
 // This would typically come from  app's state management or API
 const initialNotes = [
@@ -54,38 +56,87 @@ export default function NotePad() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   const { user, loading } = useAuthState();
-  console.log("🚀 ~ NotePad ~ user:", user);
+
+  // --- getting note for user & adding new note
+  const {data: userData, isLoading: userLoading, error: userError} = useGetUserQuery(user?.uid);
 
   const [addNoteToDb, { data, isLoading, error }] = useAddNoteMutation();
 
-  const handleAddNote = (title: string, content: string) => {
+  // --- adding note 
+  const handleAddNote = async (title: string, content: string) => {
     if (!user) {
       toast.error("You need to login first to save notes");
-      return ;
+      return;
     }
+
     const newNote = {
       id: Date.now(),
       title,
       content,
       color: getRandomColor(),
-      uid :  user.uid,
+      uid: user.uid, 
     };
-    setNotes([...notes, newNote]);
-    addNoteToDb({ note: newNote });
+      const toastId = toast.loading("Saving note...", {position : "bottom-center"} );
+
+    try {
+      const response : any = await addNoteToDb({ note: newNote });
+
+      if ('error' in response) {
+        toast.error(response.error.data.message || "Failed to add note."); 
+        console.error(response.error);
+      } else {
+        toast.success("Note added successfully"); 
+        setNotes([...notes, newNote]); // Optimistically update UI 
+      }
+    } catch (error) {
+      toast.error("An unexpected error occurred.");
+      console.error(error);
+    } finally {
+      toast.dismiss(toastId);
+    }
   };
+
 
   const handleEditNote = (id: number) => {
     // This would typically navigate to EditNote page or open an edit modal
     console.log("Edit note", id);
   };
 
-  const handleDeleteNote = (id: number) => {
-    setNotes(notes.filter((note) => note.id !== id));
+  // --- deleting a note 
+  const [deleteNoteFromDb, {data : deleteNoteData, isLoading: deleteNoteLoading, error: deleteNoteError}] = useDeleteNoteMutation();
+
+  const handleDeleteNote = async (createdAt: string) => {
+    if (!user) {
+      toast.error("You need to login first to delete notes");
+      return;
+    }
+
+    const toastId = toast.loading("Deleting note...");
+
+    try {
+      const response: any = await deleteNoteFromDb({ uid: user?.uid, createdAt });
+
+      if ('error' in response) {
+        toast.error(response.error.data.message || "Failed to delete note.");
+        console.error(response.error);
+      } else {
+        toast.success("Note deleted successfully"); 
+      }
+    } catch (error) {
+      toast.error("An unexpected error occurred.");
+      console.error(error);
+    } finally {
+      toast.dismiss(toastId);
+    }
   };
 
   const getRandomColor = () => {
     return colorOptions[Math.floor(Math.random() * colorOptions.length)];
   };
+
+  if(userLoading){
+    return <LoadingSpinnerCustom desc="Getting notes ..." /> || <div>Loading...</div>
+  }
 
   return (
     <div className="container mx-auto p-4">
@@ -106,7 +157,7 @@ export default function NotePad() {
           </CardContent>
         </Card>
 
-        {notes.map((note) => (
+        {userData?.notes?.filter((note:any)=> !note?.isDeleted).map((note : any) => (
           <Card
             key={note.id}
             className={`flex flex-col ${note.color} transition-all duration-300 hover:shadow-lg`}
@@ -129,7 +180,7 @@ export default function NotePad() {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => handleDeleteNote(note.id)}
+                onClick={() => handleDeleteNote(note.createdAt)}
               >
                 <Trash2 className="h-4 w-4" />
                 <span className="sr-only">Delete</span>
@@ -139,7 +190,7 @@ export default function NotePad() {
         ))}
       </div>
 
-      {notes.length === 0 && (
+      {userData?.notes?.length === 0 && (
         <div className="text-center py-10">
           <p className="text-xl text-muted-foreground">
             {`No notes yet. Click on 'Add a new note' to get started!`}

@@ -9,8 +9,19 @@ export const noteApi = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["user"],
+    }),
+
+    // --- delete a note or making isDelete property true
+    deleteNote: builder.mutation({
+      query: (data) => ({
+        url: "/deleteNote",
+        method: "DELETE",
+        body: data,
+      }),
+      invalidatesTags: ["user"],
     }),
   }),
 });
 
-export const { useAddNoteMutation } = noteApi;
+export const { useAddNoteMutation, useDeleteNoteMutation } = noteApi;
