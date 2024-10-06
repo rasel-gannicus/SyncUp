@@ -94,6 +94,7 @@ export default function async({
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
+              maxLength={64}
             />
           </div>
           <div className="flex-grow overflow-hidden">

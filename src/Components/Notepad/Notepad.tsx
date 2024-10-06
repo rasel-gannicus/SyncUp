@@ -55,6 +55,15 @@ const colorOptions = [
   "bg-cyan-100",
 ];
 
+// --- reduce the length of paragraph showing in  the card / ui
+const truncateText = (text: string, maxWords: number) => {
+  const words = text.split(" ");
+  if (words.length > maxWords) {
+    return words.slice(0, maxWords).join(" ") + "...";
+  }
+  return text;
+};
+
 export default function NotePad() {
   const [notes, setNotes] = useState(initialNotes);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -214,11 +223,23 @@ export default function NotePad() {
               key={note.id}
               className={`flex flex-col ${note.color} transition-all duration-300 hover:shadow-lg`}
             >
-              <CardHeader>
-                <CardTitle>{note.title}</CardTitle>
+              <CardHeader
+                className="cursor-pointer"
+                draggable
+                onClick={() => handleEditNote(note.createdAt)}
+              >
+                <CardTitle>{truncateText(note.title, 3)}</CardTitle>
               </CardHeader>
-              <CardContent className="flex-grow">
-                <div dangerouslySetInnerHTML={{ __html: note.description }} />
+              <CardContent
+                className="flex-grow cursor-pointer"
+                draggable
+                onClick={() => handleEditNote(note.createdAt)}
+              >
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: truncateText(note.description, 20),
+                  }}
+                />
               </CardContent>
               <CardFooter className="flex justify-end space-x-2">
                 <Button
