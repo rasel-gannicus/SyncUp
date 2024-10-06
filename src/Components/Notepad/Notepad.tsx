@@ -64,7 +64,7 @@ const truncateText = (text: string, maxWords: number) => {
   return text;
 };
 
-export default function NotePad() {
+export default function NotePad({user} : {user: any}) {
   const [notes, setNotes] = useState(initialNotes);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
@@ -73,16 +73,15 @@ export default function NotePad() {
   const [editDataTime, setEditDataTime] = useState("");
   const [noteToEdit, setNoteToEdit] = useState({});
 
-  const { user, loading } = useAuthState();
 
   // --- getting note for user & adding new note
   const {
     data: userData,
     isLoading: userLoading,
     error: userError,
-  } = useGetUserQuery(user?.uid);
+  } = useGetUserQuery(user?.email || user?.providerData[0]?.email);
 
-  const [addNoteToDb, { data, isLoading, error }] = useAddNoteMutation();
+  const [addNoteToDb, { data, isLoading, error }] : any = useAddNoteMutation();
   const [
     editNoteToDb,
     { data: editNoteData, isLoading: editNoteLoading, error: editNoteError },
@@ -101,6 +100,7 @@ export default function NotePad() {
       content,
       color: getRandomColor(),
       uid: user.uid,
+      email : user.providerData[0].email ||  user?.email,
     };
     const toastId = toast.loading("Saving note...", {
       position: "bottom-center",
@@ -171,6 +171,7 @@ export default function NotePad() {
       const response: any = await deleteNoteFromDb({
         uid: user?.uid,
         createdAt,
+        email : user.providerData[0].email ||  user?.email
       });
 
       if ("error" in response) {

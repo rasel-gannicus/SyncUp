@@ -32,17 +32,54 @@ import {
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import profileImg from "@/assets/img/profile-svgrepo-com.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DeleteConfirmationModal } from "@/utils/Modals/DeleteConfirmationModal";
 import { useAuthState } from "@/utils/Route Protection/useAuthState";
 import { useRouter } from "next/navigation";
+import { useAddUserToDbMutation } from "@/Redux/features/user/userApi";
+import { toast } from "react-hot-toast";
 
 const Topbar = () => {
   const [isModal, setIsModal] = useState(false);
 
   const { user, loading } = useAuthState();
+  // console.log("🚀 ~ Topbar ~ User from Firebase :", user);
 
-  const navigate = useRouter() ;
+  const [addUserToDb] = useAddUserToDbMutation();
+
+  const handleUser = async (user: any, provider: string) => {
+    console.log("triggered");
+    if (user) {
+      try {
+        const response = await addUserToDb({
+          user: {
+            ...user,
+            name: user?.displayName || user?.providerData[0]?.displayName || "",
+            email: user?.providerData[0]?.email || user?.email ,
+            uid: user?.uid || null,
+            provider: provider,
+          },
+        });
+
+        if ("error" in response) {
+          throw new Error("Failed to save user data to database");
+        }
+
+        toast.success(`You are signed in`);
+      } catch (error) {
+        console.error("Error saving user data:", error);
+        toast.error(`Error saving user data after ${provider} sign-in`);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      handleUser(user, user.providerData[0].providerId);
+    }
+  }, [user]);
+
+  const navigate = useRouter();
 
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
@@ -147,13 +184,22 @@ const Topbar = () => {
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem>Settings</DropdownMenuItem>
-          <DropdownMenuItem onClick={() => navigate.push('/secretPage')} className="text-red-600 font-bold">Secret Page</DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => navigate.push("/secretPage")}
+            className="text-red-600 font-bold"
+          >
+            Secret Page
+          </DropdownMenuItem>
           <DropdownMenuSeparator />
-          {user ? <DropdownMenuItem onClick={() => setIsModal(true)}>
-            Logout
-          </DropdownMenuItem> : <DropdownMenuItem onClick={() => navigate.push('/login')}>
-            Login
-          </DropdownMenuItem>}
+          {user ? (
+            <DropdownMenuItem onClick={() => setIsModal(true)}>
+              Logout
+            </DropdownMenuItem>
+          ) : (
+            <DropdownMenuItem onClick={() => navigate.push("/login")}>
+              Login
+            </DropdownMenuItem>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
       <DeleteConfirmationModal isModal={isModal} setIsModal={setIsModal} />

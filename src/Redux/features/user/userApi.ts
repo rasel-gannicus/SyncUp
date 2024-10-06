@@ -5,7 +5,7 @@ export const userApi = apiSlice.injectEndpoints({
     
     // --- getting user from db
     getUser: builder.query({
-      query: (uid) => `/users?uid=${uid}`, // Directly construct the URL with query parameter
+      query: (email) => `/users?email=${email}`, // Directly construct the URL with query parameter
         providesTags: ["user"],
         }),
 

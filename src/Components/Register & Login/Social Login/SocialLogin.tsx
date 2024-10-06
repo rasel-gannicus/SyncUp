@@ -20,6 +20,7 @@ export default function SocialLogin({ isLoading }: { isLoading: boolean }) {
   const [addUserToDb] = useAddUserToDbMutation();
 
   const handleUser = async (user: any, provider: string) => {
+    console.log('triggered')
     if (user) {
       try {
         const response = await addUserToDb({
@@ -46,7 +47,6 @@ export default function SocialLogin({ isLoading }: { isLoading: boolean }) {
   };
 
   useEffect(() => {
-    // console.log({ gitUser, gitLoading, gitError });
     if (!loading && !gitLoading && (error || gitError)) {
       console.log({ error, gitError });
       toast.error(gitError?.code || error?.code || "An error happened");
