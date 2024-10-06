@@ -64,7 +64,7 @@ const truncateText = (text: string, maxWords: number) => {
   return text;
 };
 
-export default function NotePad({user} : {user: any}) {
+export default function NotePad({ user }: { user: any }) {
   const [notes, setNotes] = useState(initialNotes);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
@@ -73,7 +73,6 @@ export default function NotePad({user} : {user: any}) {
   const [editDataTime, setEditDataTime] = useState("");
   const [noteToEdit, setNoteToEdit] = useState({});
 
-
   // --- getting note for user & adding new note
   const {
     data: userData,
@@ -81,7 +80,7 @@ export default function NotePad({user} : {user: any}) {
     error: userError,
   } = useGetUserQuery(user?.email || user?.providerData[0]?.email);
 
-  const [addNoteToDb, { data, isLoading, error }] : any = useAddNoteMutation();
+  const [addNoteToDb, { data, isLoading, error }]: any = useAddNoteMutation();
   const [
     editNoteToDb,
     { data: editNoteData, isLoading: editNoteLoading, error: editNoteError },
@@ -100,7 +99,7 @@ export default function NotePad({user} : {user: any}) {
       content,
       color: getRandomColor(),
       uid: user.uid,
-      email : user.providerData[0].email ||  user?.email,
+      email: user.providerData[0].email || user?.email,
     };
     const toastId = toast.loading("Saving note...", {
       position: "bottom-center",
@@ -171,7 +170,7 @@ export default function NotePad({user} : {user: any}) {
       const response: any = await deleteNoteFromDb({
         uid: user?.uid,
         createdAt,
-        email : user.providerData[0].email ||  user?.email
+        email: user.providerData[0].email || user?.email,
       });
 
       if ("error" in response) {
@@ -217,51 +216,52 @@ export default function NotePad({user} : {user: any}) {
           </CardContent>
         </Card>
 
-        {userData?.notes
-          ?.filter((note: any) => !note?.isDeleted)
-          .map((note: any) => (
-            <Card
-              key={note.id}
-              className={`flex flex-col ${note.color} transition-all duration-300 hover:shadow-lg`}
-            >
-              <CardHeader
-                className="cursor-pointer"
-                draggable
-                onClick={() => handleEditNote(note.createdAt)}
+        {user &&
+          userData?.notes
+            ?.filter((note: any) => !note?.isDeleted)
+            .map((note: any) => (
+              <Card
+                key={note.id}
+                className={`flex flex-col ${note.color} transition-all duration-300 hover:shadow-lg`}
               >
-                <CardTitle>{truncateText(note.title, 3)}</CardTitle>
-              </CardHeader>
-              <CardContent
-                className="flex-grow cursor-pointer"
-                draggable
-                onClick={() => handleEditNote(note.createdAt)}
-              >
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: truncateText(note.description, 20),
-                  }}
-                />
-              </CardContent>
-              <CardFooter className="flex justify-end space-x-2">
-                <Button
-                  variant="ghost"
-                  size="icon"
+                <CardHeader
+                  className="cursor-pointer"
+                  draggable
                   onClick={() => handleEditNote(note.createdAt)}
                 >
-                  <Edit className="h-4 w-4" />
-                  <span className="sr-only">Edit</span>
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => handleDeleteNote(note.createdAt)}
+                  <CardTitle>{truncateText(note.title, 3)}</CardTitle>
+                </CardHeader>
+                <CardContent
+                  className="flex-grow cursor-pointer"
+                  draggable
+                  onClick={() => handleEditNote(note.createdAt)}
                 >
-                  <Trash2 className="h-4 w-4" />
-                  <span className="sr-only">Delete</span>
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: truncateText(note.description, 20),
+                    }}
+                  />
+                </CardContent>
+                <CardFooter className="flex justify-end space-x-2">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => handleEditNote(note.createdAt)}
+                  >
+                    <Edit className="h-4 w-4" />
+                    <span className="sr-only">Edit</span>
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => handleDeleteNote(note.createdAt)}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    <span className="sr-only">Delete</span>
+                  </Button>
+                </CardFooter>
+              </Card>
+            ))}
       </div>
 
       {userData?.notes?.length === 0 && (

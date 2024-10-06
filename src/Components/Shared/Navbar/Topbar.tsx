@@ -38,12 +38,13 @@ import { useAuthState } from "@/utils/Route Protection/useAuthState";
 import { useRouter } from "next/navigation";
 import { useAddUserToDbMutation } from "@/Redux/features/user/userApi";
 import { toast } from "react-hot-toast";
+import DynamicBreadcrumb from "./DynamicBreadcrumb";
 
 const Topbar = () => {
   const [isModal, setIsModal] = useState(false);
 
   const { user, loading } = useAuthState();
-  // console.log("🚀 ~ Topbar ~ User from Firebase :", user);
+  
 
   const [addUserToDb] = useAddUserToDbMutation();
 
@@ -55,7 +56,7 @@ const Topbar = () => {
           user: {
             ...user,
             name: user?.displayName || user?.providerData[0]?.displayName || "",
-            email: user?.providerData[0]?.email || user?.email ,
+            email: user?.providerData[0]?.email || user?.email,
             uid: user?.uid || null,
             provider: provider,
           },
@@ -137,25 +138,9 @@ const Topbar = () => {
           </nav>
         </SheetContent>
       </Sheet>
-      <Breadcrumb className="hidden md:flex">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link href="#">Dashboard</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link href="#">Orders</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>Recent Orders</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+      <div className="hidden md:flex">
+        <DynamicBreadcrumb />
+      </div>
       <div className="relative ml-auto flex-1 md:grow-0">
         <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input
@@ -172,7 +157,7 @@ const Topbar = () => {
             className="overflow-hidden rounded-full"
           >
             <Image
-              src={profileImg}
+              src={user?.providerData[0].photoURL || profileImg}
               width={36}
               height={36}
               alt="Avatar"
@@ -181,7 +166,15 @@ const Topbar = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuLabel>
+            {user?.providerData[0].displayName || "My Account"}
+          </DropdownMenuLabel>
+          <DropdownMenuLabel>
+            <p className="text-xs text-gray-400">
+              {user?.providerData[0]?.email || user?.email}
+            </p>
+          </DropdownMenuLabel>
+
           <DropdownMenuSeparator />
           <DropdownMenuItem>Settings</DropdownMenuItem>
           <DropdownMenuItem
