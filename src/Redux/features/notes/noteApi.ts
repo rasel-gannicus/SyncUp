@@ -21,7 +21,21 @@ export const noteApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["user"],
     }),
+
+    // --- edit a note
+    editNote: builder.mutation({
+      query: (data) => ({
+        url: "/editNote",
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["user"],
+    }),
   }),
 });
 
-export const { useAddNoteMutation, useDeleteNoteMutation } = noteApi;
+export const {
+  useAddNoteMutation,
+  useDeleteNoteMutation,
+  useEditNoteMutation,
+} = noteApi;

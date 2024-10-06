@@ -13,6 +13,7 @@ import AddNoteModal from "./Modal/AddNoteModal";
 import {
   useAddNoteMutation,
   useDeleteNoteMutation,
+  useEditNoteMutation,
 } from "@/Redux/features/notes/noteApi";
 import { useAuthState } from "@/utils/Route Protection/useAuthState";
 import { toast } from "react-hot-toast";
@@ -73,6 +74,10 @@ export default function NotePad() {
   } = useGetUserQuery(user?.uid);
 
   const [addNoteToDb, { data, isLoading, error }] = useAddNoteMutation();
+  const [
+    editNoteToDb,
+    { data: editNoteData, isLoading: editNoteLoading, error: editNoteError },
+  ] = useEditNoteMutation();
 
   // --- adding note
   const handleAddNote = async (title: string, content: string) => {
@@ -93,14 +98,23 @@ export default function NotePad() {
     });
 
     try {
-      const response: any = await addNoteToDb({ note: newNote });
+      const response: any = isEditModalOpen
+        ? await editNoteToDb({ note: newNote, createdAt: editDataTime })
+        : await addNoteToDb({ note: newNote });
 
       if ("error" in response) {
-        toast.error(response.error.data.message || "Failed to add note.");
+        toast.error(
+          response.error.data.message || isEditModalOpen
+            ? "Failed to update note."
+            : "Failed to add note."
+        );
         console.error(response.error);
       } else {
-        toast.success("Note added successfully");
-        setNotes([...notes, newNote]); // Optimistically update UI
+        toast.success(
+          isEditModalOpen
+            ? "Note updated successfully"
+            : "Note added successfully"
+        );
       }
     } catch (error) {
       toast.error("An unexpected error occurred.");
@@ -236,6 +250,7 @@ export default function NotePad() {
         </div>
       )}
 
+      {/* --- this modal will open either user want to add new notes  or edit existing notes --- */}
       <AddNoteModal
         isOpen={isAddModalOpen || isEditModalOpen}
         onClose={() => {
