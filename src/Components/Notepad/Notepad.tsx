@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,7 +10,10 @@ import {
 } from "@/components/ui/card";
 import { PlusCircle, Edit, Trash2 } from "lucide-react";
 import AddNoteModal from "./Modal/AddNoteModal";
-import { useAddNoteMutation, useDeleteNoteMutation } from "@/Redux/features/notes/noteApi";
+import {
+  useAddNoteMutation,
+  useDeleteNoteMutation,
+} from "@/Redux/features/notes/noteApi";
 import { useAuthState } from "@/utils/Route Protection/useAuthState";
 import { toast } from "react-hot-toast";
 import { useGetUserQuery } from "@/Redux/features/user/userApi";
@@ -55,14 +58,23 @@ export default function NotePad() {
   const [notes, setNotes] = useState(initialNotes);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
+  // --- edit note state
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editDataTime, setEditDataTime] = useState("");
+  const [noteToEdit, setNoteToEdit] = useState({});
+
   const { user, loading } = useAuthState();
 
   // --- getting note for user & adding new note
-  const {data: userData, isLoading: userLoading, error: userError} = useGetUserQuery(user?.uid);
+  const {
+    data: userData,
+    isLoading: userLoading,
+    error: userError,
+  } = useGetUserQuery(user?.uid);
 
   const [addNoteToDb, { data, isLoading, error }] = useAddNoteMutation();
 
-  // --- adding note 
+  // --- adding note
   const handleAddNote = async (title: string, content: string) => {
     if (!user) {
       toast.error("You need to login first to save notes");
@@ -74,19 +86,21 @@ export default function NotePad() {
       title,
       content,
       color: getRandomColor(),
-      uid: user.uid, 
+      uid: user.uid,
     };
-      const toastId = toast.loading("Saving note...", {position : "bottom-center"} );
+    const toastId = toast.loading("Saving note...", {
+      position: "bottom-center",
+    });
 
     try {
-      const response : any = await addNoteToDb({ note: newNote });
+      const response: any = await addNoteToDb({ note: newNote });
 
-      if ('error' in response) {
-        toast.error(response.error.data.message || "Failed to add note."); 
+      if ("error" in response) {
+        toast.error(response.error.data.message || "Failed to add note.");
         console.error(response.error);
       } else {
-        toast.success("Note added successfully"); 
-        setNotes([...notes, newNote]); // Optimistically update UI 
+        toast.success("Note added successfully");
+        setNotes([...notes, newNote]); // Optimistically update UI
       }
     } catch (error) {
       toast.error("An unexpected error occurred.");
@@ -96,14 +110,31 @@ export default function NotePad() {
     }
   };
 
-
-  const handleEditNote = (id: number) => {
+  const handleEditNote = (createdAt: any) => {
+    setIsEditModalOpen(true);
+    setEditDataTime(createdAt);
     // This would typically navigate to EditNote page or open an edit modal
-    console.log("Edit note", id);
   };
 
-  // --- deleting a note 
-  const [deleteNoteFromDb, {data : deleteNoteData, isLoading: deleteNoteLoading, error: deleteNoteError}] = useDeleteNoteMutation();
+  // --- clearing the 'edit data time' state when modal is closed
+  useEffect(() => {
+    if (!isEditModalOpen) {
+      setEditDataTime("");
+    }
+    setNoteToEdit(
+      userData?.notes?.find((note: any) => note.createdAt === editDataTime)
+    );
+  }, [isEditModalOpen]);
+
+  // --- deleting a note
+  const [
+    deleteNoteFromDb,
+    {
+      data: deleteNoteData,
+      isLoading: deleteNoteLoading,
+      error: deleteNoteError,
+    },
+  ] = useDeleteNoteMutation();
 
   const handleDeleteNote = async (createdAt: string) => {
     if (!user) {
@@ -114,13 +145,16 @@ export default function NotePad() {
     const toastId = toast.loading("Deleting note...");
 
     try {
-      const response: any = await deleteNoteFromDb({ uid: user?.uid, createdAt });
+      const response: any = await deleteNoteFromDb({
+        uid: user?.uid,
+        createdAt,
+      });
 
-      if ('error' in response) {
+      if ("error" in response) {
         toast.error(response.error.data.message || "Failed to delete note.");
         console.error(response.error);
       } else {
-        toast.success("Note deleted successfully"); 
+        toast.success("Note deleted successfully");
       }
     } catch (error) {
       toast.error("An unexpected error occurred.");
@@ -134,8 +168,10 @@ export default function NotePad() {
     return colorOptions[Math.floor(Math.random() * colorOptions.length)];
   };
 
-  if(userLoading){
-    return <LoadingSpinnerCustom desc="Getting notes ..." /> || <div>Loading...</div>
+  if (userLoading) {
+    return (
+      <LoadingSpinnerCustom desc="Getting notes ..." /> || <div>Loading...</div>
+    );
   }
 
   return (
@@ -157,37 +193,39 @@ export default function NotePad() {
           </CardContent>
         </Card>
 
-        {userData?.notes?.filter((note:any)=> !note?.isDeleted).map((note : any) => (
-          <Card
-            key={note.id}
-            className={`flex flex-col ${note.color} transition-all duration-300 hover:shadow-lg`}
-          >
-            <CardHeader>
-              <CardTitle>{note.title}</CardTitle>
-            </CardHeader>
-            <CardContent className="flex-grow">
-              <div dangerouslySetInnerHTML={{ __html: note.content }} />
-            </CardContent>
-            <CardFooter className="flex justify-end space-x-2">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => handleEditNote(note.id)}
-              >
-                <Edit className="h-4 w-4" />
-                <span className="sr-only">Edit</span>
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => handleDeleteNote(note.createdAt)}
-              >
-                <Trash2 className="h-4 w-4" />
-                <span className="sr-only">Delete</span>
-              </Button>
-            </CardFooter>
-          </Card>
-        ))}
+        {userData?.notes
+          ?.filter((note: any) => !note?.isDeleted)
+          .map((note: any) => (
+            <Card
+              key={note.id}
+              className={`flex flex-col ${note.color} transition-all duration-300 hover:shadow-lg`}
+            >
+              <CardHeader>
+                <CardTitle>{note.title}</CardTitle>
+              </CardHeader>
+              <CardContent className="flex-grow">
+                <div dangerouslySetInnerHTML={{ __html: note.description }} />
+              </CardContent>
+              <CardFooter className="flex justify-end space-x-2">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => handleEditNote(note.createdAt)}
+                >
+                  <Edit className="h-4 w-4" />
+                  <span className="sr-only">Edit</span>
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => handleDeleteNote(note.createdAt)}
+                >
+                  <Trash2 className="h-4 w-4" />
+                  <span className="sr-only">Delete</span>
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
       </div>
 
       {userData?.notes?.length === 0 && (
@@ -199,9 +237,14 @@ export default function NotePad() {
       )}
 
       <AddNoteModal
-        isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
+        isOpen={isAddModalOpen || isEditModalOpen}
+        onClose={() => {
+          setIsAddModalOpen(false);
+          setIsEditModalOpen(false);
+        }}
         onAddNote={handleAddNote}
+        isEditModalOpen={isEditModalOpen}
+        noteToEdit={noteToEdit}
       />
     </div>
   );

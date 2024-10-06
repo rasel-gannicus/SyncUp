@@ -12,19 +12,59 @@ import {
 } from "@/components/ui/dialog";
 import QuillEditor from "../QuillEditor/QuillEditor";
 
+const modules = {
+  toolbar: [
+    [{ header: [1, 2, false] }],
+    ["bold", "italic", "underline", "strike", "blockquote"],
+    [
+      { list: "ordered" },
+      { list: "bullet" },
+      { indent: "-1" },
+      { indent: "+1" },
+    ],
+    ["link", "image"],
+    ["clean"],
+  ],
+};
+
+const formats = [
+  "header",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "blockquote",
+  "list",
+  "bullet",
+  "indent",
+  "link",
+  "image",
+];
+
 interface AddNoteModalProps {
   isOpen: boolean;
+  isEditModalOpen: boolean;
+  noteToEdit: any;
   onClose: () => void;
   onAddNote: (title: string, content: string) => void;
 }
 
-export default function AddNoteModal({
+export default function async({
   isOpen,
   onClose,
   onAddNote,
+  isEditModalOpen,
+  noteToEdit,
 }: AddNoteModalProps) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+
+  useEffect(() => {
+    if (isEditModalOpen && noteToEdit) {
+      setTitle(noteToEdit.title);
+      setContent(noteToEdit.description);
+    }
+  }, [isEditModalOpen, noteToEdit]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -39,40 +79,13 @@ export default function AddNoteModal({
     onClose();
   };
 
-  const modules = {
-    toolbar: [
-      [{ header: [1, 2, false] }],
-      ["bold", "italic", "underline", "strike", "blockquote"],
-      [
-        { list: "ordered" },
-        { list: "bullet" },
-        { indent: "-1" },
-        { indent: "+1" },
-      ],
-      ["link", "image"],
-      ["clean"],
-    ],
-  };
-
-  const formats = [
-    "header",
-    "bold",
-    "italic",
-    "underline",
-    "strike",
-    "blockquote",
-    "list",
-    "bullet",
-    "indent",
-    "link",
-    "image",
-  ];
-
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[625px] h-[80vh] overflow-y-auto flex flex-col">
         <DialogHeader>
-          <DialogTitle>Add a New Note</DialogTitle>
+          <DialogTitle>
+            {isEditModalOpen ? "Edit Note" : "Add Note"}
+          </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="flex flex-col flex-grow">
           <div className="mb-4">
@@ -96,7 +109,7 @@ export default function AddNoteModal({
               Cancel
             </Button>
             <Button className="bg-purple-700" type="submit">
-              Add Note
+              {isEditModalOpen ? "Update Note" : "Add Note"}
             </Button>
           </DialogFooter>
         </form>
