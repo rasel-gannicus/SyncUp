@@ -12,14 +12,6 @@ import {
   Users2,
 } from "lucide-react";
 
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -39,12 +31,17 @@ import { useRouter } from "next/navigation";
 import { useAddUserToDbMutation } from "@/Redux/features/user/userApi";
 import { toast } from "react-hot-toast";
 import DynamicBreadcrumb from "./DynamicBreadcrumb";
+import { useSelector } from "react-redux";
+import { selectAllUsers, selectUserStatus } from "@/Redux/features/user/userSlice";
 
 const Topbar = () => {
   const [isModal, setIsModal] = useState(false);
 
   const { user, loading } = useAuthState();
-  
+  const users = useSelector(selectAllUsers);
+  console.log("🚀 ~ Topbar ~ users:", users)
+  const status = useSelector(selectUserStatus);
+  console.log("🚀 ~ Topbar ~ status:", status)
 
   const [addUserToDb] = useAddUserToDbMutation();
 

@@ -9,6 +9,7 @@ import {
   useEditTodoMutation,
 } from "@/Redux/features/Todo List/todoApi";
 import { useGetUserQuery } from "@/Redux/features/user/userApi";
+import { LoadingSpinnerCustom } from "@/utils/Loading Spinner/LoadingSpinner";
 
 const TodoList = ({ user }: { user: any }) => {
   const [inputValue, setInputValue] = useState("");
@@ -87,7 +88,7 @@ const TodoList = ({ user }: { user: any }) => {
     .sort((a: any, b: any) => a.completed - b.completed);
 
   if (userLoading) {
-    return <div>Loading...</div>;
+    return  <LoadingSpinnerCustom desc="Loading Todo List . . ." /> || <div>Loading...</div>;
   }
 
   return (

@@ -1,8 +1,7 @@
 import { apiSlice } from "../../api/apiSlice";
 
 export const userApi = apiSlice.injectEndpoints({
-  endpoints: (builder) => ({
-    
+  endpoints: (builder) => ({    
     // --- getting user from db
     getUser: builder.query({
       query: (email) => `/users?email=${email}`, // Directly construct the URL with query parameter
@@ -17,7 +16,6 @@ export const userApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
-  }),
-});
+  })});
 
 export const {useAddUserToDbMutation, useGetUserQuery} = userApi;
