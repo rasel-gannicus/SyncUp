@@ -221,7 +221,7 @@ export default function NotePad({ user }: { user: any }) {
             ?.filter((note: any) => !note?.isDeleted)
             .map((note: any) => (
               <Card
-                key={note.id}
+                key={note.createdAt}
                 className={`flex flex-col ${note.color} transition-all duration-300 hover:shadow-lg`}
               >
                 <CardHeader

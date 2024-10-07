@@ -37,9 +37,9 @@ import { selectUser, selectUserStatus } from "@/Redux/features/user/userSlice";
 const Topbar = () => {
   const [isModal, setIsModal] = useState(false);
 
-  // const { user, loading } = useAuthState();
+  const { user, loading } = useAuthState();
   const userFromReduxStore = useSelector(selectUser);
-  let user = userFromReduxStore?.userInfo ;
+  console.log(userFromReduxStore)
 
   const [addUserToDb] = useAddUserToDbMutation();
 
