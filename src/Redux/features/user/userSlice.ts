@@ -1,10 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { userApi } from "./userApi";
+import { apiSlice } from '@/Redux/api/apiSlice';
+import { noteApi } from '../notes/noteApi';
 
 // Define the initial state
 const initialState : any = {
   user: null,
-  status: 'idle',
+  userLoading: false,
   error: null,
 };
 
@@ -12,29 +14,19 @@ const initialState : any = {
 const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      // Handle getUser query
-      .addMatcher(userApi.endpoints.getUser.matchPending, (state) => {
-        state.status = 'loading';
-      })
-      .addMatcher(userApi.endpoints.getUser.matchFulfilled, (state, { payload }) => {
-        state.user = payload; // Store the single user
-        state.status = 'succeeded';
-      })
-      .addMatcher(userApi.endpoints.getUser.matchRejected, (state, { error }) => {
-        state.status = 'failed';
-        state.error = error.message;
-      })
-      
+  reducers: {
+    addUserToRedux (state, action) {
+      state.user = action.payload ; // Store the single user
+    },
+    addUserLoading (state, action) {
+      state.status = action.payload;
+    }
   },
 });
 
 // Export the reducer
 export default userSlice.reducer;
 
-// Export selectors
-export const selectUser = (state : any) => state.user.user;
-export const selectUserStatus = (state : any) => state.user.status;
-export const selectUserError = (state : any) => state.user.error;
+// Export the actions
+export const { addUserToRedux, addUserLoading } = userSlice.actions;
+

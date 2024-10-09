@@ -5,6 +5,7 @@ export const userApi = apiSlice.injectEndpoints({
     // --- getting user from db
     getUser: builder.query({
       query: (email) => {
+        console.log("🚀 ~ email:", email)
         // Check if email is undefined, null, or an empty string
         if (!email || email.trim() === "") {
           // Return a dummy URL that won't be called
@@ -14,12 +15,7 @@ export const userApi = apiSlice.injectEndpoints({
         return { url: `/users?email=${encodeURIComponent(email)}` };
       },
       // providesTags & invalidatesTags are enough to handle caching
-      providesTags: (result, error, email) =>
-        result
-          ? [{ type: "user", id: result.id }]
-          : email && email.trim() !== ""
-          ? ["user"]
-          : [],
+      providesTags: ["user"],
     }),
 
     // --- adding new user to db after registration or login with firebase

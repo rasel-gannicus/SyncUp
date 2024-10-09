@@ -28,23 +28,39 @@ import { useEffect, useState } from "react";
 import { DeleteConfirmationModal } from "@/utils/Modals/DeleteConfirmationModal";
 import { useAuthState } from "@/utils/Route Protection/useAuthState";
 import { useRouter } from "next/navigation";
-import { useAddUserToDbMutation } from "@/Redux/features/user/userApi";
+import { useAddUserToDbMutation, useGetUserQuery } from "@/Redux/features/user/userApi";
 import { toast } from "react-hot-toast";
 import DynamicBreadcrumb from "./DynamicBreadcrumb";
 import { useSelector } from "react-redux";
-import { selectUser, selectUserStatus } from "@/Redux/features/user/userSlice";
+import { addUserLoading, addUserToRedux, selectUser, selectUserStatus } from "@/Redux/features/user/userSlice";
+import { LoadingSpinner } from "@/utils/Loading Spinner/LoadingSpinner";
+import { useAppDispatch } from "@/Redux/hooks";
 
 const Topbar = () => {
   const [isModal, setIsModal] = useState(false);
 
-  const { user, loading } = useAuthState();
-  const userFromReduxStore = useSelector(selectUser);
-  console.log(userFromReduxStore)
+  const { user, loading } = useAuthState();  // get user from firebase
 
   const [addUserToDb] = useAddUserToDbMutation();
 
+  const { data : userFromDB , isLoading }  = useGetUserQuery(user?.providerData[0]?.email || user?.email) ; // get user from db
+
+  const dispatch = useAppDispatch() ; // redux dispatch
+
+
+
+  useEffect(()=>{
+    if(isLoading){
+      dispatch(addUserLoading(isLoading))
+    }
+    if(userFromDB){
+      dispatch(addUserToRedux(userFromDB)) ; 
+    }
+  },[userFromDB, user, isLoading])
+
+
   const handleUser = async (user: any, provider: string) => {
-    console.log("triggered");
+    // console.log("triggered");
     if (user) {
       try {
         const response = await addUserToDb({
@@ -69,13 +85,19 @@ const Topbar = () => {
     }
   };
 
+
   useEffect(() => {
     if (user) {
       handleUser(user, user.providerData[0].providerId);
     }
   }, [user]);
 
+
   const navigate = useRouter();
+
+  if (loading) {
+    return  <LoadingSpinner/> || <div>Loading...</div>;
+  }
 
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">

@@ -19,6 +19,8 @@ import { useAuthState } from "@/utils/Route Protection/useAuthState";
 import { toast } from "react-hot-toast";
 import { useGetUserQuery } from "@/Redux/features/user/userApi";
 import { LoadingSpinnerCustom } from "@/utils/Loading Spinner/LoadingSpinner";
+import { useSelector } from "react-redux";
+import { useAppSelector } from "@/Redux/hooks";
 
 // This would typically come from  app's state management or API
 const initialNotes = [
@@ -73,12 +75,10 @@ export default function NotePad({ user }: { user: any }) {
   const [editDataTime, setEditDataTime] = useState("");
   const [noteToEdit, setNoteToEdit] = useState({});
 
-  // --- getting note for user & adding new note
-  const {
-    data: userData,
-    isLoading: userLoading,
-    error: userError,
-  } = useGetUserQuery(user?.email || user?.providerData[0]?.email);
+  const userState = useAppSelector(state => state.user) ; 
+  let userData = userState.user ; 
+  let userLoading = userState.userLoading ;
+
 
   const [addNoteToDb, { data, isLoading, error }]: any = useAddNoteMutation();
   const [

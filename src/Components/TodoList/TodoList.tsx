@@ -10,6 +10,9 @@ import {
 } from "@/Redux/features/Todo List/todoApi";
 import { useGetUserQuery } from "@/Redux/features/user/userApi";
 import { LoadingSpinnerCustom } from "@/utils/Loading Spinner/LoadingSpinner";
+import { useSelector } from "react-redux";
+import { selectUser, selectUserStatus } from "@/Redux/features/user/userSlice";
+import { useAppSelector } from "@/Redux/hooks";
 
 const TodoList = ({ user }: { user: any }) => {
   const [inputValue, setInputValue] = useState("");
@@ -20,12 +23,10 @@ const TodoList = ({ user }: { user: any }) => {
   const [deleteTodo] = useDeleteTodoMutation();
   const [editTodo] = useEditTodoMutation();
 
-  const {
-    data: userData,
-    isLoading: userLoading,
-    error: userError,
-  } = useGetUserQuery(user?.email || user?.providerData[0]?.email);
 
+  const userState = useAppSelector(state => state.user) ; 
+  let userData = userState.user ; 
+  let userLoading = userState.userLoading ;
   const handleAddTodo = async () => {
     if (!user) {
       // Handle error
