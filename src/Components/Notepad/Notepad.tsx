@@ -222,7 +222,7 @@ export default function NotePad({ user }: { user: any }) {
             .map((note: any) => (
               <Card
                 key={note.createdAt}
-                className={`flex flex-col ${note.color} transition-all duration-300 hover:shadow-lg`}
+                className={`flex flex-col ${note.color} transition-all duration-300 hover:shadow-lg  dark:text-white dark:bg-gray-600 `}
               >
                 <CardHeader
                   className="cursor-pointer"

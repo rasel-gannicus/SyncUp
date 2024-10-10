@@ -264,8 +264,8 @@ const TodoList = ({ user }: { user: any }) => {
   }
 
   return (
-    <div className="max-w-md mx-auto  mt-10 p-6 bg-white rounded-lg shadow-lg">
-      <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
+    <div className="max-w-md mx-auto dark:bg-gray-800 dark:text-white  mt-10 p-6 bg-white rounded-lg shadow-lg">
+      <h1 className="text-3xl font-bold mb-6 text-center text-gray-800 dark:text-white">
         Todo List
       </h1>
       <div className="flex mb-4">
@@ -278,7 +278,7 @@ const TodoList = ({ user }: { user: any }) => {
         />
         <Button
           onClick={handleAddTodo}
-          className="bg-blue-500 hover:bg-blue-600"
+          className="bg-blue-500 hover:bg-blue-600 dark:bg-green-500"
         >
           <PlusCircle size={20} />
         </Button>
@@ -287,7 +287,7 @@ const TodoList = ({ user }: { user: any }) => {
         <Button
           onClick={() => handleChangeFilter("all")}
           className={`${
-            filter === "all" ? "bg-blue-500" : "bg-gray-200 text-gray-800"
+            filter === "all" ? "bg-blue-500 dark:bg-green-500" : "bg-gray-200 text-gray-800"
           }`}
         >
           All
@@ -295,7 +295,7 @@ const TodoList = ({ user }: { user: any }) => {
         <Button
           onClick={() => handleChangeFilter("active")}
           className={`${
-            filter === "active" ? "bg-blue-500" : "bg-gray-200 text-gray-800"
+            filter === "active" ? "bg-gree-500 hover:bg-blue-500 dark:bg-green-500" : "bg-gray-200 text-gray-800"
           }`}
         >
           Active
@@ -303,7 +303,7 @@ const TodoList = ({ user }: { user: any }) => {
         <Button
           onClick={() => handleChangeFilter("completed")}
           className={`${
-            filter === "completed" ? "bg-blue-500" : "bg-gray-200 text-gray-800"
+            filter === "completed" ? "bg-blue-500 hover:bg-blue-500 dark:bg-green-500" : "bg-gray-200 text-gray-800"
           }`}
         >
           Completed
@@ -313,7 +313,7 @@ const TodoList = ({ user }: { user: any }) => {
         {filteredTodos?.map((todo: any) => (
           <li
             key={todo?.createdAt}
-            className="flex items-center bg-gray-100 p-3 rounded"
+            className="flex items-center bg-gray-100 p-3 rounded dark:bg-gray-700 dark:text-white"
           >
             <Button
               onClick={() => handleToggleTodo(todo?.createdAt, todo?.completed)}
