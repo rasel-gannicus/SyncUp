@@ -35,6 +35,7 @@ import { useSelector } from "react-redux";
 import { addUserLoading, addUserToRedux, selectUser, selectUserStatus } from "@/Redux/features/user/userSlice";
 import { LoadingSpinner } from "@/utils/Loading Spinner/LoadingSpinner";
 import { useAppDispatch } from "@/Redux/hooks";
+import ThemeToggle from "@/utils/Dark mode toggle/ThemeToggle";
 
 const Topbar = () => {
   const [isModal, setIsModal] = useState(false);
@@ -158,6 +159,7 @@ const Topbar = () => {
       <div className="hidden md:flex">
         <DynamicBreadcrumb />
       </div>
+      <ThemeToggle />
       <div className="relative ml-auto flex-1 md:grow-0">
         <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input
