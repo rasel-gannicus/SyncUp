@@ -10,6 +10,7 @@ import {
 } from "@/Redux/features/Todo List/todoApi";
 import { LoadingSpinnerCustom } from "@/utils/Loading Spinner/LoadingSpinner";
 import { useAppSelector } from "@/Redux/hooks";
+import { toast } from "react-hot-toast";
 
 const TodoList = ({ user }: { user: any }) => {
   const [inputValue, setInputValue] = useState("");
@@ -31,6 +32,7 @@ const TodoList = ({ user }: { user: any }) => {
 
   const handleAddTodo = async () => {
     if (!user) {
+      toast.error("You need to login first to add todos.");
       return;
     }
 
@@ -41,23 +43,39 @@ const TodoList = ({ user }: { user: any }) => {
       email: user.providerData[0].email || user?.email,
     };
 
+    const toastId = toast.loading("Adding todo...");
+
     // Optimistically add the todo
     setTodos((prevTodos : any) => [...prevTodos, newTodo]);
     setInputValue("");
 
     try {
-      await addTodo({ todo: newTodo });
+      const response : any = await addTodo({ todo: newTodo });
+
+      if ("error" in response) {
+        toast.error(response.error.data.message || "Failed to add todo.");
+      } else {
+        toast.success("Todo added successfully.");
+      }
     } catch (error) {
-      // Revert if server fails
-      setTodos((prevTodos : any) => prevTodos.filter((todo : any) => todo.createdAt !== newTodo.createdAt));
+      toast.error("An unexpected error occurred while adding the todo.");
+    } finally {
+      toast.dismiss(toastId);
     }
   };
 
   const handleToggleTodo = async (createdAt: string, isCompleted: boolean) => {
+    if (!user) {
+      toast.error("You need to login first to toggle todos.");
+      return;
+    }
+
     const todoIndex = todos.findIndex((todo: any) => todo.createdAt === createdAt);
     if (todoIndex === -1) return;
 
     const updatedTodo = { ...todos[todoIndex], completed: !isCompleted };
+
+    const toastId = toast.loading("Updating todo...");
 
     // Optimistically update the todo completion status
     const updatedTodos = [...todos];
@@ -65,43 +83,80 @@ const TodoList = ({ user }: { user: any }) => {
     setTodos(updatedTodos);
 
     try {
-      await editTodo({
+      const response : any = await editTodo({
         todo: {
           createdAt,
           completed: !isCompleted,
           email: user.providerData[0].email || user?.email,
         },
       });
+
+      if ("error" in response) {
+        toast.error(response.error.data.message || "Failed to update todo.");
+      } else {
+        toast.success("Todo updated successfully.");
+      }
     } catch (error) {
-      // Revert if server fails
+      toast.error("An unexpected error occurred while updating the todo.");
+      // Revert optimistic update
       const revertedTodos = [...todos];
       revertedTodos[todoIndex].completed = isCompleted;
       setTodos(revertedTodos);
+    } finally {
+      toast.dismiss(toastId);
     }
   };
 
   const handleDeleteTodo = async (createdAt: string) => {
+    if (!user) {
+      toast.error("You need to login first to delete todos.");
+      return;
+    }
+
     const todoIndex = todos.findIndex((todo: any) => todo.createdAt === createdAt);
     if (todoIndex === -1) return;
 
     const todoToDelete = todos[todoIndex];
+    const toastId = toast.loading("Deleting todo...");
 
     // Optimistically remove the todo
     setTodos((prevTodos : any) => prevTodos.filter((todo : any) => todo.createdAt !== createdAt));
 
     try {
-      await deleteTodo({ createdAt, email: user.providerData[0].email || user?.email });
+      const response : any = await deleteTodo({ createdAt, email: user.providerData[0].email || user?.email });
+
+      if ("error" in response) {
+        toast.error(response.error.data.message || "Failed to delete todo.");
+        // Revert optimistic delete
+        setTodos((prevTodos : any) => [...prevTodos, todoToDelete]);
+      } else {
+        toast.success("Todo deleted successfully.");
+      }
     } catch (error) {
-      // Revert if server fails
+      toast.error("An unexpected error occurred while deleting the todo.");
+      // Revert optimistic delete
       setTodos((prevTodos : any) => [...prevTodos, todoToDelete]);
+    } finally {
+      toast.dismiss(toastId);
     }
   };
 
+  const handleStartEditing = (createdAt: any) => {
+    setEditingId(createdAt);
+  };
+
   const handleFinishEditing = async (createdAt: string, newText: string) => {
+    if (!user) {
+      toast.error("You need to login first to edit todos.");
+      return;
+    }
+
     const todoIndex = todos.findIndex((todo: any) => todo.createdAt === createdAt);
     if (todoIndex === -1) return;
 
     const updatedTodo = { ...todos[todoIndex], text: newText };
+
+    const toastId = toast.loading("Editing todo...");
 
     // Optimistically update the todo text
     const updatedTodos = [...todos];
@@ -110,18 +165,31 @@ const TodoList = ({ user }: { user: any }) => {
     setEditingId(null);
 
     try {
-      await editTodo({
+      const response : any = await editTodo({
         todo: {
           createdAt,
           text: newText,
           email: user.providerData[0].email || user?.email,
         },
       });
+
+      if ("error" in response) {
+        toast.error(response.error.data.message || "Failed to edit todo.");
+        // Revert optimistic update
+        const revertedTodos = [...todos];
+        revertedTodos[todoIndex].text = todos[todoIndex].text; // Revert to old text
+        setTodos(revertedTodos);
+      } else {
+        toast.success("Todo edited successfully.");
+      }
     } catch (error) {
-      // Revert if server fails
+      toast.error("An unexpected error occurred while editing the todo.");
+      // Revert optimistic update
       const revertedTodos = [...todos];
-      revertedTodos[todoIndex].text = todos[todoIndex].text; // Revert to old text
+      revertedTodos[todoIndex].text = todos[todoIndex].text;
       setTodos(revertedTodos);
+    } finally {
+      toast.dismiss(toastId);
     }
   };
 
@@ -137,7 +205,6 @@ const TodoList = ({ user }: { user: any }) => {
   if (userLoading) {
     return <LoadingSpinnerCustom desc="Loading Todo List . . ." /> || <div>Loading...</div>;
   }
-
 
   return (
     <div className="max-w-md mx-auto  mt-10 p-6 bg-white rounded-lg shadow-lg">
