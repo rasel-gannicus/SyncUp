@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState, } from "react";
 import { PlusCircle, Trash2, Edit, CheckCircle, Circle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -8,10 +8,7 @@ import {
   useDeleteTodoMutation,
   useEditTodoMutation,
 } from "@/Redux/features/Todo List/todoApi";
-import { useGetUserQuery } from "@/Redux/features/user/userApi";
 import { LoadingSpinnerCustom } from "@/utils/Loading Spinner/LoadingSpinner";
-import { useSelector } from "react-redux";
-import { selectUser, selectUserStatus } from "@/Redux/features/user/userSlice";
 import { useAppSelector } from "@/Redux/hooks";
 
 const TodoList = ({ user }: { user: any }) => {
@@ -23,63 +20,112 @@ const TodoList = ({ user }: { user: any }) => {
   const [deleteTodo] = useDeleteTodoMutation();
   const [editTodo] = useEditTodoMutation();
 
+  const userState = useAppSelector((state) => state.user);
+  let userData = userState.user;
+  let userLoading = userState.userLoading;
+  const [todos, setTodos] = useState(userData?.todos || []); // Local state to store todos
 
-  const userState = useAppSelector(state => state.user) ; 
-  let userData = userState.user ; 
-  let userLoading = userState.userLoading ;
+  useEffect(() => {
+    setTodos(userData?.todos || []); // Sync with userData when it changes
+  }, [userData]);
+
   const handleAddTodo = async () => {
     if (!user) {
-      // Handle error
       return;
     }
 
     const newTodo = {
-      todo: {
-        text: inputValue,
-        completed: false,
-        email: user.providerData[0].email || user?.email,
-      },
+      text: inputValue,
+      completed: false,
+      createdAt: Date.now(), // Temporary ID
+      email: user.providerData[0].email || user?.email,
     };
 
-    addTodo(newTodo);
+    // Optimistically add the todo
+    setTodos((prevTodos : any) => [...prevTodos, newTodo]);
     setInputValue("");
+
+    try {
+      await addTodo({ todo: newTodo });
+    } catch (error) {
+      // Revert if server fails
+      setTodos((prevTodos : any) => prevTodos.filter((todo : any) => todo.createdAt !== newTodo.createdAt));
+    }
   };
 
-  const handleToggleTodo = (createdAt: string, isCompleted: boolean) => {
-    const todo = userData?.todos?.find(
-      (todo: any) => todo?.createdAt === createdAt
-    );
-    if (todo) {
-      editTodo({
+  const handleToggleTodo = async (createdAt: string, isCompleted: boolean) => {
+    const todoIndex = todos.findIndex((todo: any) => todo.createdAt === createdAt);
+    if (todoIndex === -1) return;
+
+    const updatedTodo = { ...todos[todoIndex], completed: !isCompleted };
+
+    // Optimistically update the todo completion status
+    const updatedTodos = [...todos];
+    updatedTodos[todoIndex] = updatedTodo;
+    setTodos(updatedTodos);
+
+    try {
+      await editTodo({
         todo: {
           createdAt,
           completed: !isCompleted,
           email: user.providerData[0].email || user?.email,
         },
       });
+    } catch (error) {
+      // Revert if server fails
+      const revertedTodos = [...todos];
+      revertedTodos[todoIndex].completed = isCompleted;
+      setTodos(revertedTodos);
     }
   };
 
-  const handleDeleteTodo = (createdAt: string) => {
-    deleteTodo({ createdAt, email: user.providerData[0].email || user?.email });
+  const handleDeleteTodo = async (createdAt: string) => {
+    const todoIndex = todos.findIndex((todo: any) => todo.createdAt === createdAt);
+    if (todoIndex === -1) return;
+
+    const todoToDelete = todos[todoIndex];
+
+    // Optimistically remove the todo
+    setTodos((prevTodos : any) => prevTodos.filter((todo : any) => todo.createdAt !== createdAt));
+
+    try {
+      await deleteTodo({ createdAt, email: user.providerData[0].email || user?.email });
+    } catch (error) {
+      // Revert if server fails
+      setTodos((prevTodos : any) => [...prevTodos, todoToDelete]);
+    }
   };
 
-  const handleStartEditing = (createdAt: any) => {
-    setEditingId(createdAt);
-  };
+  const handleFinishEditing = async (createdAt: string, newText: string) => {
+    const todoIndex = todos.findIndex((todo: any) => todo.createdAt === createdAt);
+    if (todoIndex === -1) return;
 
-  const handleFinishEditing = (createdAt: string, newText: string) => {
-    editTodo({
-      todo: {
-        createdAt,
-        text: newText,
-        email: user.providerData[0].email || user?.email,
-      },
-    });
+    const updatedTodo = { ...todos[todoIndex], text: newText };
+
+    // Optimistically update the todo text
+    const updatedTodos = [...todos];
+    updatedTodos[todoIndex] = updatedTodo;
+    setTodos(updatedTodos);
     setEditingId(null);
+
+    try {
+      await editTodo({
+        todo: {
+          createdAt,
+          text: newText,
+          email: user.providerData[0].email || user?.email,
+        },
+      });
+    } catch (error) {
+      // Revert if server fails
+      const revertedTodos = [...todos];
+      revertedTodos[todoIndex].text = todos[todoIndex].text; // Revert to old text
+      setTodos(revertedTodos);
+    }
   };
 
-  const filteredTodos = userData?.todos
+  const filteredTodos = todos
     ?.filter((todo: any) => !todo?.isDeleted)
     ?.filter((todo: any) => {
       if (filter === "active") return !todo.completed;
@@ -89,8 +135,9 @@ const TodoList = ({ user }: { user: any }) => {
     .sort((a: any, b: any) => a.completed - b.completed);
 
   if (userLoading) {
-    return  <LoadingSpinnerCustom desc="Loading Todo List . . ." /> || <div>Loading...</div>;
+    return <LoadingSpinnerCustom desc="Loading Todo List . . ." /> || <div>Loading...</div>;
   }
+
 
   return (
     <div className="max-w-md mx-auto  mt-10 p-6 bg-white rounded-lg shadow-lg">

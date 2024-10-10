@@ -1,10 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { userApi } from "./userApi";
-import { apiSlice } from '@/Redux/api/apiSlice';
-import { noteApi } from '../notes/noteApi';
+import { createSlice } from "@reduxjs/toolkit";
 
 // Define the initial state
-const initialState : any = {
+const initialState: any = {
   user: null,
   userLoading: false,
   error: null,
@@ -12,15 +9,15 @@ const initialState : any = {
 
 // Define the slice
 const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {
-    addUserToRedux (state, action) {
-      state.user = action.payload ; // Store the single user
+    addUserToRedux(state, action) {
+      state.user = action.payload; // Store the single user
     },
-    addUserLoading (state, action) {
+    addUserLoading(state, action) {
       state.status = action.payload;
-    }
+    },
   },
 });
 
@@ -29,4 +26,3 @@ export default userSlice.reducer;
 
 // Export the actions
 export const { addUserToRedux, addUserLoading } = userSlice.actions;
-
