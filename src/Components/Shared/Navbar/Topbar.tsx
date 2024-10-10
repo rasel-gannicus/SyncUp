@@ -159,9 +159,7 @@ const Topbar = () => {
       <div className="hidden md:flex">
         <DynamicBreadcrumb />
       </div>
-      
-      {/* --- Darkmode toggle --- */}
-      <ThemeToggle />
+
 
       {/* --- Search --- */}
       <div className="relative ml-auto flex-1 md:grow-0">
@@ -172,6 +170,10 @@ const Topbar = () => {
           className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
         />
       </div>
+            
+      {/* --- Darkmode toggle --- */}
+      <ThemeToggle />
+
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button

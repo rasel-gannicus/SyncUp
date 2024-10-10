@@ -2,30 +2,30 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface ThemeState {
-  theme: 'light' | 'dark';
+  theme: 'light' | 'dark' | 'system';
 }
 
 const initialState: ThemeState = {
-  theme: 'light', // Default theme
+  theme: 'system', // Default is 'system'
 };
 
 const themeSlice = createSlice({
   name: 'theme',
   initialState,
   reducers: {
-    toggleTheme: (state) => {
-      state.theme = state.theme === 'light' ? 'dark' : 'light';
-      // Save theme preference to localStorage
-      localStorage.setItem('theme', state.theme);
-      document.documentElement.classList.toggle('dark', state.theme === 'dark');
-    },
-    setTheme: (state, action: PayloadAction<'light' | 'dark'>) => {
+    setTheme: (state, action: PayloadAction<'light' | 'dark' | 'system'>) => {
       state.theme = action.payload;
       localStorage.setItem('theme', state.theme);
-      document.documentElement.classList.toggle('dark', state.theme === 'dark');
+
+      if (state.theme === 'system') {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.classList.toggle('dark', prefersDark);
+      } else {
+        document.documentElement.classList.toggle('dark', state.theme === 'dark');
+      }
     },
   },
 });
 
-export const { toggleTheme, setTheme } = themeSlice.actions;
+export const { setTheme } = themeSlice.actions;
 export default themeSlice.reducer;
