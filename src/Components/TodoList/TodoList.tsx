@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { PlusCircle, Trash2, Edit, CheckCircle, Circle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ import {
 import { LoadingSpinnerCustom } from "@/utils/Loading Spinner/LoadingSpinner";
 import { useAppSelector } from "@/Redux/hooks";
 import { toast } from "react-hot-toast";
+import { validateUser } from "./functionalities";
 
 const TodoList = ({ user }: { user: any }) => {
   const [inputValue, setInputValue] = useState("");
@@ -30,39 +31,50 @@ const TodoList = ({ user }: { user: any }) => {
     setTodos(userData?.todos || []); // Sync with userData when it changes
   }, [userData]);
 
-  const handleAddTodo = async () => {
-    if (!user) {
-      toast.error("You need to login first to add todos.");
-      return;
-    }
+  /**
+   * Adds a new todo item to the list and saves it to the database.
+   * Optimistically adds the new todo item to the list, then sends a request to the
+   * server to add the new todo item. If the request succeeds, the new todo item is
+   * kept in the list. If the request fails, the new todo item is removed from the
+   * list.
+   */
+  const handleAddTodo = useCallback(async () => {
+    if (!validateUser(user)) return;
 
     const newTodo = {
       text: inputValue,
       completed: false,
-      createdAt: Date.now(), // Temporary ID
+      createdAt: Date.now(),
       email: user.providerData[0].email || user?.email,
     };
 
     const toastId = toast.loading("Adding todo...");
 
-    // Optimistically add the todo
-    setTodos((prevTodos : any) => [...prevTodos, newTodo]);
+    // Optimistically add the new todo item to the list
+    setTodos((prevTodos: any) => [...prevTodos, newTodo]);
     setInputValue("");
 
     try {
-      const response : any = await addTodo({ todo: newTodo });
-
+      const response: any = await addTodo({ todo: newTodo });
       if ("error" in response) {
+        // If the request fails, remove the new todo item from the list
+        setTodos((prevTodos: any) =>
+          prevTodos.filter((todo: any) => todo.createdAt !== newTodo.createdAt)
+        );
         toast.error(response.error.data.message || "Failed to add todo.");
       } else {
         toast.success("Todo added successfully.");
       }
     } catch (error) {
+      // If the request fails, remove the new todo item from the list
+      setTodos((prevTodos: any) =>
+        prevTodos.filter((todo: any) => todo.createdAt !== newTodo.createdAt)
+      );
       toast.error("An unexpected error occurred while adding the todo.");
     } finally {
       toast.dismiss(toastId);
     }
-  };
+  }, [inputValue, user, addTodo]);
 
   const handleToggleTodo = async (createdAt: string, isCompleted: boolean) => {
     if (!user) {
@@ -70,7 +82,9 @@ const TodoList = ({ user }: { user: any }) => {
       return;
     }
 
-    const todoIndex = todos.findIndex((todo: any) => todo.createdAt === createdAt);
+    const todoIndex = todos.findIndex(
+      (todo: any) => todo.createdAt === createdAt
+    );
     if (todoIndex === -1) return;
 
     const updatedTodo = { ...todos[todoIndex], completed: !isCompleted };
@@ -83,7 +97,7 @@ const TodoList = ({ user }: { user: any }) => {
     setTodos(updatedTodos);
 
     try {
-      const response : any = await editTodo({
+      const response: any = await editTodo({
         todo: {
           createdAt,
           completed: !isCompleted,
@@ -113,29 +127,36 @@ const TodoList = ({ user }: { user: any }) => {
       return;
     }
 
-    const todoIndex = todos.findIndex((todo: any) => todo.createdAt === createdAt);
+    const todoIndex = todos.findIndex(
+      (todo: any) => todo.createdAt === createdAt
+    );
     if (todoIndex === -1) return;
 
     const todoToDelete = todos[todoIndex];
     const toastId = toast.loading("Deleting todo...");
 
     // Optimistically remove the todo
-    setTodos((prevTodos : any) => prevTodos.filter((todo : any) => todo.createdAt !== createdAt));
+    setTodos((prevTodos: any) =>
+      prevTodos.filter((todo: any) => todo.createdAt !== createdAt)
+    );
 
     try {
-      const response : any = await deleteTodo({ createdAt, email: user.providerData[0].email || user?.email });
+      const response: any = await deleteTodo({
+        createdAt,
+        email: user.providerData[0].email || user?.email,
+      });
 
       if ("error" in response) {
         toast.error(response.error.data.message || "Failed to delete todo.");
         // Revert optimistic delete
-        setTodos((prevTodos : any) => [...prevTodos, todoToDelete]);
+        setTodos((prevTodos: any) => [...prevTodos, todoToDelete]);
       } else {
         toast.success("Todo deleted successfully.");
       }
     } catch (error) {
       toast.error("An unexpected error occurred while deleting the todo.");
       // Revert optimistic delete
-      setTodos((prevTodos : any) => [...prevTodos, todoToDelete]);
+      setTodos((prevTodos: any) => [...prevTodos, todoToDelete]);
     } finally {
       toast.dismiss(toastId);
     }
@@ -151,7 +172,9 @@ const TodoList = ({ user }: { user: any }) => {
       return;
     }
 
-    const todoIndex = todos.findIndex((todo: any) => todo.createdAt === createdAt);
+    const todoIndex = todos.findIndex(
+      (todo: any) => todo.createdAt === createdAt
+    );
     if (todoIndex === -1) return;
 
     const updatedTodo = { ...todos[todoIndex], text: newText };
@@ -165,7 +188,7 @@ const TodoList = ({ user }: { user: any }) => {
     setEditingId(null);
 
     try {
-      const response : any = await editTodo({
+      const response: any = await editTodo({
         todo: {
           createdAt,
           text: newText,
@@ -193,17 +216,51 @@ const TodoList = ({ user }: { user: any }) => {
     }
   };
 
-  const filteredTodos = todos
-    ?.filter((todo: any) => !todo?.isDeleted)
-    ?.filter((todo: any) => {
-      if (filter === "active") return !todo.completed;
-      if (filter === "completed") return todo.completed;
-      return true;
-    })
-    .sort((a: any, b: any) => a.completed - b.completed);
+  /**
+   * Returns a filtered and sorted list of todos based on the current filter.
+   */
+  const filteredTodos = useMemo(() => {
+    // First, filter out any todos that have been deleted
+    const nonDeletedTodos = todos?.filter((todo: any) => !todo?.isDeleted);
+
+    // Then, filter the todos based on the current filter
+    const filteredTodos = nonDeletedTodos?.filter((todo: any) => {
+      switch (filter) {
+        // Show only active todos
+        case "active":
+          return !todo.completed;
+
+        // Show only completed todos
+        case "completed":
+          return todo.completed;
+
+        // Show all todos
+        default:
+          return true;
+      }
+    });
+
+    // Sort the todos by completed status
+    const sortedTodos = filteredTodos?.sort(
+      (a: any, b: any) => a.completed - b.completed
+    );
+
+    return sortedTodos;
+  }, [todos, filter]);
+
+  /**
+   * Changes the current filter to the new filter.
+   *
+   * @param {string} newFilter The new filter to apply.
+   */
+  const handleChangeFilter = useCallback((newFilter: string) => {
+    setFilter(newFilter);
+  }, []);
 
   if (userLoading) {
-    return <LoadingSpinnerCustom desc="Loading Todo List . . ." /> || <div>Loading...</div>;
+    return (
+      <LoadingSpinnerCustom desc="Getting Todo Lists ..." /> || <div>Loading...</div>
+    );
   }
 
   return (
@@ -228,7 +285,7 @@ const TodoList = ({ user }: { user: any }) => {
       </div>
       <div className="space-x-2 mb-4">
         <Button
-          onClick={() => setFilter("all")}
+          onClick={() => handleChangeFilter("all")}
           className={`${
             filter === "all" ? "bg-blue-500" : "bg-gray-200 text-gray-800"
           }`}
@@ -236,7 +293,7 @@ const TodoList = ({ user }: { user: any }) => {
           All
         </Button>
         <Button
-          onClick={() => setFilter("active")}
+          onClick={() => handleChangeFilter("active")}
           className={`${
             filter === "active" ? "bg-blue-500" : "bg-gray-200 text-gray-800"
           }`}
@@ -244,7 +301,7 @@ const TodoList = ({ user }: { user: any }) => {
           Active
         </Button>
         <Button
-          onClick={() => setFilter("completed")}
+          onClick={() => handleChangeFilter("completed")}
           className={`${
             filter === "completed" ? "bg-blue-500" : "bg-gray-200 text-gray-800"
           }`}
