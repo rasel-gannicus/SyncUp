@@ -5,7 +5,7 @@ export const financeTrackerApi = apiSlice.injectEndpoints({
     // --- Add a new transaction
     addTransaction: builder.mutation({
       query: (data) => ({
-        url: "/api/v1/addTransaction",
+        url: "/addTransaction",
         method: "POST",
         body: data,
       }),
@@ -15,7 +15,7 @@ export const financeTrackerApi = apiSlice.injectEndpoints({
     // --- Edit a transaction
     editTransaction: builder.mutation({
       query: (data) => ({
-        url: "/api/v1/editTransaction",
+        url: "/editTransaction",
         method: "PUT",
         body: data,
       }),
@@ -25,7 +25,7 @@ export const financeTrackerApi = apiSlice.injectEndpoints({
     // --- Delete a transaction
     deleteTransaction: builder.mutation({
       query: (data) => ({
-        url: "/api/v1/deleteTransaction",
+        url: "/deleteTransaction",
         method: "DELETE",
         body: data,
       }),

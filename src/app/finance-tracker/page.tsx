@@ -1,3 +1,4 @@
+"use client" ; 
 import FinanceTracker from '@/components/Finance Tracker/FinanceTracker';
 import React from 'react';
 
