@@ -30,12 +30,12 @@ import { useAuthState } from "@/utils/Route Protection/useAuthState";
 import { useRouter } from "next/navigation";
 import { useAddUserToDbMutation, useGetUserQuery } from "@/Redux/features/user/userApi";
 import { toast } from "react-hot-toast";
-import DynamicBreadcrumb from "./DynamicBreadcrumb";
 import { useSelector } from "react-redux";
-import { addUserLoading, addUserToRedux, selectUser, selectUserStatus } from "@/Redux/features/user/userSlice";
+import { addUserLoading, addUserToRedux } from "@/Redux/features/user/userSlice";
 import { LoadingSpinner } from "@/utils/Loading Spinner/LoadingSpinner";
 import { useAppDispatch } from "@/Redux/hooks";
 import ThemeToggle from "@/utils/Dark mode toggle/ThemeToggle";
+import DynamicBreadcrumb from "./DynamicBreadcrumb";
 
 const Topbar = () => {
   const [isModal, setIsModal] = useState(false);
@@ -51,12 +51,10 @@ const Topbar = () => {
 
 
   useEffect(()=>{
-    if(isLoading){
-      dispatch(addUserLoading(isLoading))
-    }
     if(userFromDB){
       dispatch(addUserToRedux(userFromDB)) ; 
     }
+    dispatch(addUserLoading(isLoading))
   },[userFromDB, user, isLoading])
 
 
@@ -97,7 +95,7 @@ const Topbar = () => {
   const navigate = useRouter();
 
   if (loading) {
-    return  <LoadingSpinner/> || <div>Loading...</div>;
+    return  <LoadingSpinner/> ;
   }
 
   return (

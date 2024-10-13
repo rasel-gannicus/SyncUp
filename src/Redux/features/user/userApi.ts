@@ -5,7 +5,6 @@ export const userApi = apiSlice.injectEndpoints({
     // --- getting user from db
     getUser: builder.query({
       query: (email) => {
-        console.log("🚀 ~ email:", email)
         // Check if email is undefined, null, or an empty string
         if (!email || email.trim() === "") {
           // Return a dummy URL that won't be called

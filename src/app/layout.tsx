@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Wrapper } from "@/components/Shared/Wrapper";
 import { Ubuntu } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import ReduxProvider from "@/Redux/Wrapper/ReduxProvider";
+import { Wrapper } from "@/components/Shared/Wrapper";
 import { AuthWrapper } from "@/components/Shared/AuthWrapper";
 
 export const metadata: Metadata = {

@@ -2,15 +2,9 @@
 import { useState, useEffect } from "react";
 import "react-quill/dist/quill.snow.css";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import QuillEditor from "../QuillEditor/QuillEditor";
+import QuillEditor from "@/components/Notepad/QuillEditor/QuillEditor";
 
 const modules = {
   toolbar: [
@@ -49,13 +43,13 @@ interface AddNoteModalProps {
   onAddNote: (title: string, content: string) => void;
 }
 
-export default function async({
+const AddNoteModal = ({
   isOpen,
   onClose,
   onAddNote,
   isEditModalOpen,
   noteToEdit,
-}: AddNoteModalProps) {
+}: AddNoteModalProps) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
@@ -117,4 +111,6 @@ export default function async({
       </DialogContent>
     </Dialog>
   );
-}
+};
+
+export default AddNoteModal;

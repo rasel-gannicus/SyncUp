@@ -1,7 +1,9 @@
 import Link from "next/link";
 import {
+  AlarmClockCheck,
   Home,
   LineChart,
+  Notebook,
   Package,
   Package2,
   Settings,
@@ -13,7 +15,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { GiNotebook } from "react-icons/gi";
 
 const Sidebar = () => {
   return (
@@ -45,7 +46,7 @@ const Sidebar = () => {
                 href="/notepad"
                 className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
               >
-                <GiNotebook className="h-5 w-5" />
+                <Notebook className="h-5 w-5" />
                 <span className="sr-only">Add Note</span>
               </Link>
             </TooltipTrigger>
@@ -57,7 +58,7 @@ const Sidebar = () => {
                 href="/todoList"
                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
               >
-                <Package className="h-5 w-5" />
+                <AlarmClockCheck className="h-5 w-5" />
                 <span className="sr-only">Todo List</span>
               </Link>
             </TooltipTrigger>

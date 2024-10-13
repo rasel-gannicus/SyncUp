@@ -1,7 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// Define the initial state
-const initialState: any = {
+/**
+ * The initial state of the user reducer, with strongly typed properties.
+ */
+export interface UserState {
+  user: any ;
+  userLoading: boolean;
+  error: string | null;
+}
+
+/**
+ * The initial state of the user reducer.
+ */
+const initialState: UserState = {
   user: null,
   userLoading: false,
   error: null,
@@ -16,7 +27,7 @@ const userSlice = createSlice({
       state.user = action.payload; // Store the single user
     },
     addUserLoading(state, action) {
-      state.status = action.payload;
+      state.userLoading = action.payload;
     },
   },
 });

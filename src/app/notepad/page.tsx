@@ -1,19 +1,16 @@
-"use client" ;
-import NotePad from '@/components/Notepad/Notepad';
-import { LoadingSpinner } from '@/utils/Loading Spinner/LoadingSpinner';
-import { useAuthState } from '@/utils/Route Protection/useAuthState';
-import React from 'react';
+"use client";
+import NotePad from "@/components/Notepad/Notepad";
+import { LoadingSpinner } from "@/utils/Loading Spinner/LoadingSpinner";
+import { useAuthState } from "@/utils/Route Protection/useAuthState";
 
-const page = () => {
-    const {user , loading} = useAuthState() ;
-    if(loading){
-        return <LoadingSpinner />
-    }
-    return (
-        <div>
-            <NotePad user={user} /> 
-        </div>
-    );
+const NotepadPage = () => {
+  const { user, loading } = useAuthState();
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
+  return <NotePad user={user} />;
 };
 
-export default page;
+export default NotepadPage;

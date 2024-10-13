@@ -10,6 +10,7 @@ import SocialLogin from "../Social Login/SocialLogin";
 import Link from "next/link";
 import { useAddUserToDbMutation } from "@/Redux/features/user/userApi";
 import { withAuthProtection } from "@/utils/Route Protection/RouteProtection";
+import { LoadingSpinner } from "@/utils/Loading Spinner/LoadingSpinner";
 
 function Register() {
   const [isLoading, setIsLoading] = useState(false);

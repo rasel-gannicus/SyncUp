@@ -259,7 +259,7 @@ const TodoList = ({ user }: { user: any }) => {
 
   if (userLoading) {
     return (
-      <LoadingSpinnerCustom desc="Getting Todo Lists ..." /> || <div>Loading...</div>
+      <LoadingSpinnerCustom desc="Getting Todo Lists ..." /> 
     );
   }
 

@@ -9,7 +9,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { PlusCircle, Edit, Trash2 } from "lucide-react";
-import AddNoteModal from "./Modal/AddNoteModal";
 import {
   useAddNoteMutation,
   useDeleteNoteMutation,
@@ -21,6 +20,7 @@ import { useGetUserQuery } from "@/Redux/features/user/userApi";
 import { LoadingSpinnerCustom } from "@/utils/Loading Spinner/LoadingSpinner";
 import { useSelector } from "react-redux";
 import { useAppSelector } from "@/Redux/hooks";
+import AddNoteModal from "./Modal/AddNoteModal";
 
 // This would typically come from  app's state management or API
 const initialNotes = [
@@ -75,10 +75,10 @@ export default function NotePad({ user }: { user: any }) {
   const [editDataTime, setEditDataTime] = useState("");
   const [noteToEdit, setNoteToEdit] = useState({});
 
-  const userState = useAppSelector(state => state.user) ; 
-  let userData = userState.user ; 
-  let userLoading = userState.userLoading ;
-
+  const userState = useAppSelector((state) => state.user);
+  let userData = userState.user;
+  let userLoading = userState.userLoading;
+  console.log("🚀 ~ NotePad ~ userLoading:", userLoading);
 
   const [addNoteToDb, { data, isLoading, error }]: any = useAddNoteMutation();
   const [
@@ -192,9 +192,8 @@ export default function NotePad({ user }: { user: any }) {
   };
 
   if (userLoading) {
-    return (
-      <LoadingSpinnerCustom desc="Getting notes ..." /> || <div>Loading...</div>
-    );
+    <LoadingSpinnerCustom desc="Getting notes ..." /> ;
+    return;
   }
 
   return (
