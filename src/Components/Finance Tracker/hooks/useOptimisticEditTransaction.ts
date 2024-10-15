@@ -5,11 +5,11 @@ import { useEditTransactionMutation } from '@/Redux/features/Finance Tracker/fin
 export const useOptimisticEditTransaction = (
   email: string | undefined,
   data: FinanceTracker[],
-  setData: React.Dispatch<React.SetStateAction<FinanceTracker[]>>
+  setData: React.Dispatch<React.SetStateAction<FinanceTracker[]>>,
+  cancelEdit : () => void
 ) => {
   const [editTransaction] = useEditTransactionMutation();
 
-  console.log(data)
   const handleEditTransaction = async (
     transactionId: string,
     updatedTransaction: Transaction
@@ -135,6 +135,7 @@ export const useOptimisticEditTransaction = (
       console.error('Error editing transaction:', error);
     } finally {
       toast.dismiss(toastId);
+      cancelEdit();
     }
   };
 
