@@ -8,6 +8,7 @@ import { useAppSelector } from '@/Redux/hooks'; // Adjust the import path as nee
 import { useAddTransactionMutation, useDeleteTransactionMutation, useEditTransactionMutation } from '@/Redux/features/Finance Tracker/financeTrackerApi';
 import { StatCard } from './Stat Card/StatCard';
 import { TransactionForm } from './Add Transaction Form/TransactionForm';
+import { toast } from 'react-hot-toast';
 
 export interface Transaction {
   id: string;
@@ -51,10 +52,41 @@ const FinanceTracker: React.FC = () => {
 
   const handleAddTransaction = async (transaction: Transaction) => {
     if (!email) return;
+
+    const toastId = toast.loading("Adding todo...");
+
+    const updatedMonth = {
+      ...latestMonth,
+      transactions: [...latestMonth.transactions, transaction], // Optimistically add transaction
+    };
+
+    setData((prevData) => {
+      const updatedData = [...prevData];
+      updatedData[updatedData.length - 1] = updatedMonth; // Optimistic update
+      return updatedData;
+    });
+
     try {
-      await addTransaction({ email, monthName: latestMonth.name, transaction });
+      const response: any = await addTransaction({ email, monthName: latestMonth.name, transaction });
+
+      if ("error" in response) {
+        toast.error(response.error.data.message || "Failed to add todo.");
+      } else {
+        toast.success("Todo added successfully.");
+      }
+
     } catch (error) {
+      // Revert optimistic update if the request fails
+      setData((prevData) => {
+        const updatedData = [...prevData];
+        updatedData[updatedData.length - 1].transactions = updatedData[updatedData.length - 1].transactions.filter(
+          (t) => t.id !== transaction.id
+        );
+        return updatedData;
+      });
       console.error('Error adding transaction:', error);
+    }finally {
+      toast.dismiss(toastId);
     }
   };
   
