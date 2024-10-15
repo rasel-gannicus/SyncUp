@@ -13,6 +13,9 @@ import {
 import { StatCard } from "./Stat Card/StatCard";
 import { TransactionForm } from "./Add Transaction Form/TransactionForm";
 import { toast } from "react-hot-toast";
+import { useOptimisticAddTransaction } from "./hooks/useOptimisticAddTransaction";
+import { useOptimisticDeleteTransaction } from "./hooks/useOptimisticDeleteTransaction";
+import { useOptimisticEditTransaction } from "./hooks/useOptimisticEditTransaction";
 
 export interface Transaction {
   id: string;
@@ -69,158 +72,67 @@ const FinanceTracker: React.FC = () => {
       : Number((((current - previous) / previous) * 100).toFixed(2));
   };
 
-  const handleAddTransaction = async (transaction: Transaction) => {
-    if (!email) return;
+  const handleAddTransaction = useOptimisticAddTransaction(email, setData);
 
-    const toastId = toast.loading("Adding Transaction...");
+  const handleEditTransaction = useOptimisticEditTransaction(email, data, setData);
+  
+  // const handleEditTransaction = async (
+  //   transactionId: string,
+  //   updatedTransaction: Transaction
+  // ) => {
+  //   if (!email) return;
 
-    const updatedMonth = {
-      ...latestMonth,
-      transactions: [...latestMonth.transactions, transaction], // Optimistically add transaction
-    };
+  //   const monthIndex = data.length - 1;
+  //   const transactionIndex = data[monthIndex].transactions.findIndex(
+  //     (t) => t.id === transactionId
+  //   );
 
-    setData((prevData) => {
-      const updatedData = [...prevData];
-      updatedData[updatedData.length - 1] = updatedMonth; // Optimistic update
-      return updatedData;
-    });
+  //   const toastId = toast.loading("Updating transaction...");
 
-    try {
-      const response: any = await addTransaction({
-        email,
-        monthName: latestMonth.name,
-        transaction,
-      });
+  //   const updatedMonth = {
+  //     ...latestMonth,
+  //     transactions: latestMonth.transactions.map((t) =>
+  //       t.id === transactionId ? { ...t, ...updatedTransaction } : t
+  //     ), // Optimistically update transaction
+  //   };
 
-      if ("error" in response) {
-        toast.error(
-          response.error.data.message || "Failed to add Transaction."
-        );
-      } else {
-        toast.success("Transaction added successfully.");
-      }
-    } catch (error) {
-      // Revert optimistic update if the request fails
-      setData((prevData) => {
-        const updatedData = [...prevData];
-        updatedData[updatedData.length - 1].transactions = updatedData[
-          updatedData.length - 1
-        ].transactions.filter((t) => t.id !== transaction.id);
-        return updatedData;
-      });
-      console.error("Error adding transaction:", error);
-    } finally {
-      toast.dismiss(toastId);
-    }
-  };
+  //   setData((prevData) => {
+  //     const updatedData = [...prevData];
+  //     updatedData[monthIndex] = updatedMonth; // Optimistic update
+  //     return updatedData;
+  //   });
 
-  const handleEditTransaction = async (
-    transactionId: string,
-    updatedTransaction: Transaction
-  ) => {
-    if (!email) return;
+  //   try {
+  //     const response: any = await editTransaction({
+  //       email,
+  //       monthName: latestMonth.name,
+  //       transactionId,
+  //       updatedTransaction,
+  //     });
 
-    const monthIndex = data.length - 1;
-    const transactionIndex = data[monthIndex].transactions.findIndex(
-      (t) => t.id === transactionId
-    );
+  //     if ("error" in response) {
+  //       toast.error(
+  //         response.error.data.message || "Failed to edit transaction."
+  //       );
+  //     } else {
+  //       toast.success("Transaction updated successfully.");
+  //     }
+  //   } catch (error) {
+  //     // Revert optimistic update if the request fails
+  //     setData((prevData) => {
+  //       const updatedData = [...prevData];
+  //       updatedData[monthIndex].transactions[transactionIndex] =
+  //         editingTransaction; // Revert to old transaction
+  //       return updatedData;
+  //     });
+  //     console.error("Error editing transaction:", error);
+  //   } finally {
+  //     toast.dismiss(toastId);
+  //     setEditingTransaction(null);
+  //   }
+  // };
 
-    const toastId = toast.loading("Updating transaction...");
-
-    const updatedMonth = {
-      ...latestMonth,
-      transactions: latestMonth.transactions.map((t) =>
-        t.id === transactionId ? { ...t, ...updatedTransaction } : t
-      ), // Optimistically update transaction
-    };
-
-    setData((prevData) => {
-      const updatedData = [...prevData];
-      updatedData[monthIndex] = updatedMonth; // Optimistic update
-      return updatedData;
-    });
-
-    try {
-      const response: any = await editTransaction({
-        email,
-        monthName: latestMonth.name,
-        transactionId,
-        updatedTransaction,
-      });
-
-      if ("error" in response) {
-        toast.error(
-          response.error.data.message || "Failed to edit transaction."
-        );
-      } else {
-        toast.success("Transaction updated successfully.");
-      }
-    } catch (error) {
-      // Revert optimistic update if the request fails
-      setData((prevData) => {
-        const updatedData = [...prevData];
-        updatedData[monthIndex].transactions[transactionIndex] =
-          editingTransaction; // Revert to old transaction
-        return updatedData;
-      });
-      console.error("Error editing transaction:", error);
-    } finally {
-      toast.dismiss(toastId);
-      setEditingTransaction(null);
-    }
-  };
-
-  const handleRemoveTransaction = async (transactionId: string) => {
-    if (!email) return;
-
-    const monthIndex = data.length - 1;
-    const transactionToRemove = data[monthIndex].transactions.find(
-      (t) => t.id === transactionId
-    );
-
-    const updatedMonth = {
-      ...latestMonth,
-      transactions: latestMonth.transactions.filter(
-        (t) => t.id !== transactionId
-      ), // Optimistically remove transaction
-    };
-
-    const toastId = toast.loading("Deleting Transaction...");
-
-    setData((prevData) => {
-      const updatedData = [...prevData];
-      updatedData[monthIndex] = updatedMonth; // Optimistic update
-      return updatedData;
-    });
-
-    try {
-      const response: any = await deleteTransaction({
-        email,
-        monthName: latestMonth.name,
-        transactionId,
-      });
-      if ("error" in response) {
-        toast.error(
-          response.error.data.message || "Failed to delete transaction."
-        );
-      } else {
-        toast.success("Transaction deleted successfully.");
-      }
-    } catch (error) {
-      // Revert optimistic update if the request fails
-      setData((prevData) => {
-        const updatedData = [...prevData];
-        updatedData[monthIndex].transactions = [
-          ...updatedData[monthIndex].transactions,
-          transactionToRemove!,
-        ]; // Re-add transaction
-        return updatedData;
-      });
-      console.error("Error removing transaction:", error);
-    } finally {
-      toast.dismiss(toastId);
-    }
-  };
+  const handleRemoveTransaction = useOptimisticDeleteTransaction(email, setData)
 
   const cancelEdit = () => {
     setEditingTransaction(null);

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import FinanceTracker, { Transaction } from '../FinanceTracker';
 import { useAddTransactionMutation } from '@/Redux/features/Finance Tracker/financeTrackerApi';
@@ -12,18 +11,24 @@ export const useOptimisticAddTransaction = (email: string | undefined, setData: 
     const newTransaction: Transaction = {
       ...transaction,
       id: Date.now().toString(), // Temporary ID
-      date: new Date().toISOString()
+      date: new Date().toISOString(),
     };
 
     const toastId = toast.loading("Adding transaction...");
 
     // Optimistically update the UI
     setData((prevData) => {
-      const newData = [...prevData];
+      // Create a deep copy of prevData to avoid mutating the original state
+      const newData = prevData.map((month) => ({
+        ...month,
+        transactions: [...month.transactions], // Shallow copy of transactions array
+      }));
+
       const latestMonth = newData[newData.length - 1];
-      
+
       if (latestMonth) {
-        latestMonth.transactions.push(newTransaction);
+        // Create a new array for transactions and update income/expenses safely
+        latestMonth.transactions = [...latestMonth.transactions, newTransaction];
         latestMonth.income += transaction.type === 'income' ? transaction.amount : 0;
         latestMonth.expenses += transaction.type === 'expenses' ? transaction.amount : 0;
         latestMonth.savings = latestMonth.income - latestMonth.expenses;
@@ -36,22 +41,16 @@ export const useOptimisticAddTransaction = (email: string | undefined, setData: 
       const response: any = await addTransaction({ 
         email, 
         monthName: new Date().toLocaleString('default', { month: 'long' }), 
-        transaction 
+        transaction,
       });
 
       if ('error' in response) {
         // If the request fails, revert the optimistic update
         setData((prevData) => {
-          const newData = [...prevData];
-          const latestMonth = newData[newData.length - 1];
-          
-          if (latestMonth) {
-            latestMonth.transactions = latestMonth.transactions.filter(t => t.id !== newTransaction.id);
-            latestMonth.income -= transaction.type === 'income' ? transaction.amount : 0;
-            latestMonth.expenses -= transaction.type === 'expenses' ? transaction.amount : 0;
-            latestMonth.savings = latestMonth.income - latestMonth.expenses;
-          }
-
+          const newData = prevData.map((month) => ({
+            ...month,
+            transactions: month.transactions.filter((t) => t.id !== newTransaction.id),
+          }));
           return newData;
         });
         toast.error(response.error.data.message || "Failed to add transaction.");
@@ -63,16 +62,10 @@ export const useOptimisticAddTransaction = (email: string | undefined, setData: 
     } catch (error) {
       // If an unexpected error occurs, revert the optimistic update
       setData((prevData) => {
-        const newData = [...prevData];
-        const latestMonth = newData[newData.length - 1];
-        
-        if (latestMonth) {
-          latestMonth.transactions = latestMonth.transactions.filter(t => t.id !== newTransaction.id);
-          latestMonth.income -= transaction.type === 'income' ? transaction.amount : 0;
-          latestMonth.expenses -= transaction.type === 'expenses' ? transaction.amount : 0;
-          latestMonth.savings = latestMonth.income - latestMonth.expenses;
-        }
-
+        const newData = prevData.map((month) => ({
+          ...month,
+          transactions: month.transactions.filter((t) => t.id !== newTransaction.id),
+        }));
         return newData;
       });
       toast.error("An unexpected error occurred while adding the transaction.");
