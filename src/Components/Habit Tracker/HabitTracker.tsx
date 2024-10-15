@@ -13,14 +13,9 @@ interface Habit {
 }
 
 interface HabitHistory {
-  [date: string]: { [habitId: number]: boolean };
+  [date: string]: { [habitId: number |  string]: boolean };
 }
 
-// [
-//   { id: 1, name: "Drink Water", completed: false },
-//   { id: 2, name: "Exercise", completed: false },
-//   { id: 3, name: "Read 30 mins", completed: false },
-// ];
 
 const HabitTracker: React.FC = () => {
   const userState = useAppSelector((state) => state.user);
@@ -35,33 +30,47 @@ const HabitTracker: React.FC = () => {
 
   const today = format(new Date(), "yyyy-MM-dd");
 
-//   // Toggle habit completion status for the selected date
-//   const toggleHabit = (id: number) => {
-//     const dateKey = format(selectedDate, "yyyy-MM-dd");
-//     const currentDayHistory = habitHistory[dateKey] || {};
-
-//     setHabitHistory({
-//       ...habitHistory,
-//       [dateKey]: {
-//         ...currentDayHistory,
-//         [id]: !currentDayHistory[id], // Toggle the habit's completion status
-//       },
-//     });
-//   };
   const [addHabit] = useAddHabitMutation();
 
 const [toggleHabit] = useToggleHabitMutation();
 
 const handleToggleHabit = async (habitId : string) => {
-    const date = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+  const date = format(selectedDate, "yyyy-MM-dd"); // Use the selected date
+  try {
+    // Optimistically update the local state
+    setHabits((prevHabits) =>
+      prevHabits.map((habit : any ) =>
+        habit._id === habitId
+          ? {
+              ...habit,
+              days: {
+                ...habit.days,
+                [date]: {
+                  completed: !(
+                    habit.days[date]?.completed || false
+                  ),
+                },
+              },
+            }
+          : habit
+      )
+    );
+
+    // Sync with backend
     const { data, error } = await toggleHabit({ email, habitId, date });
-    
+
     if (error) {
       console.error("Error toggling habit:", error);
+      // Optionally, revert the optimistic update if needed
     } else {
       console.log("Habit toggled successfully:", data);
+      // Optionally, refetch habits from the backend to ensure data consistency
     }
-  };
+  } catch (error) {
+    console.error("Error toggling habit:", error);
+  }
+};
+
   
 
 
@@ -98,12 +107,12 @@ const handleToggleHabit = async (habitId : string) => {
     setSelectedDate(date);
   };
 
-  const habitsForSelectedDate = habits.map((habit) => ({
+  const habitsForSelectedDate = habits.map((habit : any) => ({
     ...habit,
     completed:
-      habitHistory[format(selectedDate, "yyyy-MM-dd")]?.[habit._id] || false,
+      habit.days[format(selectedDate, "yyyy-MM-dd")]?.completed || false,
   }));
-
+  
   useEffect(() => {
     if (userData?.habits) {
       setHabits(userData.habits);
