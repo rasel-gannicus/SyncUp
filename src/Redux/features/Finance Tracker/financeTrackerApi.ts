@@ -1,4 +1,4 @@
-import { apiSlice } from "../../api/apiSlice"; // Assuming you have an API slice set up
+import { apiSlice } from "../../api/apiSlice"; 
 
 export const financeTrackerApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -9,7 +9,7 @@ export const financeTrackerApi = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["user"], // Assuming you have a 'transactions' cache tag
+      invalidatesTags: ["user"],
     }),
 
     // --- Edit a transaction
