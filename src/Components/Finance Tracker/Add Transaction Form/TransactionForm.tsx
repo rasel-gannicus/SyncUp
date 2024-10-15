@@ -1,22 +1,26 @@
-"use client" ;
+"use client";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { PlusCircle } from "lucide-react";
-import { useEffect, useState } from "react";
 import { Transaction } from "../FinanceTracker";
 
-
 interface TransactionFormProps {
-  onSubmit: (transaction: Omit<Transaction, 'id' | 'date'>) => void;
-  initialValues?: Omit<Transaction, 'id' | 'date'> ;
+  onSubmit:  any ;
+  initialValues?: Omit<Transaction, 'id' | 'date'>;
   submitLabel: string;
   onCancel: () => void;
 }
 
-export const TransactionForm: React.FC<TransactionFormProps> = ({ onSubmit, initialValues, submitLabel, onCancel }) => {
+export const TransactionForm: React.FC<TransactionFormProps> = ({ 
+  onSubmit, 
+  initialValues, 
+  submitLabel, 
+  onCancel 
+}) => {
   const [type, setType] = useState<'income' | 'expenses'>(initialValues?.type || 'income');
-  const [amount, setAmount] = useState<string>(initialValues?.amount.toString() || '');
+  const [amount, setAmount] = useState<string>(initialValues?.amount?.toString() || '');
 
   useEffect(() => {
     if (initialValues) {
@@ -30,19 +34,23 @@ export const TransactionForm: React.FC<TransactionFormProps> = ({ onSubmit, init
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (amount && !isNaN(parseFloat(amount))) {
-      onSubmit({ type, amount: parseFloat(amount) });
-      setAmount('');
-      setType('income');
+    const parsedAmount = parseFloat(amount);
+    if (amount && !isNaN(parsedAmount)) {
+      onSubmit({ type, amount: parsedAmount });
+      if (!initialValues) {
+        setAmount('');
+        setType('income');
+      }
     }
   };
 
   const handleCancel = () => {
     onCancel();
-    setType('income');
-    setAmount('');
+    if (!initialValues) {
+      setType('income');
+      setAmount('');
+    }
   };
-
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -65,12 +73,10 @@ export const TransactionForm: React.FC<TransactionFormProps> = ({ onSubmit, init
         />
       </div>
       <div className="flex space-x-2">
-        <Button type="submit" className="flex-1" >
+        <Button type="submit" className="flex-1">
           <PlusCircle className="mr-2 h-4 w-4" /> {submitLabel}
         </Button>
-        <Button type="button" variant="outline" 
-        onClick={handleCancel} 
-        className="flex-1">
+        <Button type="button" variant="outline" onClick={handleCancel} className="flex-1">
           Cancel
         </Button>
       </div>
