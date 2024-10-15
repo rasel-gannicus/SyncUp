@@ -5,14 +5,8 @@ import { Button } from "@/components/ui/button";
 import { DollarSign, Edit, Trash2 } from "lucide-react";
 import Chart from "./Chart/Chart";
 import { useAppSelector } from "@/Redux/hooks"; // Adjust the import path as needed
-import {
-  useAddTransactionMutation,
-  useDeleteTransactionMutation,
-  useEditTransactionMutation,
-} from "@/Redux/features/Finance Tracker/financeTrackerApi";
 import { StatCard } from "./Stat Card/StatCard";
 import { TransactionForm } from "./Add Transaction Form/TransactionForm";
-import { toast } from "react-hot-toast";
 import { useOptimisticAddTransaction } from "./hooks/useOptimisticAddTransaction";
 import { useOptimisticDeleteTransaction } from "./hooks/useOptimisticDeleteTransaction";
 import { useOptimisticEditTransaction } from "./hooks/useOptimisticEditTransaction";
@@ -43,10 +37,6 @@ const FinanceTracker: React.FC = () => {
   const [editingTransaction, setEditingTransaction]: any =
     useState<Transaction | null>(null);
 
-  const [addTransaction] = useAddTransactionMutation();
-  const [editTransaction] = useEditTransactionMutation();
-  const [deleteTransaction] = useDeleteTransactionMutation();
-
   const latestMonth = data[data.length - 1] || {
     name: "",
     income: 0,
@@ -75,62 +65,6 @@ const FinanceTracker: React.FC = () => {
   const handleAddTransaction = useOptimisticAddTransaction(email, setData);
 
   const handleEditTransaction = useOptimisticEditTransaction(email, data, setData);
-  
-  // const handleEditTransaction = async (
-  //   transactionId: string,
-  //   updatedTransaction: Transaction
-  // ) => {
-  //   if (!email) return;
-
-  //   const monthIndex = data.length - 1;
-  //   const transactionIndex = data[monthIndex].transactions.findIndex(
-  //     (t) => t.id === transactionId
-  //   );
-
-  //   const toastId = toast.loading("Updating transaction...");
-
-  //   const updatedMonth = {
-  //     ...latestMonth,
-  //     transactions: latestMonth.transactions.map((t) =>
-  //       t.id === transactionId ? { ...t, ...updatedTransaction } : t
-  //     ), // Optimistically update transaction
-  //   };
-
-  //   setData((prevData) => {
-  //     const updatedData = [...prevData];
-  //     updatedData[monthIndex] = updatedMonth; // Optimistic update
-  //     return updatedData;
-  //   });
-
-  //   try {
-  //     const response: any = await editTransaction({
-  //       email,
-  //       monthName: latestMonth.name,
-  //       transactionId,
-  //       updatedTransaction,
-  //     });
-
-  //     if ("error" in response) {
-  //       toast.error(
-  //         response.error.data.message || "Failed to edit transaction."
-  //       );
-  //     } else {
-  //       toast.success("Transaction updated successfully.");
-  //     }
-  //   } catch (error) {
-  //     // Revert optimistic update if the request fails
-  //     setData((prevData) => {
-  //       const updatedData = [...prevData];
-  //       updatedData[monthIndex].transactions[transactionIndex] =
-  //         editingTransaction; // Revert to old transaction
-  //       return updatedData;
-  //     });
-  //     console.error("Error editing transaction:", error);
-  //   } finally {
-  //     toast.dismiss(toastId);
-  //     setEditingTransaction(null);
-  //   }
-  // };
 
   const handleRemoveTransaction = useOptimisticDeleteTransaction(email, setData)
 
@@ -199,7 +133,7 @@ const FinanceTracker: React.FC = () => {
             <p>No transactions yet. Add a transaction to get started!</p>
           ) : (
             <ul className="space-y-2">
-              {latestMonth.transactions.map((transaction) => (
+              {latestMonth.transactions.map((transaction : any) => (
                 <li
                   key={transaction.id}
                   className="flex items-center justify-between p-2 bg-gray-100 rounded"
