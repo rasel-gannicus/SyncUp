@@ -1,8 +1,10 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { FaCheckCircle, FaCircle, FaTrash } from 'react-icons/fa';
-import { format, startOfMonth, addDays, eachDayOfInterval } from 'date-fns';
+import React, { useState } from "react";
+import { FaCheckCircle, FaCircle, FaTrash } from "react-icons/fa";
+import { format, startOfMonth, addDays, eachDayOfInterval } from "date-fns";
+import { useAddHabitMutation } from "@/Redux/features/Habit Tracker/HabitTrackerApi";
+import { useAppSelector } from "@/Redux/hooks";
 
 interface Habit {
   id: number;
@@ -15,21 +17,25 @@ interface HabitHistory {
 }
 
 const HabitTracker: React.FC = () => {
+  const userState = useAppSelector((state) => state.user);
+  const { user: userData, userLoading } = userState;
+  const email = userData?.email;
+
   const [habits, setHabits] = useState<Habit[]>([
-    { id: 1, name: 'Drink Water', completed: false },
-    { id: 2, name: 'Exercise', completed: false },
-    { id: 3, name: 'Read 30 mins', completed: false },
+    { id: 1, name: "Drink Water", completed: false },
+    { id: 2, name: "Exercise", completed: false },
+    { id: 3, name: "Read 30 mins", completed: false },
   ]);
-  
+
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [habitHistory, setHabitHistory] = useState<HabitHistory>({});
-  const [newHabit, setNewHabit] = useState('');
+  const [newHabit, setNewHabit] = useState("");
 
-  const today = format(new Date(), 'yyyy-MM-dd');
+  const today = format(new Date(), "yyyy-MM-dd");
 
   // Toggle habit completion status for the selected date
   const toggleHabit = (id: number) => {
-    const dateKey = format(selectedDate, 'yyyy-MM-dd');
+    const dateKey = format(selectedDate, "yyyy-MM-dd");
     const currentDayHistory = habitHistory[dateKey] || {};
 
     setHabitHistory({
@@ -40,9 +46,9 @@ const HabitTracker: React.FC = () => {
       },
     });
   };
+  const [addHabit] = useAddHabitMutation();
 
-  // Add a new habit to the global list of habits
-  const addHabit = () => {
+  const handleAddHabit = async () => {
     if (!newHabit.trim()) return;
 
     const newHabitObject = {
@@ -50,18 +56,21 @@ const HabitTracker: React.FC = () => {
       name: newHabit,
       completed: false,
     };
-
-    setHabits([...habits, newHabitObject]);
-    setNewHabit(''); // Clear input field after adding
+    try {
+      await addHabit({ habit: { ...newHabitObject, email } }).unwrap();
+      // Handle success (e.g., show toast notification)
+    } catch (error) {
+      // Handle error (e.g., show error notification)
+    }
   };
 
   // Delete a habit from the global list and remove its history across all dates
   const deleteHabit = (id: number) => {
-    setHabits(habits.filter(habit => habit.id !== id));
+    setHabits(habits.filter((habit) => habit.id !== id));
 
     // Remove habit from all history records
     const updatedHistory = { ...habitHistory };
-    Object.keys(updatedHistory).forEach(dateKey => {
+    Object.keys(updatedHistory).forEach((dateKey) => {
       if (updatedHistory[dateKey][id] !== undefined) {
         delete updatedHistory[dateKey][id];
       }
@@ -77,14 +86,19 @@ const HabitTracker: React.FC = () => {
 
   const habitsForSelectedDate = habits.map((habit) => ({
     ...habit,
-    completed: habitHistory[format(selectedDate, 'yyyy-MM-dd')]?.[habit.id] || false,
+    completed:
+      habitHistory[format(selectedDate, "yyyy-MM-dd")]?.[habit.id] || false,
   }));
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-4">Habit Tracker</h2>
-        <p className="text-center text-gray-500 mb-8">{format(selectedDate, 'EEEE, MMMM d')}</p>
+        <h2 className="text-3xl font-bold text-center text-gray-800 mb-4">
+          Habit Tracker
+        </h2>
+        <p className="text-center text-gray-500 mb-8">
+          {format(selectedDate, "EEEE, MMMM d")}
+        </p>
 
         {/* Habit List */}
         <div className="space-y-4">
@@ -93,7 +107,9 @@ const HabitTracker: React.FC = () => {
               key={habit.id}
               className="flex items-center justify-between p-4 bg-gray-50 rounded-lg shadow-sm hover:shadow-md transition-all"
             >
-              <span className="text-lg font-semibold text-gray-700">{habit.name}</span>
+              <span className="text-lg font-semibold text-gray-700">
+                {habit.name}
+              </span>
               <div className="flex space-x-4">
                 <button onClick={() => toggleHabit(habit.id)}>
                   {habit.completed ? (
@@ -120,7 +136,7 @@ const HabitTracker: React.FC = () => {
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-indigo-200"
           />
           <button
-            onClick={addHabit}
+            onClick={handleAddHabit}
             className="ml-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
           >
             Add
@@ -129,7 +145,10 @@ const HabitTracker: React.FC = () => {
 
         {/* Calendar */}
         <div className="mt-6">
-          <Calendar selectedDate={selectedDate} onDateChange={handleDateChange} />
+          <Calendar
+            selectedDate={selectedDate}
+            onDateChange={handleDateChange}
+          />
         </div>
       </div>
     </div>
@@ -137,10 +156,10 @@ const HabitTracker: React.FC = () => {
 };
 
 // Calendar Component
-const Calendar: React.FC<{ selectedDate: Date; onDateChange: (date: Date) => void }> = ({
-  selectedDate,
-  onDateChange,
-}) => {
+const Calendar: React.FC<{
+  selectedDate: Date;
+  onDateChange: (date: Date) => void;
+}> = ({ selectedDate, onDateChange }) => {
   const startOfMonthDate = startOfMonth(selectedDate);
   const daysInMonth = eachDayOfInterval({
     start: startOfMonthDate,
@@ -153,13 +172,13 @@ const Calendar: React.FC<{ selectedDate: Date; onDateChange: (date: Date) => voi
         <button
           key={day.toString()}
           className={`p-2 rounded-lg ${
-            format(day, 'yyyy-MM-dd') === format(selectedDate, 'yyyy-MM-dd')
-              ? 'bg-indigo-600 text-white'
-              : 'bg-gray-200'
+            format(day, "yyyy-MM-dd") === format(selectedDate, "yyyy-MM-dd")
+              ? "bg-indigo-600 text-white"
+              : "bg-gray-200"
           }`}
           onClick={() => onDateChange(day)}
         >
-          {format(day, 'd')}
+          {format(day, "d")}
         </button>
       ))}
     </div>
