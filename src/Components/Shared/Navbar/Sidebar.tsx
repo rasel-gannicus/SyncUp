@@ -4,6 +4,7 @@ import {
   Coins,
   Home,
   LineChart,
+  LucideListTodo,
   Notebook,
   Package,
   Package2,
@@ -80,11 +81,24 @@ const Sidebar = () => {
                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8  [&.active]:bg-blue-100  [&.active]:text-black "
                 prefetch={true}
               >
-                <AlarmClockCheck className="h-5 w-5" />
+                <LucideListTodo className="h-5 w-5" />
                 <span className="sr-only">Todo List</span>
               </NavLink>
             </TooltipTrigger>
             <TooltipContent side="right">Todo List</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <NavLink
+                href="/habit-tracker"
+                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8  [&.active]:bg-blue-100  [&.active]:text-black "
+                prefetch={true}
+              >
+                <AlarmClockCheck className="h-5 w-5" />
+                <span className="sr-only">Habit Tracker</span>
+              </NavLink>
+            </TooltipTrigger>
+            <TooltipContent side="right">Habit Tracker</TooltipContent>
           </Tooltip>
           {/* <Tooltip>
             <TooltipTrigger asChild>
