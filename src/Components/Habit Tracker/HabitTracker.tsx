@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { FaCheckCircle, FaCircle, FaTrash } from "react-icons/fa";
 import { format, startOfMonth, addDays, eachDayOfInterval } from "date-fns";
-import { useAddHabitMutation, useDeleteHabitMutation } from "@/Redux/features/Habit Tracker/HabitTrackerApi";
+import { useAddHabitMutation, useDeleteHabitMutation, useToggleHabitMutation } from "@/Redux/features/Habit Tracker/HabitTrackerApi";
 import { useAppSelector } from "@/Redux/hooks";
 
 interface Habit {
@@ -35,20 +35,35 @@ const HabitTracker: React.FC = () => {
 
   const today = format(new Date(), "yyyy-MM-dd");
 
-  // Toggle habit completion status for the selected date
-  const toggleHabit = (id: number) => {
-    const dateKey = format(selectedDate, "yyyy-MM-dd");
-    const currentDayHistory = habitHistory[dateKey] || {};
+//   // Toggle habit completion status for the selected date
+//   const toggleHabit = (id: number) => {
+//     const dateKey = format(selectedDate, "yyyy-MM-dd");
+//     const currentDayHistory = habitHistory[dateKey] || {};
 
-    setHabitHistory({
-      ...habitHistory,
-      [dateKey]: {
-        ...currentDayHistory,
-        [id]: !currentDayHistory[id], // Toggle the habit's completion status
-      },
-    });
-  };
+//     setHabitHistory({
+//       ...habitHistory,
+//       [dateKey]: {
+//         ...currentDayHistory,
+//         [id]: !currentDayHistory[id], // Toggle the habit's completion status
+//       },
+//     });
+//   };
   const [addHabit] = useAddHabitMutation();
+
+const [toggleHabit] = useToggleHabitMutation();
+
+const handleToggleHabit = async (habitId : string) => {
+    const date = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+    const { data, error } = await toggleHabit({ email, habitId, date });
+    
+    if (error) {
+      console.error("Error toggling habit:", error);
+    } else {
+      console.log("Habit toggled successfully:", data);
+    }
+  };
+  
+
 
   const handleAddHabit = async () => {
     if (!newHabit.trim()) return;
@@ -77,20 +92,6 @@ const HabitTracker: React.FC = () => {
     }
   };
 
-  // Delete a habit from the global list and remove its history across all dates
-  //   const deleteHabit = (id: number) => {
-  //     setHabits(habits.filter((habit) => habit.id !== id));
-
-  //     // Remove habit from all history records
-  //     const updatedHistory = { ...habitHistory };
-  //     Object.keys(updatedHistory).forEach((dateKey) => {
-  //       if (updatedHistory[dateKey][id] !== undefined) {
-  //         delete updatedHistory[dateKey][id];
-  //       }
-  //     });
-
-  //     setHabitHistory(updatedHistory);
-  //   };
 
   // Select a date from the calendar
   const handleDateChange = (date: Date) => {
@@ -100,7 +101,7 @@ const HabitTracker: React.FC = () => {
   const habitsForSelectedDate = habits.map((habit) => ({
     ...habit,
     completed:
-      habitHistory[format(selectedDate, "yyyy-MM-dd")]?.[habit.id] || false,
+      habitHistory[format(selectedDate, "yyyy-MM-dd")]?.[habit._id] || false,
   }));
 
   useEffect(() => {
@@ -121,23 +122,23 @@ const HabitTracker: React.FC = () => {
 
         {/* Habit List */}
         <div className="space-y-4">
-          {habitsForSelectedDate.map((habit) => (
+          {habitsForSelectedDate.map((habit : any ) => (
             <div
-              key={habit.id}
+              key={habit._id}
               className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg shadow-sm hover:shadow-md transition-all"
             >
               <span className="text-lg font-semibold text-gray-700 dark:text-gray-300">
                 {habit.name}
               </span>
               <div className="flex space-x-4">
-                <button onClick={() => toggleHabit(habit.id)}>
+                <button onClick={() => handleToggleHabit(habit._id)}>
                   {habit.completed ? (
                     <FaCheckCircle className="text-green-500 w-6 h-6" />
                   ) : (
                     <FaCircle className="text-gray-300 w-6 h-6" />
                   )}
                 </button>
-                <button onClick={() => handleDeleteHabit(habit.id)}>
+                <button onClick={() => handleDeleteHabit(habit._id)}>
                   <FaTrash className="text-red-500 w-6 h-6" />
                 </button>
               </div>
