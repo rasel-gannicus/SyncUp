@@ -1,11 +1,11 @@
 "use client" ;
 import React, { useState, useEffect } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {  DollarSign, Edit, Trash2 } from 'lucide-react';
 import { StatCard } from './Stat Card/StatCard';
 import { TransactionForm } from './Add Transaction Form/TransactionForm';
+import Chart from './Chart/Chart';
 
 export interface Transaction {
   id: string;
@@ -139,25 +139,7 @@ const FinanceTracker: React.FC = () => {
           )}
         </CardContent>
       </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle>Financial Overview</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={data}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="income" stroke="#8884d8" />
-              <Line type="monotone" dataKey="expenses" stroke="#82ca9d" />
-              <Line type="monotone" dataKey="savings" stroke="#ffc658" />
-            </LineChart>
-          </ResponsiveContainer>
-        </CardContent>
-      </Card>
+      <Chart data={data} />
     </div>
   );
 };

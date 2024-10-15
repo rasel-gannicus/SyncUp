@@ -9,7 +9,7 @@ import { Transaction } from "../FinanceTracker";
 
 interface TransactionFormProps {
   onSubmit: (transaction: Omit<Transaction, 'id' | 'date'>) => void;
-  initialValues?: Omit<Transaction, 'id' | 'date'>;
+  initialValues?: Omit<Transaction, 'id' | 'date'> ;
   submitLabel: string;
   onCancel: () => void;
 }
