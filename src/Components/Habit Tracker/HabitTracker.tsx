@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaCheckCircle, FaCircle, FaTrash } from "react-icons/fa";
 import { format, startOfMonth, addDays, eachDayOfInterval } from "date-fns";
-import { useAddHabitMutation } from "@/Redux/features/Habit Tracker/HabitTrackerApi";
+import { useAddHabitMutation, useDeleteHabitMutation } from "@/Redux/features/Habit Tracker/HabitTrackerApi";
 import { useAppSelector } from "@/Redux/hooks";
 
 interface Habit {
@@ -16,16 +16,18 @@ interface HabitHistory {
   [date: string]: { [habitId: number]: boolean };
 }
 
+// [
+//   { id: 1, name: "Drink Water", completed: false },
+//   { id: 2, name: "Exercise", completed: false },
+//   { id: 3, name: "Read 30 mins", completed: false },
+// ];
+
 const HabitTracker: React.FC = () => {
   const userState = useAppSelector((state) => state.user);
   const { user: userData, userLoading } = userState;
   const email = userData?.email;
 
-  const [habits, setHabits] = useState<Habit[]>([
-    { id: 1, name: "Drink Water", completed: false },
-    { id: 2, name: "Exercise", completed: false },
-    { id: 3, name: "Read 30 mins", completed: false },
-  ]);
+  const [habits, setHabits] = useState<Habit[]>(userData?.habits || []);
 
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [habitHistory, setHabitHistory] = useState<HabitHistory>({});
@@ -64,20 +66,31 @@ const HabitTracker: React.FC = () => {
     }
   };
 
-  // Delete a habit from the global list and remove its history across all dates
-  const deleteHabit = (id: number) => {
-    setHabits(habits.filter((habit) => habit.id !== id));
+  const [deleteHabit] = useDeleteHabitMutation();
 
-    // Remove habit from all history records
-    const updatedHistory = { ...habitHistory };
-    Object.keys(updatedHistory).forEach((dateKey) => {
-      if (updatedHistory[dateKey][id] !== undefined) {
-        delete updatedHistory[dateKey][id];
-      }
-    });
-
-    setHabitHistory(updatedHistory);
+  const handleDeleteHabit = async (habitId : string) => {
+    try {
+      await deleteHabit({ habitId, email }).unwrap();
+      // Handle success
+    } catch (error) {
+      // Handle error
+    }
   };
+
+  // Delete a habit from the global list and remove its history across all dates
+  //   const deleteHabit = (id: number) => {
+  //     setHabits(habits.filter((habit) => habit.id !== id));
+
+  //     // Remove habit from all history records
+  //     const updatedHistory = { ...habitHistory };
+  //     Object.keys(updatedHistory).forEach((dateKey) => {
+  //       if (updatedHistory[dateKey][id] !== undefined) {
+  //         delete updatedHistory[dateKey][id];
+  //       }
+  //     });
+
+  //     setHabitHistory(updatedHistory);
+  //   };
 
   // Select a date from the calendar
   const handleDateChange = (date: Date) => {
@@ -90,13 +103,19 @@ const HabitTracker: React.FC = () => {
       habitHistory[format(selectedDate, "yyyy-MM-dd")]?.[habit.id] || false,
   }));
 
+  useEffect(() => {
+    if (userData?.habits) {
+      setHabits(userData.habits);
+    }
+  }, [userData]);
+
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-4">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col items-center justify-center dark:text-white">
+      <div className="bg-white dark:bg-black p-8 rounded-lg shadow-lg w-full max-w-lg">
+        <h2 className="text-3xl font-bold text-center text-gray-800 mb-4 dark:text-gray-300">
           Habit Tracker
         </h2>
-        <p className="text-center text-gray-500 mb-8">
+        <p className="text-center text-gray-500 dark:dark:text-gray-500 mb-8">
           {format(selectedDate, "EEEE, MMMM d")}
         </p>
 
@@ -105,9 +124,9 @@ const HabitTracker: React.FC = () => {
           {habitsForSelectedDate.map((habit) => (
             <div
               key={habit.id}
-              className="flex items-center justify-between p-4 bg-gray-50 rounded-lg shadow-sm hover:shadow-md transition-all"
+              className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg shadow-sm hover:shadow-md transition-all"
             >
-              <span className="text-lg font-semibold text-gray-700">
+              <span className="text-lg font-semibold text-gray-700 dark:text-gray-300">
                 {habit.name}
               </span>
               <div className="flex space-x-4">
@@ -118,7 +137,7 @@ const HabitTracker: React.FC = () => {
                     <FaCircle className="text-gray-300 w-6 h-6" />
                   )}
                 </button>
-                <button onClick={() => deleteHabit(habit.id)}>
+                <button onClick={() => handleDeleteHabit(habit.id)}>
                   <FaTrash className="text-red-500 w-6 h-6" />
                 </button>
               </div>
@@ -133,11 +152,11 @@ const HabitTracker: React.FC = () => {
             value={newHabit}
             onChange={(e) => setNewHabit(e.target.value)}
             placeholder="Add a new habit..."
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-indigo-200"
+            className="w-full px-4 py-2 border dark:bg-gray-700 dark:text-gray-200 border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-indigo-200"
           />
           <button
             onClick={handleAddHabit}
-            className="ml-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
+            className="ml-2 px-4 py-2 bg-indigo-600 text-white rounded-lg dark:bg-teal-600 hover:bg-indigo-700 transition"
           >
             Add
           </button>
@@ -173,8 +192,8 @@ const Calendar: React.FC<{
           key={day.toString()}
           className={`p-2 rounded-lg ${
             format(day, "yyyy-MM-dd") === format(selectedDate, "yyyy-MM-dd")
-              ? "bg-indigo-600 text-white"
-              : "bg-gray-200"
+              ? "bg-indigo-600 text-white dark:bg-teal-600"
+              : "bg-gray-200 dark:bg-gray-700"
           }`}
           onClick={() => onDateChange(day)}
         >
