@@ -6,6 +6,7 @@ import {  DollarSign, Edit, Trash2 } from 'lucide-react';
 import { StatCard } from './Stat Card/StatCard';
 import { TransactionForm } from './Add Transaction Form/TransactionForm';
 import Chart from './Chart/Chart';
+import { useAppSelector } from '@/Redux/hooks';
 
 export interface Transaction {
   id: string;
@@ -13,20 +14,21 @@ export interface Transaction {
   amount: number;
   date: string;
 }
-interface FinancialData {
+interface FinanceTracker {
   name: string;
   income: number;
   expenses: number;
   savings: number;
   transactions: Transaction[];
 }
-const initialData: FinancialData[] = [
-  { name: 'Jun', income: 550, expenses: 450, savings: 0, transactions: [] },
-  { name: 'July', income: 2000, expenses: 580, savings: 0, transactions: [] },
-  { name: 'August', income: 900, expenses: 100, savings: 0, transactions: [] },
-];
+
 const FinanceTracker: React.FC = () => {
-  const [data, setData] = useState<FinancialData[]>(initialData);
+
+  const userState = useAppSelector((state) => state.user);
+  let userData = userState.user;
+  let userLoading = userState.userLoading;
+
+  const [data, setData] = useState<FinanceTracker[]>(userData?.todos || []);
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
 
   const latestMonth = data[data.length - 1];
@@ -37,7 +39,7 @@ const FinanceTracker: React.FC = () => {
     return previous === 0 ? 0 : Number(((current - previous) / previous * 100).toFixed(2));
   };
 
-  const updateFinancialData = (newTransactions: Transaction[]) => {
+  const updateFinanceTracker = (newTransactions: Transaction[]) => {
     setData(prevData => {
       const newData = [...prevData];
       const lastMonth = newData[newData.length - 1];
@@ -55,7 +57,7 @@ const FinanceTracker: React.FC = () => {
       id: Date.now().toString(),
       date: new Date().toISOString(),
     };
-    updateFinancialData([...latestMonth.transactions, newTransaction]);
+    updateFinanceTracker([...latestMonth.transactions, newTransaction]);
   };
 
   const handleEditTransaction = (transaction: Omit<Transaction, 'id' | 'date'>) => {
@@ -63,14 +65,14 @@ const FinanceTracker: React.FC = () => {
       const newTransactions = latestMonth.transactions.map(t =>
         t.id === editingTransaction.id ? { ...t, ...transaction } : t
       );
-      updateFinancialData(newTransactions);
+      updateFinanceTracker(newTransactions);
       setEditingTransaction(null);
     }
   };
 
   const handleRemoveTransaction = (id: string) => {
     const newTransactions = latestMonth.transactions.filter(t => t.id !== id);
-    updateFinancialData(newTransactions);
+    updateFinanceTracker(newTransactions);
   };
 
   const cancelEdit = () => {
