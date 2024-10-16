@@ -12,6 +12,7 @@ import { LoadingSpinnerCustom } from "@/utils/Loading Spinner/LoadingSpinner";
 import { useAppSelector } from "@/Redux/hooks";
 import { toast } from "react-hot-toast";
 import { validateUser } from "./functionalities";
+import { HabitTrackerLoading } from "@/utils/Loading Spinner/Loading Skeleton/Skeleton";
 
 const TodoList = ({ user }: { user: any }) => {
   const [inputValue, setInputValue] = useState("");
@@ -257,12 +258,6 @@ const TodoList = ({ user }: { user: any }) => {
     setFilter(newFilter);
   }, []);
 
-  if (userLoading) {
-    return (
-      <LoadingSpinnerCustom desc="Getting Todo Lists ..." /> 
-    );
-  }
-
   return (
     <div className="max-w-md mx-auto dark:bg-gray-800 dark:text-white  mt-10 p-6 bg-white rounded-lg shadow-lg">
       <h1 className="text-3xl font-bold mb-6 text-center text-gray-800 dark:text-white">
@@ -310,6 +305,7 @@ const TodoList = ({ user }: { user: any }) => {
         </Button>
       </div>
       <ul className="space-y-2">
+        {userLoading && <HabitTrackerLoading />}
         {filteredTodos?.map((todo: any) => (
           <li
             key={todo?.createdAt}

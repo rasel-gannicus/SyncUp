@@ -21,6 +21,7 @@ import { LoadingSpinnerCustom } from "@/utils/Loading Spinner/LoadingSpinner";
 import { useSelector } from "react-redux";
 import { useAppSelector } from "@/Redux/hooks";
 import AddNoteModal from "./Modal/AddNoteModal";
+import { NotepadLoading } from "@/utils/Loading Spinner/Loading Skeleton/Skeleton";
 
 // This would typically come from  app's state management or API
 const initialNotes = [
@@ -191,11 +192,6 @@ export default function NotePad({ user }: { user: any }) {
     return colorOptions[Math.floor(Math.random() * colorOptions.length)];
   };
 
-  if (userLoading) {
-    <LoadingSpinnerCustom desc="Getting notes ..." /> ;
-    return;
-  }
-
   return (
     <div className="container mx-auto p-4">
       <header className="mb-6">
@@ -261,6 +257,7 @@ export default function NotePad({ user }: { user: any }) {
                 </CardFooter>
               </Card>
             ))}
+            {userLoading && <><NotepadLoading /><NotepadLoading /><NotepadLoading /></> }
       </div>
 
       {userData?.notes?.length === 0 && (

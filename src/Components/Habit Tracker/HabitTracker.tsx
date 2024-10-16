@@ -3,8 +3,16 @@
 import React, { useEffect, useState } from "react";
 import { FaCheckCircle, FaCircle, FaTrash } from "react-icons/fa";
 import { format, startOfMonth, addDays, eachDayOfInterval } from "date-fns";
-import { useAddHabitMutation, useDeleteHabitMutation, useToggleHabitMutation } from "@/Redux/features/Habit Tracker/HabitTrackerApi";
+import {
+  useAddHabitMutation,
+  useDeleteHabitMutation,
+  useToggleHabitMutation,
+} from "@/Redux/features/Habit Tracker/HabitTrackerApi";
 import { useAppSelector } from "@/Redux/hooks";
+import {
+  CustomLoadingSkeleton,
+  HabitTrackerLoading,
+} from "@/utils/Loading Spinner/Loading Skeleton/Skeleton";
 
 interface Habit {
   id: number;
@@ -13,9 +21,8 @@ interface Habit {
 }
 
 interface HabitHistory {
-  [date: string]: { [habitId: number |  string]: boolean };
+  [date: string]: { [habitId: number | string]: boolean };
 }
-
 
 const HabitTracker: React.FC = () => {
   const userState = useAppSelector((state) => state.user);
@@ -32,47 +39,42 @@ const HabitTracker: React.FC = () => {
 
   const [addHabit] = useAddHabitMutation();
 
-const [toggleHabit] = useToggleHabitMutation();
+  const [toggleHabit] = useToggleHabitMutation();
 
-const handleToggleHabit = async (habitId : string) => {
-  const date = format(selectedDate, "yyyy-MM-dd"); // Use the selected date
-  try {
-    // Optimistically update the local state
-    setHabits((prevHabits) =>
-      prevHabits.map((habit : any ) =>
-        habit._id === habitId
-          ? {
-              ...habit,
-              days: {
-                ...habit.days,
-                [date]: {
-                  completed: !(
-                    habit.days[date]?.completed || false
-                  ),
+  const handleToggleHabit = async (habitId: string) => {
+    const date = format(selectedDate, "yyyy-MM-dd"); // Use the selected date
+    try {
+      // Optimistically update the local state
+      setHabits((prevHabits) =>
+        prevHabits.map((habit: any) =>
+          habit._id === habitId
+            ? {
+                ...habit,
+                days: {
+                  ...habit.days,
+                  [date]: {
+                    completed: !(habit.days[date]?.completed || false),
+                  },
                 },
-              },
-            }
-          : habit
-      )
-    );
+              }
+            : habit
+        )
+      );
 
-    // Sync with backend
-    const { data, error } = await toggleHabit({ email, habitId, date });
+      // Sync with backend
+      const { data, error } = await toggleHabit({ email, habitId, date });
 
-    if (error) {
+      if (error) {
+        console.error("Error toggling habit:", error);
+        // Optionally, revert the optimistic update if needed
+      } else {
+        console.log("Habit toggled successfully:", data);
+        // Optionally, refetch habits from the backend to ensure data consistency
+      }
+    } catch (error) {
       console.error("Error toggling habit:", error);
-      // Optionally, revert the optimistic update if needed
-    } else {
-      console.log("Habit toggled successfully:", data);
-      // Optionally, refetch habits from the backend to ensure data consistency
     }
-  } catch (error) {
-    console.error("Error toggling habit:", error);
-  }
-};
-
-  
-
+  };
 
   const handleAddHabit = async () => {
     if (!newHabit.trim()) return;
@@ -92,7 +94,7 @@ const handleToggleHabit = async (habitId : string) => {
 
   const [deleteHabit] = useDeleteHabitMutation();
 
-  const handleDeleteHabit = async (habitId : string) => {
+  const handleDeleteHabit = async (habitId: string) => {
     try {
       await deleteHabit({ habitId, email }).unwrap();
       // Handle success
@@ -101,18 +103,17 @@ const handleToggleHabit = async (habitId : string) => {
     }
   };
 
-
   // Select a date from the calendar
   const handleDateChange = (date: Date) => {
     setSelectedDate(date);
   };
 
-  const habitsForSelectedDate = habits.map((habit : any) => ({
+  const habitsForSelectedDate = habits.map((habit: any) => ({
     ...habit,
     completed:
       habit.days[format(selectedDate, "yyyy-MM-dd")]?.completed || false,
   }));
-  
+
   useEffect(() => {
     if (userData?.habits) {
       setHabits(userData.habits);
@@ -131,7 +132,8 @@ const handleToggleHabit = async (habitId : string) => {
 
         {/* Habit List */}
         <div className="space-y-4">
-          {habitsForSelectedDate.map((habit : any ) => (
+          {userLoading && <HabitTrackerLoading />}
+          {habitsForSelectedDate.map((habit: any) => (
             <div
               key={habit._id}
               className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg shadow-sm hover:shadow-md transition-all"
@@ -152,7 +154,7 @@ const handleToggleHabit = async (habitId : string) => {
                 </button>
               </div>
             </div>
-          ))}
+          ))}          
         </div>
 
         {/* Add New Habit */}
