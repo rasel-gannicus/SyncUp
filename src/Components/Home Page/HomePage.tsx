@@ -40,7 +40,7 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="grid grid-cols-1 gap-x-8 gap-y-12 lg:gap-y-20 md:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4  w-full md:p-7 p-10">
+    <div className="grid grid-cols-1 gap-x-8 gap-y-12 lg:gap-y-20 md:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4  w-full md:px-7 px-10 ">
       {apps.map((app, index) => (
         <Link href={`${app.link}`}>
           <Card
