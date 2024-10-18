@@ -1,10 +1,11 @@
+import HomePage from '@/components/Home Page/HomePage';
 import { useState } from 'react';
 
 export default function Home() {
 
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <h2>Home is where the heart is</h2>
+    <div className="grid  items-center justify-items-center min-h-[90vh]   ">
+      <HomePage /> 
     </div>
   );
 }
