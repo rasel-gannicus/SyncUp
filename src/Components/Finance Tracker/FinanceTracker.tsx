@@ -17,6 +17,7 @@ import {
   LoadingSpinner,
   LoadingSpinnerCustom,
 } from "@/utils/Loading Spinner/LoadingSpinner";
+import HabitTracker from "../Habit Tracker/HabitTracker";
 
 export interface Transaction {
   id: string;
@@ -87,9 +88,6 @@ const FinanceTracker: React.FC = () => {
     setData
   );
 
-  if (userLoading) {
-    return <LoadingSpinnerCustom desc="Loading Finance Tracker . . ." />;
-  }
   const formatedDate = (date: string) => {
     const dateObj = new Date(date);
     const options: Intl.DateTimeFormatOptions = {
@@ -109,18 +107,21 @@ const FinanceTracker: React.FC = () => {
           value={latestMonth.income}
           trend={calculateTrend(latestMonth.income, prevMonth.income)}
           icon={DollarSign}
+          userLoading={userLoading}
         />
         <StatCard
           title="Total Expenses"
           value={latestMonth.expenses}
           trend={calculateTrend(latestMonth.expenses, prevMonth.expenses)}
           icon={DollarSign}
+          userLoading={userLoading}
         />
         <StatCard
           title="Total Savings"
           value={latestMonth.savings}
           trend={calculateTrend(latestMonth.savings, prevMonth.savings)}
           icon={DollarSign}
+          userLoading={userLoading}
         />
       </div>
       <Card>
@@ -157,52 +158,60 @@ const FinanceTracker: React.FC = () => {
             <p>No transactions yet. Add a transaction to get started!</p>
           ) : (
             <ul className="space-y-2 max-h-80 overflow-y-auto ">
-              {latestMonth.transactions.map((transaction: any) => (
-                <li
-                  key={transaction._id}
-                  className={`flex items-center justify-between p-2 bg-gray-100 rounded ${
-                    transaction.type === "income" ? "bg-green-50" : "bg-red-50"
-                  }`}
-                >
-                  <span className="flex items-center">
-                    {transaction.type === "income" ? "➕" : "➖"}
-                    <span className="flex items-center gap-1 ms-5">
-                      {/* <AiFillDollarCircle className="text-orange-400" /> */}
-                      <Image
-                        src={
-                          transaction.type === "income" ? dollarImg : dollarImg2
-                        }
-                        alt="dollar"
-                        width={30}
-                      />
-                      {transaction.amount}
+              {userLoading ? (
+                <HabitTracker />
+              ) : (
+                latestMonth.transactions.map((transaction: any) => (
+                  <li
+                    key={transaction._id}
+                    className={`flex items-center justify-between p-2 bg-gray-100 rounded ${
+                      transaction.type === "income"
+                        ? "bg-green-50"
+                        : "bg-red-50"
+                    }`}
+                  >
+                    <span className="flex items-center">
+                      {transaction.type === "income" ? "➕" : "➖"}
+                      <span className="flex items-center gap-1 ms-5">
+                        {/* <AiFillDollarCircle className="text-orange-400" /> */}
+                        <Image
+                          src={
+                            transaction.type === "income"
+                              ? dollarImg
+                              : dollarImg2
+                          }
+                          alt="dollar"
+                          width={30}
+                        />
+                        {transaction.amount}
+                      </span>
                     </span>
-                  </span>
-                  <div className="flex items-center">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="text-xs lg:me-20 hidden md:block"
-                    >
-                      {formatedDate(transaction.date)}
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setEditingTransaction(transaction)}
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleRemoveTransaction(transaction._id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </li>
-              ))}
+                    <div className="flex items-center">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="text-xs lg:me-20 hidden md:block"
+                      >
+                        {formatedDate(transaction.date)}
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setEditingTransaction(transaction)}
+                      >
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleRemoveTransaction(transaction._id)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </li>
+                ))
+              )}
             </ul>
           )}
         </CardContent>

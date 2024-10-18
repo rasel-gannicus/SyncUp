@@ -2,19 +2,17 @@
 
 import React, { useEffect, useState } from "react";
 import { FaCheckCircle, FaCircle, FaTrash } from "react-icons/fa";
-import { format, startOfMonth, addDays, eachDayOfInterval } from "date-fns";
-import {
-  useAddHabitMutation,
-  useDeleteHabitMutation,
-  useToggleHabitMutation,
-} from "@/Redux/features/Habit Tracker/HabitTrackerApi";
+import { format} from "date-fns";
 import { useAppSelector } from "@/Redux/hooks";
 import {
-  CustomLoadingSkeleton,
   HabitTrackerLoading,
 } from "@/utils/Loading Spinner/Loading Skeleton/Skeleton";
+import { useAddHabit } from "./hooks/useAddHabit";
+import { useDeleteHabit } from "./hooks/useDeleteHabit";
+import { useToggleHabit } from "./hooks/useToggleHabit";
+import { Calendar } from "./Calendar/Calendar";
 
-interface Habit {
+export interface Habit {
   id: number;
   name: string;
   completed: boolean;
@@ -32,76 +30,18 @@ const HabitTracker: React.FC = () => {
   const [habits, setHabits] = useState<Habit[]>(userData?.habits || []);
 
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [habitHistory, setHabitHistory] = useState<HabitHistory>({});
   const [newHabit, setNewHabit] = useState("");
 
-  const today = format(new Date(), "yyyy-MM-dd");
+  // const today = format(new Date(), "yyyy-MM-dd");
 
-  const [addHabit] = useAddHabitMutation();
+  // --- adding a new habit 
+  const handleAddHabit = useAddHabit(habits, email); 
 
-  const [toggleHabit] = useToggleHabitMutation();
+  // --- toggling a habit
+  const handleToggleHabit = useToggleHabit(selectedDate, setHabits, email)
 
-  const handleToggleHabit = async (habitId: string) => {
-    const date = format(selectedDate, "yyyy-MM-dd"); // Use the selected date
-    try {
-      // Optimistically update the local state
-      setHabits((prevHabits) =>
-        prevHabits.map((habit: any) =>
-          habit._id === habitId
-            ? {
-                ...habit,
-                days: {
-                  ...habit.days,
-                  [date]: {
-                    completed: !(habit.days[date]?.completed || false),
-                  },
-                },
-              }
-            : habit
-        )
-      );
-
-      // Sync with backend
-      const { data, error } = await toggleHabit({ email, habitId, date });
-
-      if (error) {
-        console.error("Error toggling habit:", error);
-        // Optionally, revert the optimistic update if needed
-      } else {
-        console.log("Habit toggled successfully:", data);
-        // Optionally, refetch habits from the backend to ensure data consistency
-      }
-    } catch (error) {
-      console.error("Error toggling habit:", error);
-    }
-  };
-
-  const handleAddHabit = async () => {
-    if (!newHabit.trim()) return;
-
-    const newHabitObject = {
-      id: habits.length + 1,
-      name: newHabit,
-      completed: false,
-    };
-    try {
-      await addHabit({ habit: { ...newHabitObject, email } }).unwrap();
-      // Handle success (e.g., show toast notification)
-    } catch (error) {
-      // Handle error (e.g., show error notification)
-    }
-  };
-
-  const [deleteHabit] = useDeleteHabitMutation();
-
-  const handleDeleteHabit = async (habitId: string) => {
-    try {
-      await deleteHabit({ habitId, email }).unwrap();
-      // Handle success
-    } catch (error) {
-      // Handle error
-    }
-  };
+  // --- deleting a habit
+  const handleDeleteHabit = useDeleteHabit(email) ;
 
   // Select a date from the calendar
   const handleDateChange = (date: Date) => {
@@ -122,7 +62,7 @@ const HabitTracker: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col items-center justify-center dark:text-white">
-      <div className="bg-white dark:bg-black p-8 rounded-lg shadow-lg w-full max-w-lg">
+      <div className="bg-white my-10 dark:bg-black p-8 rounded-lg shadow-lg w-full max-w-lg">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-4 dark:text-gray-300">
           Habit Tracker
         </h2>
@@ -154,7 +94,7 @@ const HabitTracker: React.FC = () => {
                 </button>
               </div>
             </div>
-          ))}          
+          ))}
         </div>
 
         {/* Add New Habit */}
@@ -167,7 +107,7 @@ const HabitTracker: React.FC = () => {
             className="w-full px-4 py-2 border dark:bg-gray-700 dark:text-gray-200 border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-indigo-200"
           />
           <button
-            onClick={handleAddHabit}
+            onClick={() => handleAddHabit(newHabit)}
             className="ml-2 px-4 py-2 bg-indigo-600 text-white rounded-lg dark:bg-teal-600 hover:bg-indigo-700 transition"
           >
             Add
@@ -186,34 +126,5 @@ const HabitTracker: React.FC = () => {
   );
 };
 
-// Calendar Component
-const Calendar: React.FC<{
-  selectedDate: Date;
-  onDateChange: (date: Date) => void;
-}> = ({ selectedDate, onDateChange }) => {
-  const startOfMonthDate = startOfMonth(selectedDate);
-  const daysInMonth = eachDayOfInterval({
-    start: startOfMonthDate,
-    end: addDays(startOfMonthDate, 30),
-  });
-
-  return (
-    <div className="grid grid-cols-7 gap-2 mt-6">
-      {daysInMonth.map((day) => (
-        <button
-          key={day.toString()}
-          className={`p-2 rounded-lg ${
-            format(day, "yyyy-MM-dd") === format(selectedDate, "yyyy-MM-dd")
-              ? "bg-indigo-600 text-white dark:bg-teal-600"
-              : "bg-gray-200 dark:bg-gray-700"
-          }`}
-          onClick={() => onDateChange(day)}
-        >
-          {format(day, "d")}
-        </button>
-      ))}
-    </div>
-  );
-};
 
 export default HabitTracker;
