@@ -155,7 +155,7 @@ const Topbar = () => {
         </SheetContent>
       </Sheet>
       <div className="hidden md:flex">
-        <DynamicBreadcrumb />
+        {/* <DynamicBreadcrumb /> */}
       </div>
 
 

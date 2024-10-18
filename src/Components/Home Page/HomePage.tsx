@@ -12,7 +12,7 @@ export default function HomePage() {
     {
       title: "Finance Tracker",
       description: "2 days ago",
-      color: "bg-[#171717]",
+      color: "bg-[#536273]",
       image: financeImg,
       link : '/finance-tracker'
     },
@@ -24,18 +24,18 @@ export default function HomePage() {
       link : '/habit-tracker'
     },
     {
+      title: "Todo List",
+      description: "5 days ago",
+      color: "bg-[#613C75]",
+      image: cardImg2,
+      link : '/todoList'
+    },
+    {
       title: "Notepad",
       description: "5 days ago",
       color: "bg-[#80A49B]",
       image: cardImg1,
       link : '/notepad'
-    },
-    {
-      title: "Todo List",
-      description: "5 days ago",
-      color: "bg-[#536273]",
-      image: cardImg2,
-      link : '/todoList'
     },
   ];
 
