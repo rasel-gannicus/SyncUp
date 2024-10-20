@@ -18,6 +18,7 @@ import {
   LoadingSpinnerCustom,
 } from "@/utils/Loading Spinner/LoadingSpinner";
 import HabitTracker from "../Habit Tracker/HabitTracker";
+import { HabitTrackerLoading } from "@/utils/Loading Spinner/Loading Skeleton/Skeleton";
 
 export interface Transaction {
   id: string;
@@ -159,12 +160,12 @@ const FinanceTracker: React.FC = () => {
           ) : (
             <ul className="space-y-2 max-h-80 overflow-y-auto ">
               {userLoading ? (
-                <HabitTracker />
+                <HabitTrackerLoading />
               ) : (
                 latestMonth.transactions.map((transaction: any) => (
                   <li
                     key={transaction._id}
-                    className={`flex items-center justify-between p-2 bg-gray-100 rounded ${
+                    className={`flex items-center justify-between p-2 dark:text-gray-500 bg-gray-100 rounded ${
                       transaction.type === "income"
                         ? "bg-green-50"
                         : "bg-red-50"

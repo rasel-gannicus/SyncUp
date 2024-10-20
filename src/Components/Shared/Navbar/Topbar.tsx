@@ -10,6 +10,11 @@ import {
   Search,
   ShoppingCart,
   Users2,
+  AlarmClockCheck,
+  Coins,
+  LucideListTodo,
+  Notebook,
+  Settings,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -28,35 +33,42 @@ import { useEffect, useState } from "react";
 import { DeleteConfirmationModal } from "@/utils/Modals/DeleteConfirmationModal";
 import { useAuthState } from "@/utils/Route Protection/useAuthState";
 import { useRouter } from "next/navigation";
-import { useAddUserToDbMutation, useGetUserQuery } from "@/Redux/features/user/userApi";
+import {
+  useAddUserToDbMutation,
+  useGetUserQuery,
+} from "@/Redux/features/user/userApi";
 import { toast } from "react-hot-toast";
 import { useSelector } from "react-redux";
-import { addUserLoading, addUserToRedux } from "@/Redux/features/user/userSlice";
+import {
+  addUserLoading,
+  addUserToRedux,
+} from "@/Redux/features/user/userSlice";
 import { LoadingSpinner } from "@/utils/Loading Spinner/LoadingSpinner";
 import { useAppDispatch } from "@/Redux/hooks";
 import ThemeToggle from "@/utils/Dark mode toggle/ThemeToggle";
 import DynamicBreadcrumb from "./DynamicBreadcrumb";
+import { NavLink } from "@/utils/Navlink/NavLink";
+import { FaSackDollar } from "react-icons/fa6";
 
 const Topbar = () => {
   const [isModal, setIsModal] = useState(false);
 
-  const { user, loading } = useAuthState();  // get user from firebase
+  const { user, loading } = useAuthState(); // get user from firebase
 
   const [addUserToDb] = useAddUserToDbMutation();
 
-  const { data : userFromDB , isLoading }  = useGetUserQuery(user?.providerData[0]?.email || user?.email) ; // get user from db
+  const { data: userFromDB, isLoading } = useGetUserQuery(
+    user?.providerData[0]?.email || user?.email
+  ); // get user from db
 
-  const dispatch = useAppDispatch() ; // redux dispatch
+  const dispatch = useAppDispatch(); // redux dispatch
 
-
-
-  useEffect(()=>{
-    if(userFromDB){
-      dispatch(addUserToRedux(userFromDB)) ; 
+  useEffect(() => {
+    if (userFromDB) {
+      dispatch(addUserToRedux(userFromDB));
     }
-    dispatch(addUserLoading(isLoading))
-  },[userFromDB, user, isLoading])
-
+    dispatch(addUserLoading(isLoading));
+  }, [userFromDB, user, isLoading]);
 
   const handleUser = async (user: any, provider: string) => {
     // console.log("triggered");
@@ -84,18 +96,16 @@ const Topbar = () => {
     }
   };
 
-
   useEffect(() => {
     if (user) {
       handleUser(user, user.providerData[0].providerId);
     }
   }, [user]);
 
-
   const navigate = useRouter();
 
   if (loading) {
-    return  <LoadingSpinner/> ;
+    return <LoadingSpinner />;
   }
 
   return (
@@ -107,57 +117,63 @@ const Topbar = () => {
             <span className="sr-only">Toggle Menu</span>
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="sm:max-w-xs">
-          <nav className="grid gap-6 text-lg font-medium">
-            <Link
-              href="#"
-              className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
-            >
-              <Package2 className="h-5 w-5 transition-all group-hover:scale-110" />
-              <span className="sr-only">Acme Inc</span>
-            </Link>
-            <Link
-              href="#"
-              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+        <SheetContent side="left" className="sm:max-w-xs ">
+          <nav className="grid gap-6 text-lg font-medium mt-20">
+            <NavLink
+              href="/"
+              className="flex items-center gap-4 px-2.5 py-2 rounded-lg text-muted-foreground hover:text-foreground [&.active]:bg-blue-100   [&.active]:text-black"
             >
               <Home className="h-5 w-5" />
-              Dashboard
-            </Link>
-            <Link
-              href="#"
-              className="flex items-center gap-4 px-2.5 text-foreground"
+              Home
+            </NavLink>
+
+            <NavLink
+              href="/finance-tracker"
+              className="flex items-center gap-4 px-2.5 py-2 rounded-lg text-muted-foreground hover:text-foreground [&.active]:bg-blue-100   [&.active]:text-black"
+              prefetch={true}
             >
-              <ShoppingCart className="h-5 w-5" />
-              Orders
-            </Link>
-            <Link
-              href="#"
-              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+              <FaSackDollar className="h-5 w-5" />
+              <span className=" ">
+                Finance Tracker
+              </span>
+            </NavLink>
+
+            <NavLink
+              href="/habit-tracker"
+              className="flex items-center gap-4 px-2.5 py-2 rounded-lg text-muted-foreground hover:text-foreground [&.active]:bg-blue-100   [&.active]:text-black"
+              prefetch={true}
             >
-              <Package className="h-5 w-5" />
-              Products
-            </Link>
-            <Link
-              href="#"
-              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+              <AlarmClockCheck className="h-5 w-5" />
+              <span className=" ">
+                Habit Tracker
+              </span>
+            </NavLink>
+
+            <NavLink
+              href="/notepad"
+              className="flex items-center gap-4 px-2.5 py-2 rounded-lg text-muted-foreground hover:text-foreground [&.active]:bg-blue-100   [&.active]:text-black"
+              prefetch={true}
             >
-              <Users2 className="h-5 w-5" />
-              Customers
-            </Link>
-            <Link
-              href="#"
-              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+              <Notebook className="h-5 w-5" />
+              <span className=" ">Notepad</span>
+            </NavLink>
+
+            <NavLink
+              href="/todoList"
+              className="flex items-center gap-4 px-2.5 py-2 rounded-lg text-muted-foreground hover:text-foreground [&.active]:bg-blue-100   [&.active]:text-black"
+              prefetch={true}
             >
-              <LineChart className="h-5 w-5" />
-              Settings
-            </Link>
+              <LucideListTodo className="h-5 w-5" />
+              <span className=" ">
+                Todo List
+              </span>
+            </NavLink>
+
+            
           </nav>
         </SheetContent>
       </Sheet>
-      <div className="hidden md:flex">
-        {/* <DynamicBreadcrumb /> */}
-      </div>
-
+      <div className="hidden md:flex">{/* <DynamicBreadcrumb /> */}</div>
 
       {/* --- Search --- */}
       <div className="relative ml-auto flex-1 md:grow-0">
@@ -168,7 +184,7 @@ const Topbar = () => {
           className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
         />
       </div>
-            
+
       {/* --- Darkmode toggle --- */}
       <ThemeToggle />
 

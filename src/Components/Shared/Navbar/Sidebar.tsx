@@ -46,7 +46,20 @@ const Sidebar = () => {
           prefetch={true}
         >
           <FaSackDollar className="h-5 w-5" />
-          <span className=" text-center text-xs font-medium">Finance Tracker</span>
+          <span className=" text-center text-xs font-medium">
+            Finance Tracker
+          </span>
+        </NavLink>
+
+        <NavLink
+          href="/habit-tracker"
+          className="flex h-16 w-16  items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground  md:h-16 md:w-16 flex-col gap-y-1 [&.active]:bg-blue-100   [&.active]:text-black"
+          prefetch={true}
+        >
+          <AlarmClockCheck className="h-5 w-5" />
+          <span className=" text-center text-xs font-medium">
+            Habit Tracker
+          </span>
         </NavLink>
 
         <NavLink
@@ -66,16 +79,6 @@ const Sidebar = () => {
           <LucideListTodo className="h-5 w-5" />
           <span className=" text-center text-xs font-medium">Todo List</span>
         </NavLink>
-
-        <NavLink
-          href="/habit-tracker"
-          className="flex h-16 w-16  items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground  md:h-16 md:w-16 flex-col gap-y-1 [&.active]:bg-blue-100   [&.active]:text-black"
-          prefetch={true}
-        >
-          <AlarmClockCheck className="h-5 w-5" />
-          <span className=" text-center text-xs font-medium">Habit Tracker</span>
-        </NavLink>
-
       </nav>
       <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
         <NavLink
