@@ -97,14 +97,14 @@ function Register() {
   }, [loading, error, user]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100 flex items-center justify-center p-4">
-      <div className="bg-white/80 backdrop-blur-md rounded-xl shadow-xl overflow-hidden max-w-md w-full">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100 dark:from-gray-900 flex items-center justify-center p-4">
+      <div className="bg-white/80 dark:bg-gray-700 backdrop-blur-md rounded-xl shadow-xl overflow-hidden max-w-md w-full">
         <div className="p-8">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-800">
+            <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-300">
               Create an account
             </h1>
-            <p className="text-gray-600 mt-2">
+            <p className="text-gray-600 dark:text-gray-300 mt-2">
               Keep your progress in one place!
             </p>
           </div>
@@ -113,7 +113,7 @@ function Register() {
             <div className="space-y-2">
               <Label
                 htmlFor="name"
-                className="text-sm font-medium text-gray-700"
+                className="text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 Full Name
               </Label>
@@ -133,7 +133,7 @@ function Register() {
             <div className="space-y-2">
               <Label
                 htmlFor="email"
-                className="text-sm font-medium text-gray-700"
+                className="text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 Email
               </Label>
@@ -148,13 +148,13 @@ function Register() {
                 autoCorrect="off"
                 disabled={isLoading}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md "
               />
             </div>
             <div className="space-y-2">
               <Label
                 htmlFor="password"
-                className="text-sm font-medium text-gray-700"
+                className="text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 Password
               </Label>
@@ -168,13 +168,13 @@ function Register() {
                 autoComplete="new-password"
                 disabled={isLoading}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md "
               />
             </div>
             <div className="space-y-2">
               <Label
                 htmlFor="rePassword"
-                className="text-sm font-medium text-gray-700"
+                className="text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 Confirm Password
               </Label>
@@ -204,7 +204,7 @@ function Register() {
 
           <SocialLogin isLoading={isLoading} />
 
-          <p className="mt-6 text-center text-sm text-gray-600">
+          <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-300">
             Already have an account?{" "}
             <Link
               href="/login"

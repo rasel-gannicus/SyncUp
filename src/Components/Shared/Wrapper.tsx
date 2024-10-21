@@ -22,9 +22,9 @@ export function Wrapper({ children }: Readonly<{ children: React.ReactNode }>) {
   useSystemTheme() ;
 
   return (
-    <div className="flex min-h-screen dark:bg-gray-900 w-full flex-col bg-muted/40">
+    <div className="flex min-h-[90vh] dark:bg-gray-900 w-full flex-col bg-muted/40">
       <Sidebar />
-      <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
+      <div className="flex flex-col sm:gap-4 sm:pt-4 sm:pl-14">
         <Topbar />
         <main className="grid ">{children}</main>
       </div>
