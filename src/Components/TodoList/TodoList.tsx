@@ -257,7 +257,7 @@ const TodoList = ({ user }: { user: any }) => {
   }, []);
 
   return (
-    <div className="max-w-md mx-auto dark:bg-gray-800 dark:text-white  mt-10 p-6 bg-white rounded-lg shadow-lg">
+    <div className="max-w-xl mx-auto dark:bg-gray-800 dark:text-white  mt-10 p-6 bg-white rounded-lg shadow-lg">
       <h1 className="text-3xl font-bold mb-6 text-center text-gray-800 dark:text-white">
         Todo List
       </h1>
@@ -329,7 +329,7 @@ const TodoList = ({ user }: { user: any }) => {
                 className="flex-grow"
               />
             ) : (
-              <span className="flex-grow">{todo.text}</span>
+              <span className={`flex-grow ${todo.completed && 'line-through text-gray-400'} `}>{todo.text}</span>
             )}
             <Button
               onClick={() => handleStartEditing(todo?.createdAt)}

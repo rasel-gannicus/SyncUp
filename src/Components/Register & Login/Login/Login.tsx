@@ -1,15 +1,15 @@
 "use client";
-import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useCreateUserWithEmailAndPassword, useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { LoadingSpinner } from "@/utils/Loading Spinner/LoadingSpinner";
+import { withAuthRedirect } from "@/utils/Route Protection/RouteProtection";
 import auth from "@/utils/firebase.init";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { toast } from "react-hot-toast";
 import SocialLogin from "../Social Login/SocialLogin";
-import Link from "next/link";
-import { withAuthRedirect } from "@/utils/Route Protection/RouteProtection";
-import { LoadingSpinner } from "@/utils/Loading Spinner/LoadingSpinner";
 
 function Login() {
   const [isLoading, setIsLoading] = useState(false);
@@ -17,8 +17,7 @@ function Login() {
   const [email, setEmail] = useState("");
 
   // Firebase hook for creating a user with email and password
-  const [signIn, user, loading, error] =
-    useSignInWithEmailAndPassword(auth);
+  const [signIn, user, loading, error] = useSignInWithEmailAndPassword(auth);
 
   // Function to handle form submission for registration
   const handleSubmit = async (event: React.SyntheticEvent) => {
@@ -74,7 +73,9 @@ function Login() {
       <div className="bg-white/80 dark:bg-gray-700  backdrop-blur-md rounded-xl shadow-xl overflow-hidden max-w-md w-full">
         <div className="p-8">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-300">Login</h1>
+            <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-300">
+              Login
+            </h1>
             <p className="text-gray-600 dark:text-gray-300 mt-2">
               Keep your progress in one place!
             </p>

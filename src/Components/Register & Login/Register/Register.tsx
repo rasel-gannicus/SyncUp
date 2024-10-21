@@ -1,20 +1,19 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useAddUserToDbMutation } from "@/Redux/features/user/userApi";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { LoadingSpinner } from "@/utils/Loading Spinner/LoadingSpinner";
 import auth from "@/utils/firebase.init";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { toast } from "react-hot-toast";
 import SocialLogin from "../Social Login/SocialLogin";
-import Link from "next/link";
-import { useAddUserToDbMutation } from "@/Redux/features/user/userApi";
-import { withAuthProtection } from "@/utils/Route Protection/RouteProtection";
-import { LoadingSpinner } from "@/utils/Loading Spinner/LoadingSpinner";
 
 function Register() {
   const [isLoading, setIsLoading] = useState(false);
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState(""); 
   const [rePassword, setRePassword] = useState("");
   const [email, setEmail] = useState("");
 

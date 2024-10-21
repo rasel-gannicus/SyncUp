@@ -1,23 +1,12 @@
+import { NavLink } from "@/utils/Navlink/NavLink";
 import {
   AlarmClockCheck,
-  Coins,
   Home,
-  LineChart,
   LucideListTodo,
   Notebook,
-  Package,
-  Package2,
-  Settings,
-  Users2,
+  Settings
 } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { FaSackDollar } from "react-icons/fa6";
-import { NavLink } from "@/utils/Navlink/NavLink";
 
 const Sidebar = () => {
   return (
