@@ -26,7 +26,7 @@ export function Wrapper({ children }: Readonly<{ children: React.ReactNode }>) {
       <Sidebar />
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
         <Topbar />
-        <main className="grid md:mx-5">{children}</main>
+        <main className="grid ">{children}</main>
       </div>
     </div>
   );

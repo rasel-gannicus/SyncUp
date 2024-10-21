@@ -249,10 +249,8 @@ const TodoList = ({ user }: { user: any }) => {
     return sortedTodos;
   }, [todos, filter]);
 
-  /**
+  /*
    * Changes the current filter to the new filter.
-   *
-   * @param {string} newFilter The new filter to apply.
    */
   const handleChangeFilter = useCallback((newFilter: string) => {
     setFilter(newFilter);
@@ -306,7 +304,7 @@ const TodoList = ({ user }: { user: any }) => {
       </div>
       <ul className="space-y-2">
         {userLoading && <HabitTrackerLoading />}
-        {filteredTodos?.map((todo: any) => (
+        {user && filteredTodos?.map((todo: any) => (
           <li
             key={todo?.createdAt}
             className="flex items-center bg-gray-100 p-3 rounded dark:bg-gray-700 dark:text-white"

@@ -11,6 +11,7 @@ import { useAddHabit } from "./hooks/useAddHabit";
 import { useDeleteHabit } from "./hooks/useDeleteHabit";
 import { useToggleHabit } from "./hooks/useToggleHabit";
 import { Calendar } from "./Calendar/Calendar";
+import { useAuthState } from "@/utils/Route Protection/useAuthState";
 
 export interface Habit {
   id: number;
@@ -26,6 +27,8 @@ const HabitTracker: React.FC = () => {
   const userState = useAppSelector((state) => state.user);
   const { user: userData, userLoading } = userState;
   const email = userData?.email;
+
+  const { user, loading } = useAuthState(); //-- get user authentication info from firebase
 
   const [habits, setHabits] = useState<Habit[]>(userData?.habits || []);
 
@@ -73,7 +76,7 @@ const HabitTracker: React.FC = () => {
         {/* Habit List */}
         <div className="space-y-4">
           {userLoading && <HabitTrackerLoading />}
-          {habitsForSelectedDate.map((habit: any) => (
+          { user && habitsForSelectedDate.map((habit: any) => (
             <div
               key={habit._id}
               className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg shadow-sm hover:shadow-md transition-all"

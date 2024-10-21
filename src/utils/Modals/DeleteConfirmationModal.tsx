@@ -1,4 +1,6 @@
 "use client" ;
+import { addUserToRedux } from "@/Redux/features/user/userSlice";
+import { useAppDispatch } from "@/Redux/hooks";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import auth from "@/utils/firebase.init";
@@ -17,11 +19,14 @@ export const DeleteConfirmationModal = ({
 }: deleteConfirmationModalProps) => {
   const [signOut, loading, error] = useSignOut(auth);
 
+  const dispatch = useAppDispatch() ; 
+
   //   -- closing modal and logging out
   const handleModalClose = async () => {
     const success = await signOut();   
     if (success) {
       toast.success(`Logged out successfully !`, { position: "bottom-center" });
+      dispatch(addUserToRedux('')) ;
     }
     setIsModal(false);
   };

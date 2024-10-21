@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { DollarSign, Edit, Trash2 } from "lucide-react";
 import Chart from "./Chart/Chart";
-import { useAppSelector } from "@/Redux/hooks"; // Adjust the import path as needed
+import { useAppSelector } from "@/Redux/hooks"; 
 import { StatCard } from "./Stat Card/StatCard";
 import { TransactionForm } from "./Add Transaction Form/TransactionForm";
 import { useOptimisticAddTransaction } from "./hooks/useOptimisticAddTransaction";
@@ -13,12 +13,8 @@ import { useOptimisticEditTransaction } from "./hooks/useOptimisticEditTransacti
 import dollarImg from "@/assets/img/money.png";
 import dollarImg2 from "@/assets/img/money2.png";
 import Image from "next/image";
-import {
-  LoadingSpinner,
-  LoadingSpinnerCustom,
-} from "@/utils/Loading Spinner/LoadingSpinner";
-import HabitTracker from "../Habit Tracker/HabitTracker";
 import { HabitTrackerLoading } from "@/utils/Loading Spinner/Loading Skeleton/Skeleton";
+import { useAuthState } from "@/utils/Route Protection/useAuthState";
 
 export interface Transaction {
   id: string;
@@ -39,6 +35,8 @@ const FinanceTracker: React.FC = () => {
   const userState = useAppSelector((state) => state.user);
   const { user: userData, userLoading } = userState;
   const email = userData?.email;
+
+  const { user, loading } = useAuthState();
 
   const [data, setData] = useState<FinanceTracker[]>(
     userData?.financeTracker || []
@@ -155,7 +153,7 @@ const FinanceTracker: React.FC = () => {
           <CardTitle>Recent Transactions</CardTitle>
         </CardHeader>
         <CardContent>
-          {latestMonth.transactions.length === 0 ? (
+          { !user || latestMonth.transactions.length === 0 ? (
             <p>No transactions yet. Add a transaction to get started!</p>
           ) : (
             <ul className="space-y-2 max-h-80 overflow-y-auto ">

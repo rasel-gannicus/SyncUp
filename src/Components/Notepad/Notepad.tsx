@@ -14,11 +14,7 @@ import {
   useDeleteNoteMutation,
   useEditNoteMutation,
 } from "@/Redux/features/notes/noteApi";
-import { useAuthState } from "@/utils/Route Protection/useAuthState";
 import { toast } from "react-hot-toast";
-import { useGetUserQuery } from "@/Redux/features/user/userApi";
-import { LoadingSpinnerCustom } from "@/utils/Loading Spinner/LoadingSpinner";
-import { useSelector } from "react-redux";
 import { useAppSelector } from "@/Redux/hooks";
 import AddNoteModal from "./Modal/AddNoteModal";
 import { NotepadLoading } from "@/utils/Loading Spinner/Loading Skeleton/Skeleton";
