@@ -70,8 +70,8 @@ A comprehensive **full-stack web application** that provides multiple productivi
 3. **Set Up Environment Variables:**
    Create a `.env` file in the root directory and add the following secrets retrieved from Google Firebase:
    ```env
-   NEXT_PUBLIC_apiKey= 
-   NEXT_PUBLIC_authDomain= 
+   NEXT_PUBLIC_apiKey=
+   NEXT_PUBLIC_authDomain=
    NEXT_PUBLIC_projectId=
    NEXT_PUBLIC_storageBucket=
    NEXT_PUBLIC_messagingSenderId=
@@ -95,26 +95,32 @@ npm run dev
    ```
 
 ## API Endpoints
-- **POST /api/v1/users** - Get a user info from the database.
-- **POST /api/v1/addUserToDB** - Add a user to the database after  authentication with firebase .
+
+- **GET /api/v1/users** - Get a user info from the database.
+- **POST /api/v1/addUserToDB** - Add a user to the database after authentication with firebase .
 
 - **POST /api/v1/addNote** - Add a new note.
-- **POST /api/v1/editNote** - Edit an existing note. 
-- **POST /api/v1/deleteNote** - Delete a note.
+- **PUT /api/v1/editNote** - Edit an existing note.
+- **DELETE /api/v1/deleteNote** - Delete a note.
 
-- **POST /api/v1/addTransaction** -   Add a new transaction. It might be an expense or an income.
-- **POST /api/v1/editTransaction** -  Edit an existing transaction.
-- **POST /api/v1/deleteTransaction** - Delete a transaction.
+- **POST /api/v1/addTodo** - Add a new todo.
+- **PUT /api/v1/editTodo** - Edit a todo.
+- **DELETE /api/v1/deleteTodo** - Delete a todo.
+
+- **POST /api/v1/addTransaction** - Add a new transaction. It might be an expense or an income.
+- **PUT /api/v1/editTransaction** - Edit an existing transaction.
+- **DELETE /api/v1/deleteTransaction** - Delete a transaction.
 
 - **POST /api/v1/addHabit** - Create a new habit.
-- **POST /api/v1/deleteHabit** -  Delete a habit.
-- **POST /api/v1/toggleHabit** -  Toggle a habit. Make it marked or unmarked.
+- **POST /api/v1/deleteHabit** - Delete a habit.
+- **POST /api/v1/toggleHabit** - Toggle a habit. Make it marked or unmarked.
 
 ## Future Enhancements
 
-- Integration of **calendars** and **reminders** to enhance the TodoList and Habit Tracker.
+- Integration of **calendars** and **reminders** to enhance the TodoList, Notepad and Finance Tracker
 - **Analytics Dashboard**: Provide users with insights into their habits, expenses, and productivity.
 - **Collaborative Features**: Share notes and tasks with other users for improved teamwork.
+- **Adding more apps**: Add more productivity apps to the platform. 
 
 ## License
 
@@ -125,3 +131,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 For inquiries or support, reach out at:  
 **Email:** [shafikrasel5@gmail.com](mailto:shafikrasel5@gmail.com)  
 **GitHub:** [https://github.com/rasel-gannicus](https://github.com/rasel-gannicus)
+
+### Previews 
+
+
+*Manage orders from Admin panel*
+![Manage orders from Admin panel](https://github.com/rasel-gannicus/Pharmasia/blob/main/src/assets/for%20hosting/admin%20manage%20orders.png?raw=true)

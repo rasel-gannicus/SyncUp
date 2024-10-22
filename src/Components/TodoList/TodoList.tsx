@@ -270,7 +270,7 @@ const TodoList = ({ user }: { user: any }) => {
         />
         <Button
           onClick={handleAddTodo}
-          className="bg-teal-500 hover:bg-teal-600 dark:bg-green-500"
+          className="bg-teal-500 hover:bg-teal-600 dark:bg-orange-400"
         >
           <PlusCircle size={20} />
         </Button>
@@ -279,7 +279,7 @@ const TodoList = ({ user }: { user: any }) => {
         <Button
           onClick={() => handleChangeFilter("all")}
           className={`${
-            filter === "all" ? "bg-teal-500 hover:bg-teal-500 dark:bg-green-500" : "bg-gray-200 hover:bg-teal-500 text-gray-800"
+            filter === "all" ? "bg-teal-500 hover:bg-teal-500 dark:bg-orange-400" : "bg-gray-200 hover:bg-teal-500 text-gray-800"
           }`}
         >
           All
@@ -287,7 +287,7 @@ const TodoList = ({ user }: { user: any }) => {
         <Button
           onClick={() => handleChangeFilter("active")}
           className={`${
-            filter === "active" ? "bg-teal-500 hover:bg-teal-500 dark:bg-green-500" : "bg-gray-200 hover:bg-teal-500 text-gray-800"
+            filter === "active" ? "bg-teal-500 hover:bg-teal-500 dark:bg-orange-400" : "bg-gray-200 hover:bg-teal-500 text-gray-800"
           }`}
         >
           Pending
@@ -295,7 +295,7 @@ const TodoList = ({ user }: { user: any }) => {
         <Button
           onClick={() => handleChangeFilter("completed")}
           className={`${
-            filter === "completed" ? "bg-teal-500 hover:bg-teal-500 dark:bg-green-500" : "bg-gray-200 hover:bg-teal-500 text-gray-800"
+            filter === "completed" ? "bg-teal-500 hover:bg-teal-500 dark:bg-orange-400" : "bg-gray-200 hover:bg-teal-500 text-gray-800"
           }`}
         >
           Completed

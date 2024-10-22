@@ -38,7 +38,7 @@ const HabitTracker: React.FC = () => {
   // const today = format(new Date(), "yyyy-MM-dd");
 
   // --- adding a new habit 
-  const handleAddHabit = useAddHabit(habits, email); 
+  const handleAddHabit = useAddHabit(habits, email, setNewHabit); 
 
   // --- toggling a habit
   const handleToggleHabit = useToggleHabit(selectedDate, setHabits, email)

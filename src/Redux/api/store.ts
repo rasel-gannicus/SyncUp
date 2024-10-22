@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { apiSlice } from "./apiSlice";
 import userReducer from "../features/user/userSlice";
-import themeReducer from '../features/Darkmode/themeSlice'; // Import your theme slice
+import themeReducer from '../features/Darkmode/themeSlice'; 
 
 
 export const store = configureStore({

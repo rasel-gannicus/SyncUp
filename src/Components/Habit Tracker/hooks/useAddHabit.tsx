@@ -2,7 +2,7 @@ import { useAddHabitMutation } from "@/Redux/features/Habit Tracker/HabitTracker
 import { Habit } from "../HabitTracker";
 import { toast } from "react-hot-toast";
 
-export const useAddHabit = (habits: Habit[], email: string) => {
+export const useAddHabit = (habits: Habit[], email: string, setNewHabit : (newHabit: string) => void) => {
   const [addHabit] = useAddHabitMutation();
 
   const handleAddHabit = async (newHabit: string) => {
@@ -23,6 +23,7 @@ export const useAddHabit = (habits: Habit[], email: string) => {
       toast.error(error.message || "Failed to add new habit.");
     } finally {
       toast.dismiss(toastId);
+      setNewHabit('') ; // --- reset the new habit input field
     }
   };
 

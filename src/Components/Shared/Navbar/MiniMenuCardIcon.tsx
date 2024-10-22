@@ -18,7 +18,7 @@ export const MiniMenuCardIcon = () => {
         <div className=" w-full flex justify-center items-center  gap-4  ">
           <Tooltip>
             <TooltipTrigger>
-              <Link href="/finance-tracker" className="h-10 w-10 rounded   bg-gray-200 dark:bg-gray-700 flex flex-col items-center justify-center gap-2 ">
+              <Link href="/finance-tracker" className="h-10 w-10 rounded   bg-gray-200  flex flex-col items-center justify-center gap-2 ">
                 <Image src={financeImg} alt="panda" className="w-3/4" />
               </Link>
             </TooltipTrigger>

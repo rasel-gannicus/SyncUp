@@ -20,7 +20,7 @@ export function AuthWrapper({ children }: { children: React.ReactNode }) {
   }, [user, loading, router]);
 
   if (loading) {
-    return <HomePageLoading />; // Or your custom loading component
+    return <HomePageLoading />; 
   }
 
   return <>{children}</>;
