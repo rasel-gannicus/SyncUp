@@ -1,3 +1,9 @@
+
+
+<p align="center">
+  <img src="https://github.com/rasel-gannicus/SyncUp/blob/main/src/assets/img/syncup%20logo.png?raw=truehttps://github.com/rasel-gannicus/SyncUp/blob/main/src/assets/Hosting%20for%20github%20readme/DarkMode/todolist%20darkmode.png?raw=true" alt="Image" width="300" />
+</p>
+
 # SyncUp - Multi-App Productivity Suite
 
 A comprehensive **full-stack web application** that provides multiple productivity tools integrated into a single platform. This project includes **Expense Tracker**, **Habit Tracker**, **Notepad** and **TodoList** all organized under each user's document in a unified database structure.
