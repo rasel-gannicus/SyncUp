@@ -41,6 +41,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { FaSackDollar } from "react-icons/fa6";
 import { IoMdKey, IoMdLogIn } from "react-icons/io";
+import MiniMenuCardIcon from "./MiniMenuCardIcon";
 
 const Topbar = () => {
   const [isModal, setIsModal] = useState(false);
@@ -157,17 +158,9 @@ const Topbar = () => {
           </nav>
         </SheetContent>
       </Sheet>
-      <div className="hidden md:flex">{/* <DynamicBreadcrumb /> */}</div>
 
       {/* --- Search --- */}
-      <div className="relative ml-auto flex-1 md:grow-0">
-        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-        <Input
-          type="search"
-          placeholder="Search..."
-          className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
-        />
-      </div>
+      <MiniMenuCardIcon />
 
       {/* --- Darkmode toggle --- */}
       <ThemeToggle />
@@ -177,7 +170,7 @@ const Topbar = () => {
           <Button
             variant="outline"
             size="icon"
-            className="overflow-hidden rounded-full"
+            className="overflow-hidden rounded-full w-10 h-10"
           >
             <Image
               src={user?.providerData[0].photoURL || profileImg}

@@ -290,7 +290,7 @@ const TodoList = ({ user }: { user: any }) => {
             filter === "active" ? "bg-teal-500 hover:bg-teal-500 dark:bg-green-500" : "bg-gray-200 hover:bg-teal-500 text-gray-800"
           }`}
         >
-          Active
+          Pending
         </Button>
         <Button
           onClick={() => handleChangeFilter("completed")}

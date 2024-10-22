@@ -111,7 +111,7 @@ const HabitTracker: React.FC = () => {
           />
           <button
             onClick={() => handleAddHabit(newHabit)}
-            className="ml-2 px-4 py-2 bg-indigo-600 text-white rounded-lg dark:bg-teal-600 hover:bg-indigo-700 transition"
+            className="ml-2 px-4 py-2 bg-teal-600 text-white rounded-lg dark:bg-teal-600 hover:bg-indigo-700 transition"
           >
             Add
           </button>

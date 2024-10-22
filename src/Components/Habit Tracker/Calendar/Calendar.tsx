@@ -19,7 +19,7 @@ export const Calendar: React.FC<{
             key={day.toString()}
             className={`p-2 rounded-lg ${
               format(day, "yyyy-MM-dd") === format(selectedDate, "yyyy-MM-dd")
-                ? "bg-indigo-600 text-white dark:bg-teal-600"
+                ? "bg-teal-600 text-white dark:bg-teal-600"
                 : "bg-gray-200 dark:bg-gray-700"
             }`}
             onClick={() => onDateChange(day)}
