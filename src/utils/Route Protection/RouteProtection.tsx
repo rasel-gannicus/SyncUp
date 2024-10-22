@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { HomePageLoading } from '../Loading Spinner/Loading Skeleton/Skeleton';
 import { useAuthState } from './useAuthState';
-import { LoadingSpinner } from '../Loading Spinner/LoadingSpinner';
 
 export function withAuthProtection(WrappedComponent: React.ComponentType, redirectPath = '/login') {
   return function WithAuthProtection(props: any) {
@@ -17,7 +17,7 @@ export function withAuthProtection(WrappedComponent: React.ComponentType, redire
     }, [user, loading, router]);
 
     if (loading) {
-      return <LoadingSpinner />;
+      return <HomePageLoading />;
     }
 
     if (user) {
@@ -40,7 +40,7 @@ export function withAuthRedirect(WrappedComponent: React.ComponentType, redirect
     }, [user, loading, router]);
 
     if (loading) {
-      return <LoadingSpinner />;
+      return <HomePageLoading />;
     }
 
     if (!user) {

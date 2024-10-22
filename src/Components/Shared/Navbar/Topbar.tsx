@@ -1,22 +1,24 @@
 "use client";
-import Image from "next/image";
-import Link from "next/link";
 import {
-  Home,
-  LineChart,
-  Package,
-  Package2,
-  PanelLeft,
-  Search,
-  ShoppingCart,
-  Users2,
   AlarmClockCheck,
-  Coins,
+  Home,
   LucideListTodo,
   Notebook,
-  Settings,
+  PanelLeft,
+  Search
 } from "lucide-react";
+import Image from "next/image";
 
+import {
+  useAddUserToDbMutation,
+  useGetUserQuery,
+} from "@/Redux/features/user/userApi";
+import {
+  addUserLoading,
+  addUserToRedux,
+} from "@/Redux/features/user/userSlice";
+import { useAppDispatch } from "@/Redux/hooks";
+import profileImg from "@/assets/img/profile-svgrepo-com.svg";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -28,26 +30,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import profileImg from "@/assets/img/profile-svgrepo-com.svg";
-import { useEffect, useState } from "react";
+import ThemeToggle from "@/utils/Dark mode toggle/ThemeToggle";
+import { HomePageLoading } from "@/utils/Loading Spinner/Loading Skeleton/Skeleton";
 import { DeleteConfirmationModal } from "@/utils/Modals/DeleteConfirmationModal";
+import { NavLink } from "@/utils/Navlink/NavLink";
 import { useAuthState } from "@/utils/Route Protection/useAuthState";
 import { useRouter } from "next/navigation";
-import {
-  useAddUserToDbMutation,
-  useGetUserQuery,
-} from "@/Redux/features/user/userApi";
+import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { useSelector } from "react-redux";
-import {
-  addUserLoading,
-  addUserToRedux,
-} from "@/Redux/features/user/userSlice";
-import { LoadingSpinner } from "@/utils/Loading Spinner/LoadingSpinner";
-import { useAppDispatch } from "@/Redux/hooks";
-import ThemeToggle from "@/utils/Dark mode toggle/ThemeToggle";
-import DynamicBreadcrumb from "./DynamicBreadcrumb";
-import { NavLink } from "@/utils/Navlink/NavLink";
 import { FaSackDollar } from "react-icons/fa6";
 
 const Topbar = () => {
@@ -105,7 +95,7 @@ const Topbar = () => {
   const navigate = useRouter();
 
   if (loading) {
-    return <LoadingSpinner />;
+    return <HomePageLoading />;
   }
 
   return (

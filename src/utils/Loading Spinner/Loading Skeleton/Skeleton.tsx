@@ -1,5 +1,35 @@
-import React from "react";
+import habitImg from "@/assets/img/exercise.png";
+import financeImg from "@/assets/img/finance man.png";
+import todoImg from "@/assets/img/man shopping.png";
+import womanWithLaptop from "@/assets/img/woman with laptop.png";
 import { Skeleton } from "@/components/ui/skeleton";
+import Image from "next/image";
+
+export const HomePageLoading = () => {
+  return (
+    <div className=" w-full min-h-screen lg:min-h-[90vh] flex flex-col md:flex-row justify-center items-center flex-wrap gap-4">
+      <Skeleton className="h-28 w-28  p-2 bg-slate-300 dark:bg-gray-700 flex flex-col items-center justify-center gap-2 ">
+        <Image src={financeImg} alt="panda" className="w-3/5" />
+        <p className="text-xs font-bold text-gray-500 text-center">Finance Tracker</p>
+      </Skeleton>
+
+      <Skeleton className="h-28 w-28  p-2 bg-green-100  flex flex-col items-center justify-center gap-2 ">
+        <Image src={habitImg} alt="panda" className="w-3/4" />
+        <p className="text-xs font-bold text-gray-500 text-center">Habit Tracker</p>
+      </Skeleton>
+
+      <Skeleton className="h-28 w-28  p-2 bg-blue-100  flex flex-col items-center justify-center gap-2 ">
+        <Image src={todoImg} alt="panda" className="w-3/4" />
+        <p className="text-xs font-bold text-gray-500 text-center">Todo List</p>
+      </Skeleton>
+
+      <Skeleton className="h-28 w-28  p-2 bg-purple-100  flex flex-col items-center justify-center gap-2 ">
+        <Image src={womanWithLaptop} alt="panda" className="w-3/5" />
+        <p className="text-xs font-bold text-gray-500 text-center">Notepad</p>
+      </Skeleton>
+    </div>
+  );
+};
 
 export const CustomLoadingSkeleton = () => {
   return (
@@ -34,3 +64,5 @@ export const NotepadLoading = () => {
     </div>
   );
 };
+
+

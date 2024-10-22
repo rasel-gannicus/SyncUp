@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { LoadingSpinner } from "@/utils/Loading Spinner/LoadingSpinner";
+import { HomePageLoading } from "@/utils/Loading Spinner/Loading Skeleton/Skeleton";
 import { withAuthRedirect } from "@/utils/Route Protection/RouteProtection";
 import auth from "@/utils/firebase.init";
 import Link from "next/link";
@@ -131,7 +131,7 @@ function Login() {
               }`}
               disabled={loading}
             >
-              {loading ? <LoadingSpinner /> : "Login"}
+              {loading ? <HomePageLoading /> : "Login"}
             </Button>
           </form>
 

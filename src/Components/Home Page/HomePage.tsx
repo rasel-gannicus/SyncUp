@@ -6,6 +6,7 @@ import cardImg1 from "@/assets/img/note taking.png";
 import financeImg from "@/assets/img/finance 2.png";
 import Image from "next/image";
 import Link from "next/link";
+import { HomePageLoading } from "@/utils/Loading Spinner/Loading Skeleton/Skeleton";
 
 export default function HomePage() {
   const apps = [

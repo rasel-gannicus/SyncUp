@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { HomePageLoading } from '@/utils/Loading Spinner/Loading Skeleton/Skeleton';
 import { useAuthState } from '@/utils/Route Protection/useAuthState';
-import { LoadingSpinner } from '@/utils/Loading Spinner/LoadingSpinner';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export function AuthWrapper({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -20,7 +20,7 @@ export function AuthWrapper({ children }: { children: React.ReactNode }) {
   }, [user, loading, router]);
 
   if (loading) {
-    return <LoadingSpinner />; // Or your custom loading component
+    return <HomePageLoading />; // Or your custom loading component
   }
 
   return <>{children}</>;

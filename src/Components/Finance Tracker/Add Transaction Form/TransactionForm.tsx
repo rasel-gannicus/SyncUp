@@ -73,7 +73,7 @@ export const TransactionForm: React.FC<TransactionFormProps> = ({
         />
       </div>
       <div className="flex space-x-2">
-        <Button type="submit" className="flex-1">
+        <Button type="submit" className="flex-1 bg-teal-600 ">
           <PlusCircle className="mr-2 h-4 w-4" /> {submitLabel}
         </Button>
         <Button type="button" variant="outline" onClick={handleCancel} className="flex-1">

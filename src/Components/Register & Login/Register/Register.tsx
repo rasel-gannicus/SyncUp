@@ -3,7 +3,7 @@ import { useAddUserToDbMutation } from "@/Redux/features/user/userApi";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { LoadingSpinner } from "@/utils/Loading Spinner/LoadingSpinner";
+import { HomePageLoading } from "@/utils/Loading Spinner/Loading Skeleton/Skeleton";
 import auth from "@/utils/firebase.init";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -197,7 +197,7 @@ function Register() {
               }`}
               disabled={loading}
             >
-              {loading ? <LoadingSpinner /> : "Register"}
+              {loading ? <HomePageLoading /> : "Register"}
             </Button>
           </form>
 

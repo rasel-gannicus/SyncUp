@@ -1,13 +1,13 @@
 "use client";
 import NotePad from "@/components/Notepad/Notepad";
-import { LoadingSpinner } from "@/utils/Loading Spinner/LoadingSpinner";
+import { HomePageLoading } from "@/utils/Loading Spinner/Loading Skeleton/Skeleton";
 import { useAuthState } from "@/utils/Route Protection/useAuthState";
 
 const NotepadPage = () => {
   const { user, loading } = useAuthState();
 
   if (loading) {
-    return <LoadingSpinner />;
+    return <HomePageLoading />;
   }
 
   return <NotePad user={user} />;

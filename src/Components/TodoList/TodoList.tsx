@@ -1,18 +1,17 @@
 "use client";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { PlusCircle, Trash2, Edit, CheckCircle, Circle } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import {
   useAddTodoMutation,
   useDeleteTodoMutation,
   useEditTodoMutation,
 } from "@/Redux/features/Todo List/todoApi";
-import { LoadingSpinnerCustom } from "@/utils/Loading Spinner/LoadingSpinner";
 import { useAppSelector } from "@/Redux/hooks";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { HabitTrackerLoading } from "@/utils/Loading Spinner/Loading Skeleton/Skeleton";
+import { CheckCircle, Circle, Edit, PlusCircle, Trash2 } from "lucide-react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
 import { validateUser } from "./functionalities";
-import { HabitTrackerLoading } from "@/utils/Loading Spinner/Loading Skeleton/Skeleton";
 
 const TodoList = ({ user }: { user: any }) => {
   const [inputValue, setInputValue] = useState("");
@@ -271,7 +270,7 @@ const TodoList = ({ user }: { user: any }) => {
         />
         <Button
           onClick={handleAddTodo}
-          className="bg-blue-500 hover:bg-blue-600 dark:bg-green-500"
+          className="bg-teal-500 hover:bg-teal-600 dark:bg-green-500"
         >
           <PlusCircle size={20} />
         </Button>
@@ -280,7 +279,7 @@ const TodoList = ({ user }: { user: any }) => {
         <Button
           onClick={() => handleChangeFilter("all")}
           className={`${
-            filter === "all" ? "bg-blue-500 dark:bg-green-500" : "bg-gray-200 text-gray-800"
+            filter === "all" ? "bg-teal-500 hover:bg-teal-500 dark:bg-green-500" : "bg-gray-200 hover:bg-teal-500 text-gray-800"
           }`}
         >
           All
@@ -288,7 +287,7 @@ const TodoList = ({ user }: { user: any }) => {
         <Button
           onClick={() => handleChangeFilter("active")}
           className={`${
-            filter === "active" ? "bg-gree-500 hover:bg-blue-500 dark:bg-green-500" : "bg-gray-200 text-gray-800"
+            filter === "active" ? "bg-teal-500 hover:bg-teal-500 dark:bg-green-500" : "bg-gray-200 hover:bg-teal-500 text-gray-800"
           }`}
         >
           Active
@@ -296,7 +295,7 @@ const TodoList = ({ user }: { user: any }) => {
         <Button
           onClick={() => handleChangeFilter("completed")}
           className={`${
-            filter === "completed" ? "bg-blue-500 hover:bg-blue-500 dark:bg-green-500" : "bg-gray-200 text-gray-800"
+            filter === "completed" ? "bg-teal-500 hover:bg-teal-500 dark:bg-green-500" : "bg-gray-200 hover:bg-teal-500 text-gray-800"
           }`}
         >
           Completed
