@@ -52,6 +52,15 @@ A comprehensive **full-stack web application** that provides multiple productivi
 - **Responsive Design**: Fully responsive UI built with Tailwind CSS to ensure seamless usability across devices.
 - **Dark Mode Support**: Toggle between light and dark themes for enhanced user experience.
 
+### Live Site
+
+Live site: [SyncUp](https://syncup-rasel.vercel.app/).
+
+### GitHub Repository
+
+- Client: [here](https://github.com/rasel-gannicus/SyncUp).
+- Server: [here](https://github.com/rasel-gannicus/Server-for-SyncUp).
+
 ## Installation & Setup
 
 1. **Clone the Repository:**
@@ -135,5 +144,34 @@ For inquiries or support, reach out at:
 ### Previews 
 
 
-*Manage orders from Admin panel*
-![Manage orders from Admin panel](https://github.com/rasel-gannicus/Pharmasia/blob/main/src/assets/for%20hosting/admin%20manage%20orders.png?raw=true)
+*Home page*
+![Homepage](https://github.com/rasel-gannicus/SyncUp/blob/main/src/assets/Hosting%20for%20github%20readme/homepage.png?raw=true)
+
+*Finance Tracker*
+![Finance Tracker](https://github.com/rasel-gannicus/SyncUp/blob/main/src/assets/Hosting%20for%20github%20readme/syncup%20-%20finance%20tracker.png?raw=true)
+
+*Habit Tracker*
+![Habit Tracker](https://github.com/rasel-gannicus/SyncUp/blob/main/src/assets/Hosting%20for%20github%20readme/habit%20tracker.png?raw=true)
+
+*Notepad*
+![Notepad](https://github.com/rasel-gannicus/SyncUp/blob/main/src/assets/Hosting%20for%20github%20readme/notepad.png?raw=true)
+
+*Todo List*
+![Todo List](https://github.com/rasel-gannicus/SyncUp/blob/main/src/assets/Hosting%20for%20github%20readme/todolist.png?raw=true)
+
+### Dark Mode  
+
+*Home page*
+![Homepage](https://github.com/rasel-gannicus/SyncUp/blob/main/src/assets/Hosting%20for%20github%20readme/DarkMode/homepage%20dark.png?raw=true)
+
+*Finance Tracker*
+![Finance Tracker](https://github.com/rasel-gannicus/SyncUp/blob/main/src/assets/Hosting%20for%20github%20readme/DarkMode/finance%20tracker%20dark%20mode.png?raw=true)
+
+*Habit Tracker*
+![Habit Tracker](https://github.com/rasel-gannicus/SyncUp/blob/main/src/assets/Hosting%20for%20github%20readme/DarkMode/habit%20tracker%20dark%20mode.png?raw=true)
+
+*Notepad*
+![Notepad](https://github.com/rasel-gannicus/SyncUp/blob/main/src/assets/Hosting%20for%20github%20readme/DarkMode/notepad%20darkmode.png?raw=true)
+
+*Todo List*
+![Todo List](https://github.com/rasel-gannicus/SyncUp/blob/main/src/assets/Hosting%20for%20github%20readme/DarkMode/todolist%20darkmode.png?raw=true)
