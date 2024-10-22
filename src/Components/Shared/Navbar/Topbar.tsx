@@ -5,7 +5,7 @@ import {
   LucideListTodo,
   Notebook,
   PanelLeft,
-  Search
+  Search,
 } from "lucide-react";
 import Image from "next/image";
 
@@ -35,10 +35,12 @@ import { HomePageLoading } from "@/utils/Loading Spinner/Loading Skeleton/Skelet
 import { DeleteConfirmationModal } from "@/utils/Modals/DeleteConfirmationModal";
 import { NavLink } from "@/utils/Navlink/NavLink";
 import { useAuthState } from "@/utils/Route Protection/useAuthState";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { FaSackDollar } from "react-icons/fa6";
+import { IoMdKey, IoMdLogIn } from "react-icons/io";
 
 const Topbar = () => {
   const [isModal, setIsModal] = useState(false);
@@ -123,9 +125,7 @@ const Topbar = () => {
               prefetch={true}
             >
               <FaSackDollar className="h-5 w-5" />
-              <span className=" ">
-                Finance Tracker
-              </span>
+              <span className=" ">Finance Tracker</span>
             </NavLink>
 
             <NavLink
@@ -134,9 +134,7 @@ const Topbar = () => {
               prefetch={true}
             >
               <AlarmClockCheck className="h-5 w-5" />
-              <span className=" ">
-                Habit Tracker
-              </span>
+              <span className=" ">Habit Tracker</span>
             </NavLink>
 
             <NavLink
@@ -154,12 +152,8 @@ const Topbar = () => {
               prefetch={true}
             >
               <LucideListTodo className="h-5 w-5" />
-              <span className=" ">
-                Todo List
-              </span>
+              <span className=" ">Todo List</span>
             </NavLink>
-
-            
           </nav>
         </SheetContent>
       </Sheet>
@@ -205,21 +199,36 @@ const Topbar = () => {
           </DropdownMenuLabel>
 
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Settings</DropdownMenuItem>
+          {/* <DropdownMenuItem>Settings</DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => navigate.push("/secretPage")}
             className="text-red-600 font-bold"
           >
             Secret Page
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
           <DropdownMenuSeparator />
-          {user ? (
-            <DropdownMenuItem onClick={() => setIsModal(true)}>
-              Logout
+          {!user ? (
+            <DropdownMenuItem>
+              <Link
+                className="bg-teal-500 px-3 rounded py-2 flex justify-center items-center gap-1 text-white me-2 "
+                href="/login"
+              >
+                <IoMdLogIn />
+                Login
+              </Link>
+              <Link
+                className="bg-slate-400 px-3 rounded py-2 flex justify-center items-center gap-1 text-white "
+                href="/register"
+              >
+                <IoMdKey className="text-lg" />
+                Register
+              </Link>
             </DropdownMenuItem>
           ) : (
-            <DropdownMenuItem onClick={() => navigate.push("/login")}>
-              Login
+            <DropdownMenuItem>
+              <Button onClick={() => setIsModal(true)} className="bg-pink-600">
+                Logout
+              </Button>
             </DropdownMenuItem>
           )}
         </DropdownMenuContent>
