@@ -12,6 +12,7 @@ import { CheckCircle, Circle, Edit, PlusCircle, Trash2 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
 import { validateUser } from "./functionalities";
+import { useAddTodolist } from "./hooks/useAddTodolist";
 
 const TodoList = ({ user }: { user: any }) => {
   const [inputValue, setInputValue] = useState("");
@@ -38,43 +39,45 @@ const TodoList = ({ user }: { user: any }) => {
    * kept in the list. If the request fails, the new todo item is removed from the
    * list.
    */
-  const handleAddTodo = useCallback(async () => {
-    if (!validateUser(user)) return;
-    if (!inputValue.trim()) return;
-    const newTodo = {
-      text: inputValue,
-      completed: false,
-      createdAt: Date.now(),
-      email: user.providerData[0].email || user?.email,
-    };
+  // const handleAddTodo = useCallback(async () => {
+  //   if (!validateUser(user)) return;
+  //   if (!inputValue.trim()) return;
+  //   const newTodo = {
+  //     text: inputValue,
+  //     completed: false,
+  //     createdAt: Date.now(),
+  //     email: user.providerData[0].email || user?.email,
+  //   };
 
-    const toastId = toast.loading("Adding todo...");
+  //   const toastId = toast.loading("Adding todo...");
 
-    // Optimistically add the new todo item to the list
-    setTodos((prevTodos: any) => [...prevTodos, newTodo]);
-    setInputValue("");
+  //   // Optimistically add the new todo item to the list
+  //   setTodos((prevTodos: any) => [...prevTodos, newTodo]);
+  //   setInputValue("");
 
-    try {
-      const response: any = await addTodo({ todo: newTodo });
-      if ("error" in response) {
-        // If the request fails, remove the new todo item from the list
-        setTodos((prevTodos: any) =>
-          prevTodos.filter((todo: any) => todo.createdAt !== newTodo.createdAt)
-        );
-        toast.error(response.error.data.message || "Failed to add todo.");
-      } else {
-        toast.success("Todo added successfully.");
-      }
-    } catch (error) {
-      // If the request fails, remove the new todo item from the list
-      setTodos((prevTodos: any) =>
-        prevTodos.filter((todo: any) => todo.createdAt !== newTodo.createdAt)
-      );
-      toast.error("An unexpected error occurred while adding the todo.");
-    } finally {
-      toast.dismiss(toastId);
-    }
-  }, [inputValue, user, addTodo]);
+  //   try {
+  //     const response: any = await addTodo({ todo: newTodo });
+  //     if ("error" in response) {
+  //       // If the request fails, remove the new todo item from the list
+  //       setTodos((prevTodos: any) =>
+  //         prevTodos.filter((todo: any) => todo.createdAt !== newTodo.createdAt)
+  //       );
+  //       toast.error(response.error.data.message || "Failed to add todo.");
+  //     } else {
+  //       toast.success("Todo added successfully.");
+  //     }
+  //   } catch (error) {
+  //     // If the request fails, remove the new todo item from the list
+  //     setTodos((prevTodos: any) =>
+  //       prevTodos.filter((todo: any) => todo.createdAt !== newTodo.createdAt)
+  //     );
+  //     toast.error("An unexpected error occurred while adding the todo.");
+  //   } finally {
+  //     toast.dismiss(toastId);
+  //   }
+  // }, [inputValue, user, addTodo]);
+
+  const handleAddTodo = useAddTodolist({ user, inputValue, setTodos, setInputValue });
 
   const handleToggleTodo = async (createdAt: string, isCompleted: boolean) => {
     if (!user) {
