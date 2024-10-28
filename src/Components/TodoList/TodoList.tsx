@@ -40,7 +40,7 @@ const TodoList = ({ user }: { user: any }) => {
    */
   const handleAddTodo = useCallback(async () => {
     if (!validateUser(user)) return;
-
+    if (!inputValue.trim()) return;
     const newTodo = {
       text: inputValue,
       completed: false,
@@ -279,7 +279,9 @@ const TodoList = ({ user }: { user: any }) => {
         <Button
           onClick={() => handleChangeFilter("all")}
           className={`${
-            filter === "all" ? "bg-teal-500 hover:bg-teal-500 dark:bg-orange-400" : "bg-gray-200 hover:bg-teal-500 text-gray-800"
+            filter === "all"
+              ? "bg-teal-500 hover:bg-teal-500 dark:bg-orange-400"
+              : "bg-gray-200 hover:bg-teal-500 text-gray-800"
           }`}
         >
           All
@@ -287,7 +289,9 @@ const TodoList = ({ user }: { user: any }) => {
         <Button
           onClick={() => handleChangeFilter("active")}
           className={`${
-            filter === "active" ? "bg-teal-500 hover:bg-teal-500 dark:bg-orange-400" : "bg-gray-200 hover:bg-teal-500 text-gray-800"
+            filter === "active"
+              ? "bg-teal-500 hover:bg-teal-500 dark:bg-orange-400"
+              : "bg-gray-200 hover:bg-teal-500 text-gray-800"
           }`}
         >
           Pending
@@ -295,7 +299,9 @@ const TodoList = ({ user }: { user: any }) => {
         <Button
           onClick={() => handleChangeFilter("completed")}
           className={`${
-            filter === "completed" ? "bg-teal-500 hover:bg-teal-500 dark:bg-orange-400" : "bg-gray-200 hover:bg-teal-500 text-gray-800"
+            filter === "completed"
+              ? "bg-teal-500 hover:bg-teal-500 dark:bg-orange-400"
+              : "bg-gray-200 hover:bg-teal-500 text-gray-800"
           }`}
         >
           Completed
@@ -303,47 +309,56 @@ const TodoList = ({ user }: { user: any }) => {
       </div>
       <ul className="space-y-2">
         {userLoading && <HabitTrackerLoading />}
-        {user && filteredTodos?.map((todo: any) => (
-          <li
-            key={todo?.createdAt}
-            className="flex items-center bg-gray-100 p-3 rounded dark:bg-gray-700 dark:text-white"
-          >
-            <Button
-              onClick={() => handleToggleTodo(todo?.createdAt, todo?.completed)}
-              className="mr-2 bg-transparent hover:bg-transparent p-0"
+        {user &&
+          filteredTodos?.map((todo: any) => (
+            <li
+              key={todo?.createdAt}
+              className="flex items-center bg-gray-100 p-3 rounded dark:bg-gray-700 dark:text-white"
             >
-              {todo?.completed ? (
-                <CheckCircle size={20} className="text-green-500" />
-              ) : (
-                <Circle size={20} className="text-gray-400" />
-              )}
-            </Button>
-            {editingId === todo?.createdAt ? (
-              <Input
-                type="text"
-                defaultValue={todo.text}
-                onBlur={(e) =>
-                  handleFinishEditing(todo?.createdAt, e.target.value)
+              <Button
+                onClick={() =>
+                  handleToggleTodo(todo?.createdAt, todo?.completed)
                 }
-                className="flex-grow"
-              />
-            ) : (
-              <span className={`flex-grow ${todo.completed && 'line-through text-gray-400'} `}>{todo.text}</span>
-            )}
-            <Button
-              onClick={() => handleStartEditing(todo?.createdAt)}
-              className="mr-2 bg-transparent text-teal-400 hover:bg-transparent p-0"
-            >
-              <Edit size={20} />
-            </Button>
-            <Button
-              onClick={() => handleDeleteTodo(todo?.createdAt)}
-              className="bg-transparent text-red-600 hover:bg-transparent p-0"
-            >
-              <Trash2 size={20} />
-            </Button>
-          </li>
-        ))}
+                className="mr-2 bg-transparent hover:bg-transparent p-0"
+              >
+                {todo?.completed ? (
+                  <CheckCircle size={20} className="text-green-500" />
+                ) : (
+                  <Circle size={20} className="text-gray-400" />
+                )}
+              </Button>
+              {editingId === todo?.createdAt ? (
+                <Input
+                  type="text"
+                  defaultValue={todo.text}
+                  onBlur={(e) =>
+                    handleFinishEditing(todo?.createdAt, e.target.value)
+                  }
+                  className="flex-grow"
+                />
+              ) : (
+                <span
+                  className={`flex-grow ${
+                    todo.completed && "line-through text-gray-400"
+                  } `}
+                >
+                  {todo.text}
+                </span>
+              )}
+              <Button
+                onClick={() => handleStartEditing(todo?.createdAt)}
+                className="mr-2 bg-transparent text-teal-400 hover:bg-transparent p-0"
+              >
+                <Edit size={20} />
+              </Button>
+              <Button
+                onClick={() => handleDeleteTodo(todo?.createdAt)}
+                className="bg-transparent text-red-600 hover:bg-transparent p-0"
+              >
+                <Trash2 size={20} />
+              </Button>
+            </li>
+          ))}
       </ul>
     </div>
   );

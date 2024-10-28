@@ -76,9 +76,14 @@ function Login() {
             <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-300">
               Login
             </h1>
-            <p className="text-gray-600 dark:text-gray-300 mt-2">
+            <p className="text-gray-600 dark:text-gray-300 mt-2 text-xl">
               Keep your progress in one place!
             </p>
+            <div className="text-gray-400">
+              <p> --- You may try this credentials for testing: --- </p>
+              <p className="text-sm text-slate-600"> Email: rasel@gmail.com</p>
+              <p className="text-sm text-slate-600">Password: aaaaaa</p>
+            </div>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
