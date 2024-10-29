@@ -10,25 +10,25 @@ A comprehensive **full-stack web application** that provides multiple productivi
 
 ## Features
 
-### 3. **Finance Tracker**
+### 1. **Finance Tracker**
 
 - Record daily expenses with categories.
 - Generate reports to view spending patterns.
 - Budget management and tracking for better financial insights.
 
-### 4. **Habit Tracker**
+### 2. **Habit Tracker**
 
 - Create and track habits with daily goals.
 - View history of habit completion over time.
 - Toggle completion status for each day and visualize progress.
 
-### 1. **Notepad**
+### 3. **Notepad**
 
 - Create, edit, and delete notes.
 - Markdown support for enhanced note-taking.
 - Auto-save functionality for uninterrupted note-taking experience.
 
-### 2. **TodoList**
+### 4. **TodoList**
 
 - Add, manage, and track tasks .
 - Filter tasks by completion status (Pending, Completed).
