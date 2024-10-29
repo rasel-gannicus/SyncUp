@@ -42,6 +42,7 @@ import { toast } from "react-hot-toast";
 import { FaSackDollar } from "react-icons/fa6";
 import { IoMdKey, IoMdLogIn } from "react-icons/io";
 import MiniMenuCardIcon from "./MiniMenuCardIcon";
+import aiImg from "@/assets/Logo/artificial-intelligence.png";
 
 const Topbar = () => {
   const [isModal, setIsModal] = useState(false);
@@ -49,6 +50,9 @@ const Topbar = () => {
   const { user, loading } = useAuthState(); // get user from firebase
 
   const [addUserToDb] = useAddUserToDbMutation();
+  
+  // --- closing sidebar on click menu link ---
+  const [open, setOpen] = useState(false);
 
   const { data: userFromDB, isLoading } = useGetUserQuery(
     user?.providerData[0]?.email || user?.email
@@ -101,19 +105,23 @@ const Topbar = () => {
     return <HomePageLoading />;
   }
 
+
   return (
-    <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
-      <Sheet>
+    <header className="sticky top-0 z-30 flex h-14 items-center gap-1 md:gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+
+      {/* --- Sidebar Menu for mobile view --- */}
+      <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
           <Button size="icon" variant="outline" className="sm:hidden">
             <PanelLeft className="h-5 w-8" />
             <span className="sr-only">Toggle Menu</span>
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="sm:max-w-xs ">
+        <SheetContent side="left" className="sm:max-w-xs overflow-y-auto ">
           <nav className="grid gap-6 text-lg font-medium mt-20">
             <NavLink
               href="/"
+              onClick={() => setOpen(false)}
               className="flex items-center gap-4 px-2.5 py-2 rounded-lg text-muted-foreground hover:text-foreground [&.active]:bg-blue-100   [&.active]:text-black"
             >
               <Home className="h-5 w-5" />
@@ -121,7 +129,18 @@ const Topbar = () => {
             </NavLink>
 
             <NavLink
+              href="/text-processing"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-4 px-2.5 py-2 rounded-lg text-muted-foreground hover:text-foreground [&.active]:bg-blue-100   [&.active]:text-black"
+              prefetch={true}
+            >
+              <Image src={aiImg} alt="ai" className="h-5 w-5" />
+              <span className=" ">Text Processor</span>
+            </NavLink>
+
+            <NavLink
               href="/finance-tracker"
+              onClick={() => setOpen(false)}
               className="flex items-center gap-4 px-2.5 py-2 rounded-lg text-muted-foreground hover:text-foreground [&.active]:bg-blue-100   [&.active]:text-black"
               prefetch={true}
             >
@@ -131,6 +150,7 @@ const Topbar = () => {
 
             <NavLink
               href="/habit-tracker"
+              onClick={() => setOpen(false)}
               className="flex items-center gap-4 px-2.5 py-2 rounded-lg text-muted-foreground hover:text-foreground [&.active]:bg-blue-100   [&.active]:text-black"
               prefetch={true}
             >
@@ -140,6 +160,7 @@ const Topbar = () => {
 
             <NavLink
               href="/notepad"
+              onClick={() => setOpen(false)}
               className="flex items-center gap-4 px-2.5 py-2 rounded-lg text-muted-foreground hover:text-foreground [&.active]:bg-blue-100   [&.active]:text-black"
               prefetch={true}
             >
@@ -149,6 +170,7 @@ const Topbar = () => {
 
             <NavLink
               href="/todoList"
+              onClick={() => setOpen(false)}
               className="flex items-center gap-4 px-2.5 py-2 rounded-lg text-muted-foreground hover:text-foreground [&.active]:bg-blue-100   [&.active]:text-black"
               prefetch={true}
             >
@@ -170,7 +192,7 @@ const Topbar = () => {
           <Button
             variant="outline"
             size="icon"
-            className="overflow-hidden rounded-full w-10 h-10"
+            className="overflow-hidden rounded-full w-10 h-10 dark:bg-gray-300"
           >
             <Image
               src={user?.providerData[0].photoURL || profileImg}

@@ -4,6 +4,7 @@ import cardImg3 from "@/assets/img/cycle.png";
 import cardImg2 from "@/assets/img/rickshaw2.png";
 import cardImg1 from "@/assets/img/note taking.png";
 import financeImg from "@/assets/img/finance 2.png";
+import aiImg from "@/assets/img/eva ai (1).png";
 import Image from "next/image";
 import Link from "next/link";
 import { HomePageLoading } from "@/utils/Loading Spinner/Loading Skeleton/Skeleton";
@@ -11,9 +12,16 @@ import { HomePageLoading } from "@/utils/Loading Spinner/Loading Skeleton/Skelet
 export default function HomePage() {
   const apps = [
     {
-      title: "Finance Tracker",
+      title: "Text Processor AI",
       description: "2 days ago",
       color: "bg-[#536273]",
+      image: aiImg,
+      link: "/text-processing",
+    },
+    {
+      title: "Finance Tracker",
+      description: "2 days ago",
+      color: "bg-[#FF6D36]",
       image: financeImg,
       link: "/finance-tracker",
     },
