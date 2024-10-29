@@ -16,7 +16,7 @@ const TextProcessor = () => {
     updateTextStats(inputText);
   }, [inputText]);
 
-  const updateTextStats = (text) => {
+  const updateTextStats = (text : string) => {
     const characters = text.length;
     const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
     const sentences = text.trim() === '' ? 0 : text.split(/[.!?]+/).filter(Boolean).length;
@@ -24,7 +24,7 @@ const TextProcessor = () => {
     setTextStats({ characters, words, sentences, paragraphs });
   };
 
-  const copyToClipboard = async (text) => {
+  const copyToClipboard = async (text : string) => {
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
@@ -34,7 +34,7 @@ const TextProcessor = () => {
     }
   };
 
-  const getPromptForAction = (action) => {
+  const getPromptForAction = (action : string) => {
     const systemPrompt = "You are a highly skilled AI assistant specializing in text processing and analysis. Provide clear, concise, and accurate responses.";
     
     switch (action) {
@@ -59,7 +59,7 @@ const TextProcessor = () => {
     }
   };
 
-  const processText = async (action) => {
+  const processText = async (action : string) => {
     setIsProcessing(true);
     setError('');
     
@@ -119,7 +119,7 @@ const TextProcessor = () => {
       } else {
         throw new Error('No valid response from the API');
       }
-    } catch (err) {
+    } catch (err : any) {
       console.error('Processing error:', err);
       setError(err.message || 'Failed to process text. Please try again.');
     } finally {
@@ -127,11 +127,11 @@ const TextProcessor = () => {
     }
   };
 
-  const ButtonWithIcon = ({ action, icon: Icon, label }) => (
+  const ButtonWithIcon = ({ action , icon: Icon, label } : { action : string, icon : any, label : string}) => (
     <Button
       onClick={() => processText(action)}
       disabled={!inputText || isProcessing}
-      className="flex items-center gap-2"
+      className="flex items-center gap-2 bg-teal-600 dark:bg-teal-500 dark:text-black"
     >
       {isProcessing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Icon className="h-4 w-4" />}
       {label}
@@ -140,16 +140,16 @@ const TextProcessor = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-4 space-y-4">
-      <Card className="bg-white shadow-lg">
+      <Card className="bg-white dark:bg-gray-700 shadow-lg">
         <CardHeader>
-          <CardTitle className="text-2xl font-bold text-gray-800">Text Processor</CardTitle>
+          <CardTitle className="text-2xl font-bold text-gray-800 dark:text-gray-200">Text Processor</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Input Section with Stats */}
           <div className="space-y-2">
             <div className="relative">
               <textarea
-                className="w-full h-48 p-4 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
+                className="w-full h-48 p-4 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 dark:bg-gray-700"
                 placeholder="Enter your text here..."
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}

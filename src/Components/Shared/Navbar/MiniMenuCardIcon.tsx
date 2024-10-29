@@ -13,12 +13,12 @@ import Link from "next/link";
 
 export const MiniMenuCardIcon = () => {
   return (
-    <div className="relative ml-auto md:grow-0 flex max-w-[280px] md:max-w-full overflow-x-auto ">
+    <div className="relative ml-auto md:grow-0 flex max-w-[220px]  md:max-w-full overflow-x-auto ">
       <TooltipProvider delayDuration={200} >
         <div className=" w-full flex justify-center items-center  gap-4  ">
           <Tooltip>
             <TooltipTrigger>
-              <Link href="/finance-tracker" className="h-10 w-10 rounded   bg-gray-200  flex flex-col items-center justify-center gap-2 ">
+              <Link href="/finance-tracker" className="h-10 w-10 rounded ms-12 md:ms-0  bg-gray-200  flex flex-col items-center justify-center gap-2 ">
                 <Image src={financeImg} alt="panda" className="w-3/4" />
               </Link>
             </TooltipTrigger>
