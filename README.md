@@ -36,19 +36,10 @@ A comprehensive **full-stack web application** that provides multiple productivi
 
 ## Tech Stack
 
-### **Frontend**
-
-- **Next.js**: React-based framework for server-side rendering and optimized performance.
-- **TypeScript**: Ensuring type safety and reducing errors in development.
-- **Redux Toolkit**: Centralized state management for seamless data flow between components.
-- **Tailwind CSS**: Utility-first CSS framework for fast and responsive UI design.
-- **Shadcn Components**: For a polished, modern UI experience.
-
-### **Backend**
-
-- **Node.js & Express.js**: Efficient server-side framework to handle API requests.
-- **MongoDB**: Document-based NoSQL database for storing all app data under a single user's document.
-- **RTK Query**: For efficient API integration and data fetching.
+- **Frontend:** NextJs, Typescript, Redux, React, Tailwind Css, HTML, CSS, Javascript,  React icons, React Hot Toast, 
+- **Backend:** Node.js, Express, MongoDB, Firebase, RTK Query
+<!-- - **Authentication:** JWT Token , Firebase Auth -->
+<!-- - **State Management:** RTK Query, Redux -->
 
 ## Key Highlights
 
