@@ -7,7 +7,7 @@ import { Wrapper } from "@/components/Shared/Wrapper";
 import { AuthWrapper } from "@/components/Shared/AuthWrapper";
 
 export const metadata: Metadata = {
-  title: "Daily Apps",
+  title: "SyncUp - All Productivity Apps in One Place",
   description: "Created by Shafiqul Hasan Rasel",
 };
 

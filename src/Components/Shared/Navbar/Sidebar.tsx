@@ -7,6 +7,8 @@ import {
   Settings
 } from "lucide-react";
 import { FaSackDollar } from "react-icons/fa6";
+import aiImg from "@/assets/Logo/artificial-intelligence.png" ;
+import Image from "next/image";
 
 const Sidebar = () => {
   return (
@@ -27,6 +29,17 @@ const Sidebar = () => {
         >
           <Home className="h-5 w-5" />
           <span className=" text-center text-xs font-medium">Home</span>
+        </NavLink>
+
+        <NavLink
+          href="/text-processing"
+          className="flex h-16 w-16  items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground  md:h-16 md:w-16 flex-col gap-y-1 [&.active]:bg-blue-100   [&.active]:text-black"
+          prefetch={true}
+        >
+          <Image src={aiImg} alt="ai" className="h-5 w-5" />
+          <span className=" text-center text-xs font-medium">
+            Text Processor
+          </span>
         </NavLink>
 
         <NavLink

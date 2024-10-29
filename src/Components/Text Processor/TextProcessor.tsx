@@ -142,7 +142,7 @@ const TextProcessor = () => {
     <div className="max-w-6xl mx-auto p-4 space-y-4">
       <Card className="bg-white shadow-lg">
         <CardHeader>
-          <CardTitle className="text-2xl font-bold text-gray-800">AI Text Processor</CardTitle>
+          <CardTitle className="text-2xl font-bold text-gray-800">Text Processor</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Input Section with Stats */}
@@ -182,10 +182,10 @@ const TextProcessor = () => {
               <ButtonWithIcon action="grammar" icon={PenLine} label="Check Grammar" />
             </div>
             <div className="flex flex-wrap gap-2">
-              <ButtonWithIcon action="keywords" icon={MessageSquareQuote} label="Extract Keywords" />
-              <ButtonWithIcon action="simplify" icon={Wand2} label="Simplify" />
-              <ButtonWithIcon action="translate" icon={RefreshCw} label="Translate" />
-              <ButtonWithIcon action="expand" icon={MessageSquareQuote} label="Expand" />
+              {/* <ButtonWithIcon action="keywords" icon={MessageSquareQuote} label="Extract Keywords" />
+              <ButtonWithIcon action="simplify" icon={Wand2} label="Simplify" /> */}
+              {/* <ButtonWithIcon action="translate" icon={RefreshCw} label="Translate" />
+              <ButtonWithIcon action="expand" icon={MessageSquareQuote} label="Expand" /> */}
             </div>
           </div>
 
