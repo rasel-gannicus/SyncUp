@@ -6,29 +6,35 @@
 
 # SyncUp - Multi-App Productivity Suite
 
-A comprehensive **full-stack web application** that provides multiple productivity tools integrated into a single platform. This project includes **Expense Tracker**, **Habit Tracker**, **Notepad** and **TodoList** all organized under each user's document in a unified database structure.
+A comprehensive full-stack web application offering a suite of productivity tools integrated into a single platform. SyncUp includes the new AI-powered Text Processor,Finance Tracker, Habit Tracker, Notepad, and TodoList all organized under each user’s document in a unified database structure.
 
 ## Features
 
-### 1. **Finance Tracker**
+### **Text Processor**
+
+- AI-powered tool for text summarization, analysis, rephrasing, and grammar checking.
+- Provides insights and modifications using Google’s Gemini API.
+- Enhances productivity with intelligent text handling options.
+
+### **Finance Tracker**
 
 - Record daily expenses with categories.
-- Generate reports to view spending patterns.
+- Generate reports to view spending patterns with charts.
 - Budget management and tracking for better financial insights.
 
-### 2. **Habit Tracker**
+### **Habit Tracker**
 
 - Create and track habits with daily goals.
 - View history of habit completion over time.
 - Toggle completion status for each day and visualize progress.
 
-### 3. **Notepad**
+### **Notepad**
 
 - Create, edit, and delete notes.
 - Markdown support for enhanced note-taking.
 - Auto-save functionality for uninterrupted note-taking experience.
 
-### 4. **TodoList**
+### **TodoList**
 
 - Add, manage, and track tasks .
 - Filter tasks by completion status (Pending, Completed).
@@ -37,17 +43,18 @@ A comprehensive **full-stack web application** that provides multiple productivi
 ## Tech Stack
 
 - **Frontend:** NextJs, Typescript, Redux, React, Tailwind Css, HTML, CSS, Javascript,  React icons, React Hot Toast, 
-- **Backend:** Node.js, Express, MongoDB, Firebase, RTK Query
+- **Backend:** Node.js, Express, MongoDB, Firebase, RTK Query, Google Gemini API
 <!-- - **Authentication:** JWT Token , Firebase Auth -->
 <!-- - **State Management:** RTK Query, Redux -->
 
 ## Key Highlights
 
-- **Unified User Data**: All data for Notepad, TodoList, Expense Tracker, and Habit Tracker is stored under one user document in the database, minimizing complexity and reducing overhead.
+- **Unified User Data**: All data for Text Processor, Notepad, TodoList, Expense Tracker, and Habit Tracker is stored under one user document in the database, minimizing complexity and reducing overhead.
+- **AI-Enhanced Text Processing:**: Integrated Google’s Gemini API to provide text summarization, analysis, rephrasing, and grammar-checking capabilities in the Text Processor app.
 - **Scalability**: Designed for scalability with modular components, making it easy to add new apps or features in the future.
 - **Optimized Performance**: Leveraging Next.js for server-side rendering and improved SEO.
 - **Responsive Design**: Fully responsive UI built with Tailwind CSS to ensure seamless usability across devices.
-- **Dark Mode Support**: Toggle between light and dark themes for enhanced user experience.
+- **Dark Mode Support**: Toggle between light and dark themes or use the system theme for enhanced user experience.
 
 ### Live Site
 
