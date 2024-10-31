@@ -1,7 +1,5 @@
 "use client";
-import {
-  PanelLeft
-} from "lucide-react";
+import { PanelLeft } from "lucide-react";
 import Image from "next/image";
 
 import {
@@ -107,17 +105,20 @@ const Topbar = () => {
         </SheetTrigger>
         <SheetContent side="left" className="sm:max-w-xs overflow-y-auto ">
           <nav className="grid gap-6 text-lg font-medium mt-20">
-            {
-              LinkArray.map(link => 
+            <div className="md:hidden absolute top-0 left-0 m-3 ">
+              <ThemeToggle />
+            </div>
+            {LinkArray.map((link) => (
               <NavLink
+                key={link.hrefLink}
                 href={link.hrefLink}
                 onClick={() => setOpen(false)}
                 className="flex items-center gap-4 px-2.5 py-2 rounded-lg text-muted-foreground hover:text-foreground [&.active]:bg-blue-100   [&.active]:text-black"
               >
                 {link.iconForSidebarMenu()}
                 {link.linkTitle}
-              </NavLink>)
-            }            
+              </NavLink>
+            ))}
           </nav>
         </SheetContent>
       </Sheet>

@@ -6,7 +6,7 @@ const Sidebar = () => {
     <aside className="fixed inset-y-0 left-0 z-10 hidden w-20 flex-col border-r bg-background sm:flex  ">
       <nav className="flex flex-col items-center gap-2 px-2 sm:py-5overflow-y-auto overflow-x-hidden">
         <div className=""></div>
-
+    
         {LinkArray.map((link) => (
           <NavLink
             key={link.hrefLink}
