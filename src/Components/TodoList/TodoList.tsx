@@ -11,7 +11,6 @@ import { HabitTrackerLoading } from "@/utils/Loading Spinner/Loading Skeleton/Sk
 import { CheckCircle, Circle, Edit, PlusCircle, Trash2 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
-import { validateUser } from "./functionalities";
 import { useAddTodolist } from "./hooks/useAddTodolist";
 
 const TodoList = ({ user }: { user: any }) => {

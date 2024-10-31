@@ -1,11 +1,6 @@
 "use client";
 import {
-  AlarmClockCheck,
-  Home,
-  LucideListTodo,
-  Notebook,
-  PanelLeft,
-  Search,
+  PanelLeft
 } from "lucide-react";
 import Image from "next/image";
 
@@ -28,7 +23,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import ThemeToggle from "@/utils/Dark mode toggle/ThemeToggle";
 import { HomePageLoading } from "@/utils/Loading Spinner/Loading Skeleton/Skeleton";
@@ -36,13 +30,11 @@ import { DeleteConfirmationModal } from "@/utils/Modals/DeleteConfirmationModal"
 import { NavLink } from "@/utils/Navlink/NavLink";
 import { useAuthState } from "@/utils/Route Protection/useAuthState";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { FaSackDollar } from "react-icons/fa6";
 import { IoMdKey, IoMdLogIn } from "react-icons/io";
+import { LinkArray } from "./Link";
 import MiniMenuCardIcon from "./MiniMenuCardIcon";
-import aiImg from "@/assets/Logo/artificial-intelligence.png";
 
 const Topbar = () => {
   const [isModal, setIsModal] = useState(false);
@@ -99,8 +91,6 @@ const Topbar = () => {
     }
   }, [user]);
 
-  const navigate = useRouter();
-
   if (loading) {
     return <HomePageLoading />;
   }
@@ -117,64 +107,17 @@ const Topbar = () => {
         </SheetTrigger>
         <SheetContent side="left" className="sm:max-w-xs overflow-y-auto ">
           <nav className="grid gap-6 text-lg font-medium mt-20">
-            <NavLink
-              href="/"
-              onClick={() => setOpen(false)}
-              className="flex items-center gap-4 px-2.5 py-2 rounded-lg text-muted-foreground hover:text-foreground [&.active]:bg-blue-100   [&.active]:text-black"
-            >
-              <Home className="h-5 w-5" />
-              Home
-            </NavLink>
-
-            <NavLink
-              href="/text-processing"
-              onClick={() => setOpen(false)}
-              className="flex items-center gap-4 px-2.5 py-2 rounded-lg text-muted-foreground hover:text-foreground [&.active]:bg-blue-100   [&.active]:text-black"
-              prefetch={true}
-            >
-              <Image src={aiImg} alt="ai" className="h-5 w-5" />
-              <span className=" ">Text Processor</span>
-            </NavLink>
-
-            <NavLink
-              href="/finance-tracker"
-              onClick={() => setOpen(false)}
-              className="flex items-center gap-4 px-2.5 py-2 rounded-lg text-muted-foreground hover:text-foreground [&.active]:bg-blue-100   [&.active]:text-black"
-              prefetch={true}
-            >
-              <FaSackDollar className="h-5 w-5" />
-              <span className=" ">Finance Tracker</span>
-            </NavLink>
-
-            <NavLink
-              href="/habit-tracker"
-              onClick={() => setOpen(false)}
-              className="flex items-center gap-4 px-2.5 py-2 rounded-lg text-muted-foreground hover:text-foreground [&.active]:bg-blue-100   [&.active]:text-black"
-              prefetch={true}
-            >
-              <AlarmClockCheck className="h-5 w-5" />
-              <span className=" ">Habit Tracker</span>
-            </NavLink>
-
-            <NavLink
-              href="/notepad"
-              onClick={() => setOpen(false)}
-              className="flex items-center gap-4 px-2.5 py-2 rounded-lg text-muted-foreground hover:text-foreground [&.active]:bg-blue-100   [&.active]:text-black"
-              prefetch={true}
-            >
-              <Notebook className="h-5 w-5" />
-              <span className=" ">Notepad</span>
-            </NavLink>
-
-            <NavLink
-              href="/todoList"
-              onClick={() => setOpen(false)}
-              className="flex items-center gap-4 px-2.5 py-2 rounded-lg text-muted-foreground hover:text-foreground [&.active]:bg-blue-100   [&.active]:text-black"
-              prefetch={true}
-            >
-              <LucideListTodo className="h-5 w-5" />
-              <span className=" ">Todo List</span>
-            </NavLink>
+            {
+              LinkArray.map(link => 
+              <NavLink
+                href={link.hrefLink}
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-4 px-2.5 py-2 rounded-lg text-muted-foreground hover:text-foreground [&.active]:bg-blue-100   [&.active]:text-black"
+              >
+                {link.iconForSidebarMenu()}
+                {link.linkTitle}
+              </NavLink>)
+            }            
           </nav>
         </SheetContent>
       </Sheet>
@@ -214,13 +157,7 @@ const Topbar = () => {
           </DropdownMenuLabel>
 
           <DropdownMenuSeparator />
-          {/* <DropdownMenuItem>Settings</DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => navigate.push("/secretPage")}
-            className="text-red-600 font-bold"
-          >
-            Secret Page
-          </DropdownMenuItem> */}
+
           <DropdownMenuSeparator />
           {!user ? (
             <DropdownMenuItem>
