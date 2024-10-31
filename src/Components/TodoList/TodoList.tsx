@@ -185,15 +185,13 @@ const TodoList = ({ user }: { user: any }) => {
     // Then, filter the todos based on the current filter
     const filteredTodos = nonDeletedTodos?.filter((todo: any) => {
       switch (filter) {
-        // Show only active todos
+
         case "active":
           return !todo.completed;
 
-        // Show only completed todos
         case "completed":
           return todo.completed;
 
-        // Show all todos
         default:
           return true;
       }
@@ -215,7 +213,7 @@ const TodoList = ({ user }: { user: any }) => {
   }, []);
 
   return (
-    <div className="max-w-xl mx-auto dark:bg-gray-800 dark:text-white  mt-10 p-6 bg-white rounded-lg shadow-lg">
+    <div className="max-w-xl mx-auto dark:bg-gray-800 dark:text-white  mt-10 p-6 bg-white rounded-lg shadow-lg ">
       <h1 className="text-3xl font-bold mb-6 text-center text-gray-800 dark:text-white">
         Todo List
       </h1>
@@ -266,7 +264,7 @@ const TodoList = ({ user }: { user: any }) => {
           Completed
         </Button>
       </div>
-      <ul className="space-y-2">
+      <ul className="space-y-2 max-h-[400px] overflow-y-scroll">
         {userLoading && <HabitTrackerLoading />}
         {user &&
           filteredTodos?.map((todo: any) => (

@@ -4,7 +4,7 @@ import cardImg3 from "@/assets/img/cycle.png";
 import cardImg2 from "@/assets/img/rickshaw2.png";
 import cardImg1 from "@/assets/img/note taking.png";
 import financeImg from "@/assets/img/finance 2.png";
-import aiImg from "@/assets/img/eva ai (1).png";
+import aiImg from "@/assets/img/eva ai 2.png";
 import Image from "next/image";
 import Link from "next/link";
 import { HomePageLoading } from "@/utils/Loading Spinner/Loading Skeleton/Skeleton";

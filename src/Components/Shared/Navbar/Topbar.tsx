@@ -50,7 +50,7 @@ const Topbar = () => {
   const { user, loading } = useAuthState(); // get user from firebase
 
   const [addUserToDb] = useAddUserToDbMutation();
-  
+
   // --- closing sidebar on click menu link ---
   const [open, setOpen] = useState(false);
 
@@ -105,10 +105,8 @@ const Topbar = () => {
     return <HomePageLoading />;
   }
 
-
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-1 md:gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
-
       {/* --- Sidebar Menu for mobile view --- */}
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
@@ -185,7 +183,9 @@ const Topbar = () => {
       <MiniMenuCardIcon />
 
       {/* --- Darkmode toggle --- */}
-      <ThemeToggle />
+      <div className="hidden md:block">
+        <ThemeToggle />
+      </div>
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
