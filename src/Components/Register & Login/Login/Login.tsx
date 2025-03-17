@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { HomePageLoading } from "@/utils/Loading Spinner/Loading Skeleton/Skeleton";
+import { CustomLoadingSpinner, HomePageLoading } from "@/utils/Loading Spinner/Loading Skeleton/Skeleton";
 import { withAuthRedirect } from "@/utils/Route Protection/RouteProtection";
 import auth from "@/utils/firebase.init";
 import Link from "next/link";
@@ -15,6 +15,11 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+
+  const handleAutofillCredentials = () => {
+    setEmail('rasel@gmail.com') ; 
+    setPassword('aaaaaa') ;
+  };
 
   // Firebase hook for creating a user with email and password
   const [signIn, user, loading, error] = useSignInWithEmailAndPassword(auth);
@@ -35,12 +40,8 @@ function Login() {
       // Attempt to create user with email and password using Firebase
       await signIn(email, password);
     } catch (err) {
-      // Log any errors that occur during account creation
-      console.error(err);
-      // Display an error toast if account creation fails
       toast.error("Error creating account", { position: "bottom-right" });
     } finally {
-      // Set loading state to false regardless of success or failure
       setIsLoading(false);
     }
   };
@@ -48,17 +49,14 @@ function Login() {
   // Use effect hook to manage toast messages based on loading, error, and user states
   useEffect(() => {
     let toastId: any;
-    // Show a loading toast while account creation is in progress
     if (loading) {
       toastId = toast.loading("Logging in...", {
         position: "bottom-right",
       });
-      // Show an error toast if an error occurs during account creation
     } else if (error) {
       toast.error(error.message || "Error Logging in", {
         position: "bottom-right",
       });
-      // Show a success toast if the account is created successfully
     } else if (user) {
       toast.success("Logged in successfully!", {
         position: "bottom-right",
@@ -83,6 +81,15 @@ function Login() {
               <p> --- You may try this credentials for testing: --- </p>
               <p className="text-sm text-slate-600"> Email: rasel@gmail.com</p>
               <p className="text-sm text-slate-600">Password: aaaaaa</p>
+              <Button
+                className={` mt-3 bg-gray-500 text-white font-semibold py-3 rounded-md hover:bg-gray-600   duration-100 ${loading && "opacity-50 pointer-events-none"
+                  }`}
+                disabled={loading}
+                onClick={handleAutofillCredentials}
+              >
+                {loading ? <CustomLoadingSpinner /> : "Auto fill this credential"}               
+                
+              </Button>
             </div>
           </div>
 
@@ -131,12 +138,11 @@ function Login() {
 
             <Button
               type="submit"
-              className={`w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold py-3 rounded-md hover:from-purple-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-all duration-300 ${
-                loading && "opacity-50 pointer-events-none"
-              }`}
+              className={`w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold py-3 rounded-md hover:from-purple-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-all duration-300 ${loading && "opacity-50 pointer-events-none"
+                }`}
               disabled={loading}
             >
-              {loading ? <HomePageLoading /> : "Login"}
+              {loading ? <div className="flex justify-center items-center gap-3"><span>Loading </span><CustomLoadingSpinner /></div> : "Login"}
             </Button>
           </form>
 

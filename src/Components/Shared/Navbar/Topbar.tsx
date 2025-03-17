@@ -113,7 +113,7 @@ const Topbar = () => {
                 key={link.hrefLink}
                 href={link.hrefLink}
                 onClick={() => setOpen(false)}
-                className="flex items-center gap-4 px-2.5 py-2 rounded-lg text-muted-foreground hover:text-foreground [&.active]:bg-blue-100   [&.active]:text-black"
+                className="flex  items-center gap-4 px-2.5 py-2 rounded-lg text-muted-foreground hover:text-foreground [&.active]:bg-blue-100   [&.active]:text-black"
               >
                 {link.iconForSidebarMenu()}
                 {link.linkTitle}
@@ -153,23 +153,23 @@ const Topbar = () => {
             {user?.providerData[0].displayName || "My Account"}
           </DropdownMenuLabel>
           <DropdownMenuLabel>
-            <p className="text-xs text-gray-400">
+            {user?.providerData[0]?.email || user?.email && <p className="text-xs text-gray-400 mb-5">
               {user?.providerData[0]?.email || user?.email}
-            </p>
+            </p>}
             {LinkArray.map((link) => (
-          <NavLink
-            key={link.hrefLink}
-            href={link.hrefLink}
-            className="flex  items-center justify-start py-3 gap-3 px-4 rounded-lg text-muted-foreground transition-colors hover:text-foreground   gap-y-1 [&.active]:bg-blue-100   [&.active]:text-black"
-            prefetch={true}
-          >
-            {link.iconForSidebarMenu()}
-            {/* <Image src={link.iconForSidebarMenu} alt="ai" className="h-5 w-5" width={20} height={20} /> */}
-            <span className=" text-center text-xs font-medium">
-              {link.linkTitle}
-            </span>
-          </NavLink>
-        ))}
+              <NavLink
+                key={link.hrefLink}
+                href={link.hrefLink}
+                className="flex  items-center justify-start py-3 gap-3 px-4 rounded-lg text-muted-foreground transition-colors hover:text-foreground   gap-y-1 [&.active]:bg-blue-100   [&.active]:text-black"
+                prefetch={true}
+              >
+                {link.iconForSidebarMenu()}
+                {/* <Image src={link.iconForSidebarMenu} alt="ai" className="h-5 w-5" width={20} height={20} /> */}
+                <span className=" text-center text-xs font-medium">
+                  {link.linkTitle}
+                </span>
+              </NavLink>
+            ))}
           </DropdownMenuLabel>
 
           <DropdownMenuSeparator />
@@ -185,7 +185,7 @@ const Topbar = () => {
                 Login
               </Link>
               <Link
-                className="bg-slate-400 px-3 rounded py-2 flex justify-center items-center gap-1 text-white "
+                className="bg-rose-600 px-3 rounded py-2 flex justify-center items-center gap-1 text-white "
                 href="/register"
               >
                 <IoMdKey className="text-lg" />
