@@ -1,17 +1,18 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { CustomLoadingSpinner, HomePageLoading } from "@/utils/Loading Spinner/Loading Skeleton/Skeleton";
+import { CustomLoadingSpinner } from "@/utils/Loading Spinner/Loading Skeleton/Skeleton";
 import { withAuthRedirect } from "@/utils/Route Protection/RouteProtection";
 import auth from "@/utils/firebase.init";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { toast } from "react-hot-toast";
-import SocialLogin from "../Social Login/SocialLogin";
-import { MdEmail } from "react-icons/md";                  
 import { FaUnlock } from "react-icons/fa";
+import { MdEmail } from "react-icons/md";
+import SocialLogin from "../Social Login/SocialLogin";
+import loginPagePic from '@/assets/img/login page pics.png'
+import Image from "next/image";
 
 
 function Login() {
@@ -86,7 +87,7 @@ function Login() {
             <p className="text-sm text-slate-600"> Email: rasel@gmail.com</p>
             <p className="text-sm text-slate-600">Password: aaaaaa</p>
             <Button
-              className={`mt-3 bg-gray-500 text-white font-semibold py-3 rounded-md hover:bg-gray-600 duration-100 ${loading && "opacity-50 pointer-events-none"
+              className={`mt-3 bg-gray-400 text-white font-semibold py-3 rounded-md hover:bg-gray-600 duration-100 ${loading && "opacity-50 pointer-events-none"
                 }`}
               disabled={loading}
               onClick={handleAutofillCredentials}
@@ -156,9 +157,22 @@ function Login() {
           <SocialLogin isLoading={isLoading} />
         </div>
 
-        {/* Right side - Empty container for illustration */}
-        <div className="hidden md:block w-1/2 bg-[#E5F6F6] relative">
-          <div className="absolute right-0 top-0 bottom-0 w-3/4 bg-[#00A9A5] rounded-l-full opacity-20" />
+        {/* Right side - Illustration container with circles */}
+        <div className="hidden md:block w-1/2 bg-[#E5F6F6] relative overflow-hidden">
+          {/* Largest circle */}
+          <div className="absolute right-0 top-0 bottom-0 w-[90%] bg-[#00A9A5] rounded-l-full opacity-10" />
+          {/* Medium circle */}
+          <div className="absolute right-0 top-0 bottom-0 w-[80%] bg-[#00A9A5] rounded-l-full opacity-20" />
+          {/* Smallest circle */}
+          <div className="absolute right-0 top-0 bottom-0 w-[60%] bg-[#00A9A5] rounded-l-full opacity-30" />
+          {/* Robot AI Image */}
+          <div className="absolute inset-0 flex items-center justify-center z-10">
+            {/* <Image
+              src={loginPagePic} 
+              alt="Login Page Pic" 
+              className="w-2/3 h-auto object-contain"
+            /> */}
+          </div>
         </div>
       </div>
     </div>
