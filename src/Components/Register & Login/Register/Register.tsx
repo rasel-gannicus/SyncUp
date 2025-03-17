@@ -3,7 +3,7 @@ import { useAddUserToDbMutation } from "@/Redux/features/user/userApi";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { HomePageLoading } from "@/utils/Loading Spinner/Loading Skeleton/Skeleton";
+import { CustomLoadingSpinner, HomePageLoading } from "@/utils/Loading Spinner/Loading Skeleton/Skeleton";
 import auth from "@/utils/firebase.init";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -13,7 +13,7 @@ import SocialLogin from "../Social Login/SocialLogin";
 
 function Register() {
   const [isLoading, setIsLoading] = useState(false);
-  const [password, setPassword] = useState(""); 
+  const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
   const [email, setEmail] = useState("");
 
@@ -192,12 +192,11 @@ function Register() {
             </div>
             <Button
               type="submit"
-              className={`w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold py-3 rounded-md hover:from-purple-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-all duration-300 ${
-                loading && "opacity-50 pointer-events-none"
-              }`}
+              className={`w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold py-3 rounded-md hover:from-purple-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-all duration-300 ${loading && "opacity-50 pointer-events-none"
+                }`}
               disabled={loading}
             >
-              {loading ? <HomePageLoading /> : "Register"}
+              {loading ? <div className="flex justify-center items-center gap-3"><span>Loading </span><CustomLoadingSpinner /></div> : "Register"}
             </Button>
           </form>
 

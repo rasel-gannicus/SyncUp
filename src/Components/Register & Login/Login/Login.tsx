@@ -17,8 +17,8 @@ function Login() {
   const [email, setEmail] = useState("");
 
   const handleAutofillCredentials = () => {
-    setEmail('rasel@gmail.com') ; 
-    setPassword('aaaaaa') ;
+    setEmail('rasel@gmail.com');
+    setPassword('aaaaaa');
   };
 
   // Firebase hook for creating a user with email and password
@@ -67,7 +67,7 @@ function Login() {
   }, [loading, error, user]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100 dark:from-gray-900 flex items-center justify-center p-4">
+    <div className="min-h-screen h-full w-full bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100 dark:from-gray-900 flex items-center justify-center p-4">
       <div className="bg-white/80 dark:bg-gray-700  backdrop-blur-md rounded-xl shadow-xl overflow-hidden max-w-md w-full">
         <div className="p-8">
           <div className="text-center mb-8">
@@ -78,7 +78,7 @@ function Login() {
               Keep your progress in one place!
             </p>
             <div className="text-gray-400">
-              <p> --- You may try this credentials for testing: --- </p>
+              <p> --- You may try this credential for testing: --- </p>
               <p className="text-sm text-slate-600"> Email: rasel@gmail.com</p>
               <p className="text-sm text-slate-600">Password: aaaaaa</p>
               <Button
@@ -87,8 +87,8 @@ function Login() {
                 disabled={loading}
                 onClick={handleAutofillCredentials}
               >
-                {loading ? <CustomLoadingSpinner /> : "Auto fill this credential"}               
-                
+                {loading ? <CustomLoadingSpinner /> : "Auto fill this credential"}
+
               </Button>
             </div>
           </div>
