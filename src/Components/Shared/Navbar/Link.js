@@ -1,13 +1,12 @@
+import aiImg from "@/assets/Logo/artificial-intelligence.png";
 import {
-    AlarmClockCheck,
-    Home,
-    LucideListTodo,
-    Notebook,
-    Settings,
-  } from "lucide-react";
-  import { FaSackDollar } from 'react-icons/fa6'; // Make sure to install react-icons if not already
-  import aiImg from "@/assets/Logo/artificial-intelligence.png";
-  import Image from "next/image";
+  AlarmClockCheck,
+  Home,
+  LucideListTodo,
+  Notebook
+} from "lucide-react";
+import Image from "next/image";
+import { FaSackDollar } from 'react-icons/fa6'; 
   
   export const LinkArray = [
     {

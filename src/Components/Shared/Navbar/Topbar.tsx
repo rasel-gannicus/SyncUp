@@ -11,7 +11,7 @@ import {
   addUserToRedux,
 } from "@/Redux/features/user/userSlice";
 import { useAppDispatch } from "@/Redux/hooks";
-import profileImg from "@/assets/img/profile-svgrepo-com.svg";
+import profileImg from "@/assets/img/profile icon (1).png";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -136,7 +136,8 @@ const Topbar = () => {
           <Button
             variant="outline"
             size="icon"
-            className="overflow-hidden rounded-full w-10 h-10 dark:bg-gray-300"
+            className="overflow-hidden rounded-full w-10 h-10 shadow-lg dark:bg-gray-300 "
+            draggable
           >
             <Image
               src={user?.providerData[0].photoURL || profileImg}
@@ -155,6 +156,20 @@ const Topbar = () => {
             <p className="text-xs text-gray-400">
               {user?.providerData[0]?.email || user?.email}
             </p>
+            {LinkArray.map((link) => (
+          <NavLink
+            key={link.hrefLink}
+            href={link.hrefLink}
+            className="flex  items-center justify-start py-3 gap-3 px-4 rounded-lg text-muted-foreground transition-colors hover:text-foreground   gap-y-1 [&.active]:bg-blue-100   [&.active]:text-black"
+            prefetch={true}
+          >
+            {link.iconForSidebarMenu()}
+            {/* <Image src={link.iconForSidebarMenu} alt="ai" className="h-5 w-5" width={20} height={20} /> */}
+            <span className=" text-center text-xs font-medium">
+              {link.linkTitle}
+            </span>
+          </NavLink>
+        ))}
           </DropdownMenuLabel>
 
           <DropdownMenuSeparator />
