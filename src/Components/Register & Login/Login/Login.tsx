@@ -10,6 +10,9 @@ import { useEffect, useState } from "react";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { toast } from "react-hot-toast";
 import SocialLogin from "../Social Login/SocialLogin";
+import { MdEmail } from "react-icons/md";                  
+import { FaUnlock } from "react-icons/fa";
+
 
 function Login() {
   const [isLoading, setIsLoading] = useState(false);
@@ -67,96 +70,95 @@ function Login() {
   }, [loading, error, user]);
 
   return (
-    <div className="min-h-screen h-full w-full bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100 dark:from-gray-900 flex items-center justify-center p-4">
-      <div className="bg-white/80 dark:bg-gray-700  backdrop-blur-md rounded-xl shadow-xl overflow-hidden max-w-md w-full">
-        <div className="p-8">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-300">
-              Login
-            </h1>
-            <p className="text-gray-600 dark:text-gray-300 mt-2 text-xl">
-              Keep your progress in one place!
-            </p>
-            <div className="text-gray-400">
-              <p> --- You may try this credential for testing: --- </p>
-              <p className="text-sm text-slate-600"> Email: rasel@gmail.com</p>
-              <p className="text-sm text-slate-600">Password: aaaaaa</p>
-              <Button
-                className={` mt-3 bg-gray-500 text-white font-semibold py-3 rounded-md hover:bg-gray-600   duration-100 ${loading && "opacity-50 pointer-events-none"
-                  }`}
-                disabled={loading}
-                onClick={handleAutofillCredentials}
-              >
-                {loading ? <CustomLoadingSpinner /> : "Auto fill this credential"}
+    <div className="min-h-screen h-full w-full bg-white flex items-center justify-center p-4">
+      <div className="bg-white rounded-xl overflow-hidden shadow-2xl max-w-4xl w-full flex">
+        {/* Left side - Login Form */}
+        <div className="w-full md:w-1/2 p-8">
+          {/* Login/Signup Tabs */}
+          <div className="flex gap-8 mb-8">
+            <button className="text-[#00A9A5] text-xl font-semibold border-b-2 border-[#00A9A5] pb-2">Login</button>
+            <Link href="/register" className="text-gray-400 text-xl">Sign up</Link>
+          </div>
 
-              </Button>
-            </div>
+          {/* Test Credentials */}
+          <div className="text-gray-400 mb-8 text-center">
+            <p> --- You may try this credential for testing: --- </p>
+            <p className="text-sm text-slate-600"> Email: rasel@gmail.com</p>
+            <p className="text-sm text-slate-600">Password: aaaaaa</p>
+            <Button
+              className={`mt-3 bg-gray-500 text-white font-semibold py-3 rounded-md hover:bg-gray-600 duration-100 ${loading && "opacity-50 pointer-events-none"
+                }`}
+              disabled={loading}
+              onClick={handleAutofillCredentials}
+            >
+              {loading ? <CustomLoadingSpinner /> : "Auto fill this credential"}
+            </Button>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-2">
-              <Label
-                htmlFor="email"
-                className="text-sm font-medium text-gray-700 dark:text-gray-300"
-              >
-                Email
-              </Label>
-              <Input
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="m@example.com"
-                type="email"
-                autoCapitalize="none"
-                autoComplete="email"
-                autoCorrect="off"
-                disabled={isLoading}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label
-                htmlFor="password"
-                className="text-sm font-medium text-gray-700 dark:text-gray-300"
-              >
-                Password
-              </Label>
-              <Input
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                type="password"
-                autoCapitalize="none"
-                autoComplete="new-password"
-                disabled={isLoading}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              />
+            <div className="space-y-4">
+              <div className="relative">
+                <Input
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Email or phone number"
+                  type="email"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg pl-10"
+                  disabled={isLoading}
+                  required
+                />
+                <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
+                  {/* Email icon placeholder */}
+                  <MdEmail className="w-5 h-5 text-gray-400" />
+                </div>
+              </div>
+
+              <div className="relative">
+                <Input
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Password"
+                  type="password"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg pl-10"
+                  disabled={isLoading}
+                  required
+                />
+                <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
+                  {/* Password icon placeholder */}
+                  <FaUnlock className="w-5 h-5 text-gray-400" />
+                </div>
+              </div>
             </div>
 
-            <Button
-              type="submit"
-              className={`w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold py-3 rounded-md hover:from-purple-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-all duration-300 ${loading && "opacity-50 pointer-events-none"
-                }`}
-              disabled={loading}
-            >
-              {loading ? <div className="flex justify-center items-center gap-3"><span>Loading </span><CustomLoadingSpinner /></div> : "Login"}
-            </Button>
+            <div className="flex justify-between items-center">
+              <Link href="/forgot-password" className="text-[#00A9A5]">
+                Forgot your password?
+              </Link>
+              <Button
+                type="submit"
+                className="px-8 py-2 bg-[#00A9A5] text-white rounded-lg hover:bg-[#008B87] transition-colors"
+                disabled={loading}
+              >
+                {loading ? (
+                  <div className="flex items-center gap-2">
+                    <span>Loading</span>
+                    <CustomLoadingSpinner />
+                  </div>
+                ) : (
+                  "Login"
+                )}
+              </Button>
+            </div>
           </form>
 
           <SocialLogin isLoading={isLoading} />
+        </div>
 
-          <p className="mt-6 text-center text-sm dark:text-gray-300 text-gray-600">
-            {`Don't have an account ? `}
-            <Link
-              href="/register"
-              className="font-medium text-indigo-600 hover:text-indigo-500"
-            >
-              Register
-            </Link>
-          </p>
+        {/* Right side - Empty container for illustration */}
+        <div className="hidden md:block w-1/2 bg-[#E5F6F6] relative">
+          <div className="absolute right-0 top-0 bottom-0 w-3/4 bg-[#00A9A5] rounded-l-full opacity-20" />
         </div>
       </div>
     </div>

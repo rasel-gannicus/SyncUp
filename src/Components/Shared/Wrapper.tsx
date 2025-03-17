@@ -1,4 +1,4 @@
-"use client" ;
+"use client";
 import { setTheme } from "@/Redux/features/Darkmode/themeSlice";
 import Sidebar from "./Navbar/Sidebar";
 import Topbar from "./Navbar/Topbar";
@@ -19,14 +19,16 @@ export function Wrapper({ children }: Readonly<{ children: React.ReactNode }>) {
       dispatch(setTheme(savedTheme)); // Apply saved theme
     }
   }, [dispatch]);
-  useSystemTheme() ;
+  useSystemTheme();
 
   return (
     <div className="flex min-h-screen dark:bg-gray-900 w-full flex-col bg-muted/40">
       <Sidebar />
       <div className="flex flex-col sm:gap-4 sm:pt-4 sm:pl-14">
         <Topbar />
-        <main className="grid  bg-gray-100 dark:bg-gray-900 min-h-screen z-0">{children}</main>
+        <main className="grid  bg-gray-100 dark:bg-gray-900 min-h-screen z-0">
+          {children}
+        </main>
       </div>
     </div>
   );
