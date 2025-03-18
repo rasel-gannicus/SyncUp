@@ -21,6 +21,8 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [activeTab, setActiveTab] = useState('login');
+
 
   const handleAutofillCredentials = () => {
     setEmail('rasel@gmail.com');
@@ -72,22 +74,26 @@ function Login() {
     return () => toast.dismiss(toastId);
   }, [loading, error, user]);
 
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+  };
+
   return (
-    <div className="min-h-screen h-full w-full bg-white flex items-center justify-center p-4">
-      <div className="bg-white rounded-xl overflow-hidden shadow-2xl max-w-4xl w-full flex">
+    <div className="min-h-screen h-full w-full bg-white dark:bg-slate-800 flex items-center justify-center p-4">
+      <div className="bg-white dark:bg-slate-600 rounded-xl overflow-hidden shadow-2xl max-w-4xl w-full flex">
         {/* Left side - Login Form */}
-        <div className="w-full md:w-1/2 p-8 max-h-[95vh] overflow-y-auto ">
-          <Tabs defaultValue="login" className="w-full">
+        <div className="w-full md:w-1/2 p-8 max-h-[93vh] overflow-y-auto ">
+          <Tabs defaultValue="login" className="w-full" onValueChange={handleTabChange}>
             <TabsList className="grid w-full grid-cols-2 mb-8 pb-11">
-              <TabsTrigger 
+              <TabsTrigger
                 value="login"
                 className="text-xl  data-[state=active]:text-[#00A9A5]  data-[state=active]:border-[#00A9A5]"
               >
                 Login
               </TabsTrigger>
-              <TabsTrigger 
+              <TabsTrigger
                 value="register"
-                className="text-xl data-[state=active]:text-[#00A9A5] "
+                className="text-xl data-[state=active]:text-purple-800 "
               >
                 Sign up
               </TabsTrigger>
@@ -97,10 +103,10 @@ function Login() {
               {/* Test Credentials */}
               <div className="text-gray-400 mb-8 text-center">
                 <p> --- You may try this credential for testing: --- </p>
-                <p className="text-sm text-slate-600"> Email: rasel@gmail.com</p>
-                <p className="text-sm text-slate-600">Password: aaaaaa</p>
+                <p className="text-sm text-slate-600 dark:text-gray-300"> Email: rasel@gmail.com</p>
+                <p className="text-sm text-slate-600 dark:text-gray-300">Password: aaaaaa</p>
                 <Button
-                  className={`mt-3 bg-gray-400 text-white font-semibold py-3 rounded-md hover:bg-gray-600 duration-100 ${loading && "opacity-50 pointer-events-none"
+                  className={`mt-3 bg-gray-400 dark:bg-slate-500 text-white font-semibold py-3 rounded-md hover:bg-gray-600 duration-100 ${loading && "opacity-50 pointer-events-none"
                     }`}
                   disabled={loading}
                   onClick={handleAutofillCredentials}
@@ -177,18 +183,22 @@ function Login() {
         </div>
 
         {/* Right side - Illustration container with circles */}
-        <div className="hidden md:block w-1/2 bg-[#E5F6F6] relative overflow-hidden">
+        <div className={`hidden md:block w-1/2 ${activeTab === 'register' ? 'bg-purple-50' : 'bg-[#E5F6F6]'
+            } dark:bg-gray-900 relative overflow-hidden`}>
           {/* Largest circle */}
-          <div className="absolute right-0 top-0 bottom-0 w-[90%] bg-[#00A9A5] rounded-l-full opacity-10" />
+          <div className={`absolute right-0 top-0 bottom-0 w-[90%] rounded-l-full opacity-10 ${activeTab === 'register' ? 'bg-purple-500' : 'bg-[#00A9A5]'
+            }`} />
           {/* Medium circle */}
-          <div className="absolute right-0 top-0 bottom-0 w-[80%] bg-[#00A9A5] rounded-l-full opacity-20" />
+          <div className={`absolute right-0 top-0 bottom-0 w-[80%] rounded-l-full opacity-20 ${activeTab === 'register' ? 'bg-purple-700' : 'bg-[#00A9A5]'
+            }`} />
           {/* Smallest circle */}
-          <div className="absolute right-0 top-0 bottom-0 w-[60%] bg-[#00A9A5] rounded-l-full opacity-30" />
+          <div className={`absolute right-0 top-0 bottom-0 w-[60%] rounded-l-full opacity-30 ${activeTab === 'register' ? 'bg-purple-800' : 'bg-[#00A9A5]'
+            }`} />
           {/* Robot AI Image */}
           <div className="absolute inset-0 flex items-center justify-center z-10">
             {/* <Image
-              src={loginPagePic} 
-              alt="Login Page Pic" 
+              src={loginPagePic}
+              alt="Login Page Pic"
               className="w-2/3 h-auto object-contain"
             /> */}
           </div>

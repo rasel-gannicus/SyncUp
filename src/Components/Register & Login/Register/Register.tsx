@@ -95,7 +95,7 @@ function Register() {
   }, [loading, error, user]);
 
   return (
-    <div className="bg-white/80 dark:bg-gray-700  rounded-xl overflow-hidden max-w-md w-full">
+    <div className="bg-white/80 dark:bg-slate-600  rounded-xl overflow-hidden max-w-md w-full">
         <div className="mt-4">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-300">
