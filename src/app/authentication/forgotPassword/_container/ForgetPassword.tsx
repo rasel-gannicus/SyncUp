@@ -29,7 +29,7 @@ export default function ForgotPassword() {
       const success = await sendPasswordResetEmail(email);
       if(success){
         toast.success('Reset password instructions sent to your email.');
-        router.push('/login');
+        router.push('forgotPassword/successMessage');
       }
       
     } catch (error) {
@@ -82,7 +82,7 @@ export default function ForgotPassword() {
 
           <Button
             type="submit"
-            className="w-full"
+            className="w-full bg-purple-900"
             disabled={sending}
           >
             {sending ? 'Sending...' : 'Reset Password'}
