@@ -3,7 +3,7 @@ import { useAddUserToDbMutation } from "@/Redux/features/user/userApi";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { CustomLoadingSpinner, HomePageLoading } from "@/utils/Loading Spinner/Loading Skeleton/Skeleton";
+import { CustomLoadingSpinner } from "@/utils/Loading Spinner/Loading Skeleton/Skeleton";
 import auth from "@/utils/firebase.init";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -65,7 +65,6 @@ function Register() {
         });
       }
     } catch (err) {
-      console.error(err);
       toast.error("Error creating account", { position: "bottom-right" });
     } finally {
       setIsLoading(false);
@@ -96,9 +95,8 @@ function Register() {
   }, [loading, error, user]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100 dark:from-gray-900 flex items-center justify-center p-4">
-      <div className="bg-white/80 dark:bg-gray-700 backdrop-blur-md rounded-xl shadow-xl overflow-hidden max-w-md w-full">
-        <div className="p-8">
+    <div className="bg-white/80 dark:bg-gray-700  rounded-xl overflow-hidden max-w-md w-full">
+        <div className="mt-4">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-300">
               Create an account
@@ -213,7 +211,6 @@ function Register() {
           </p>
         </div>
       </div>
-    </div>
   );
 }
 
