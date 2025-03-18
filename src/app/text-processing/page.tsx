@@ -3,7 +3,7 @@ import TextProcessor from "../../components/Text Processor/TextProcessor";
 
 const page = () => {
     return (
-        <div>
+        <div className="md:mx-5">
             <TextProcessor />
         </div>
     );

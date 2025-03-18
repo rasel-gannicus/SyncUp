@@ -153,7 +153,7 @@ function Login() {
                 </div>
 
                 <div className="flex justify-between items-center">
-                  <Link href="/forgot-password" className="text-[#00A9A5]">
+                  <Link href="/authentication/forgotPassword" className="text-[#00A9A5]">
                     Forgot your password?
                   </Link>
                   <Button

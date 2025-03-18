@@ -13,7 +13,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useAddTodolist } from "./hooks/useAddTodolist";
 
-const TodoList = ({ user }: { user: any }) => {
+export const TodoList = ({ user }: { user: any }) => {
   const [inputValue, setInputValue] = useState("");
   const [filter, setFilter] = useState("all");
   const [editingId, setEditingId] = useState(null);
@@ -320,4 +320,3 @@ const TodoList = ({ user }: { user: any }) => {
   );
 };
 
-export default TodoList;
