@@ -1,5 +1,5 @@
 "use client"
-import TextProcessor from "@/components/Text Processor/TextProcessor";
+import TextProcessor from "../../components/Text Processor/TextProcessor";
 
 const page = () => {
     return (
