@@ -66,7 +66,7 @@ const TextProcessor = () => {
     try {
       const prompt = getPromptForAction(action);
       
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-exp-0827:generateContent?key=${process.env.NEXT_PUBLIC_GEMINI_API_KEY}`, {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-thinking-exp-01-21:generateContent?key=${process.env.NEXT_PUBLIC_GEMINI_API_KEY}`, {
         method: 'POST',
         // headers: {
         //   'Content-Type': 'application/json',
