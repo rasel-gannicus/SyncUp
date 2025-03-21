@@ -179,14 +179,14 @@ const Topbar = () => {
             <DropdownMenuItem>
               <Link
                 className="bg-teal-500 px-3 rounded py-2 flex justify-center items-center gap-1 text-white me-2 "
-                href="/login"
+                href="/authentication/login"
               >
                 <IoMdLogIn />
                 Login
               </Link>
               <Link
                 className="bg-rose-600 px-3 rounded py-2 flex justify-center items-center gap-1 text-white "
-                href="/register"
+                href="/authentication/register"
               >
                 <IoMdKey className="text-lg" />
                 Register
