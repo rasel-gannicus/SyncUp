@@ -1,85 +1,106 @@
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { addPromptText, setIsProcessing } from '@/Redux/features/PromptForAi/PromptAiSlice';
-import { useAppDispatch, useAppSelector } from '@/Redux/hooks';
-import { BookOpen, CheckCheck, Copy, Loader2, PenLine, RefreshCw, Search } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { BookOpen, CheckCheck, Copy, PenLine, RefreshCw, Search } from 'lucide-react';
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import Image from 'next/image';
+import bulbAi from '@/assets/img/bulb.png';
+import geminiPng from '@/assets/img/google-gemini-icon.png';
+import deepseekPng from '@/assets/img/deepseek-logo-icon.png';
+import { useState } from 'react';
 
-import { useGeminiAi } from '../AI_Api_calling/useGeminiAi';
-
-export default function SummerizeCard() {
-    const [inputText, setInputText] = useState('');
-    const [error, setError] = useState('');
-    const [textStats, setTextStats] = useState({ characters: 0, words: 0, sentences: 0, paragraphs: 0 });
-    const [copied, setCopied] = useState(false);
-    const { processWithGemini } = useGeminiAi();
-
-    const dispatch = useAppDispatch();
-    const promptState = useAppSelector((state) => state.promptTextAi);
-    const isProcessing = promptState.isProcessing;
-    const outputText = promptState.outputText;
-
-    useEffect(() => {
-        updateTextStats(inputText);
-    }, [inputText]);
-
-    const updateTextStats = (text: string) => {
-        const characters = text.length;
-        const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
-        const sentences = text.trim() === '' ? 0 : text.split(/[.!?]+/).filter(Boolean).length;
-        const paragraphs = text.trim() === '' ? 0 : text.split(/\n\s*\n/).filter(Boolean).length;
-        setTextStats({ characters, words, sentences, paragraphs });
+interface SummerizeCardProps {
+    inputText: string;
+    setInputText: (text: string) => void;
+    textStats: {
+        characters: number;
+        words: number;
+        sentences: number;
+        paragraphs: number;
     };
+    error: string;
+    outputText: string;
+    copied: boolean;
+    setCopied: (copied: boolean) => void;
+    copyToClipboard: (text: string) => void;
+    ButtonWithIcon: React.FC<{
+        action: string;
+        icon: React.ElementType;
+        label: string;
+    }>;
+}
 
-    const copyToClipboard = async (text: string) => {
-        try {
-            await navigator.clipboard.writeText(text);
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
-        } catch (err) {
-            setError('Failed to copy text');
-        }
-    };
+export default function SummerizeCard({
+    inputText,
+    setInputText,
+    textStats,
+    error,
+    outputText,
+    copied,
+    setCopied,
+    copyToClipboard,
+    ButtonWithIcon
+}: SummerizeCardProps) {
+    // Add state for selected AI model
+    const [selectedModel, setSelectedModel] = useState<string>("");
 
-    // Add this useEffect to monitor promptState changes
-    useEffect(() => {
-        if (promptState.finalPromptText) {
-            handleApiCall(promptState.finalPromptText);
-        }
-    }, [promptState.finalPromptText]);
-
-
-
-    const processText = async (action: string) => {
-        dispatch(setIsProcessing(true));
-        setError('');
-        dispatch(addPromptText({ inputText, actionType: action }));
-    };
-
-    // Separate API call logic
-    const handleApiCall = async (prompt: string) => {
-        try {
-            await processWithGemini();
-        } catch (err: any) {
-            setError(err.message || 'Failed to process text');
-        }
-    };
-
-    const ButtonWithIcon = ({ action, icon: Icon, label }: { action: string, icon: any, label: string }) => (
-        <Button
-            onClick={() => processText(action)}
-            disabled={!inputText || isProcessing}
-            className="flex items-center gap-2 bg-teal-600 dark:bg-teal-500 dark:text-black"
-        >
-            {isProcessing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Icon className="h-4 w-4" />}
-            {label}
-        </Button>
-    );
     return (
-        <Card className="bg-white dark:bg-gray-700 shadow-lg">
-            <CardHeader>
-                <CardTitle className="text-2xl font-bold text-gray-800 dark:text-gray-200">Summerize Your Paragraphs</CardTitle>
+        <Card className="bg-white dark:bg-gray-700 shadow-lg mt-5">
+            <CardHeader className=''>
+                <div className="flex justify-between items-center">
+                    <CardTitle className="text-2xl font-bold text-gray-800 dark:text-gray-200 tracking-tight">Transform Your Text with AI-Powered Summarization</CardTitle>
+                    <div>
+                        <Select value={selectedModel} onValueChange={setSelectedModel}>
+                            <SelectTrigger className="flex justify-start items-center gap-3 shadow-sm">
+                                {!selectedModel && <Image
+                                    src={bulbAi}
+                                    width={30}
+                                    height={30}
+                                    alt="bulbAi"
+                                />}
+                                <SelectValue placeholder="Select Ai Model" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                    <SelectItem value="gemini" >
+                                        <div className='flex justify-start items-center gap-3'>
+                                            <Image
+                                                src={geminiPng}
+                                                width={30}
+                                                height={30}
+                                                alt="geminiPng"
+
+                                            />
+                                            <span>Gemini</span>
+                                        </div>
+                                    </SelectItem>
+                                    <SelectItem value="deepseek" >
+                                        <div className='flex justify-start items-center gap-3'>
+                                            <Image
+                                                src={deepseekPng}
+                                                width={30}
+                                                height={30}
+                                                alt="deepseekPng"
+
+                                            />
+                                            <span>Deepseek</span>
+                                        </div>
+                                    </SelectItem>
+
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                </div>
+
             </CardHeader>
             <CardContent className="space-y-6">
                 {/* Input Section with Stats */}
@@ -114,9 +135,9 @@ export default function SummerizeCard() {
                 <div className="space-y-2">
                     <div className="flex flex-wrap gap-2">
                         <ButtonWithIcon action="summarize" icon={BookOpen} label="Summarize" />
-                        <ButtonWithIcon action="rephrase" icon={RefreshCw} label="Rephrase" />
+                        {/* <ButtonWithIcon action="rephrase" icon={RefreshCw} label="Rephrase" />
                         <ButtonWithIcon action="analyze" icon={Search} label="Analyze" />
-                        <ButtonWithIcon action="grammar" icon={PenLine} label="Check Grammar" />
+                        <ButtonWithIcon action="grammar" icon={PenLine} label="Check Grammar" /> */}
                     </div>
                     <div className="flex flex-wrap gap-2">
                         {/* <ButtonWithIcon action="keywords" icon={MessageSquareQuote} label="Extract Keywords" />

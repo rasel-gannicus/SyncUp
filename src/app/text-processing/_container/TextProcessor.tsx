@@ -96,7 +96,17 @@ const TextProcessor = () => {
           <TabsTrigger value="grammer">Check Grammer</TabsTrigger>
         </TabsList>
         <TabsContent value="summerize">
-          <SummerizeCard />
+          <SummerizeCard
+            inputText={inputText}
+            setInputText={setInputText}
+            textStats={textStats}
+            error={error}
+            outputText={outputText}
+            copied={copied}
+            setCopied={setCopied}
+            copyToClipboard={copyToClipboard}
+            ButtonWithIcon={ButtonWithIcon}
+          />
         </TabsContent>
         <TabsContent value="password">
           <Card>
