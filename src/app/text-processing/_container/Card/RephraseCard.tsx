@@ -18,29 +18,9 @@ import deepseekPng from '@/assets/img/deepseek-logo-icon.png';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/Redux/hooks';
 import { selectAiModel } from '@/Redux/features/PromptForAi/PromptAiSlice';
+import { SummerizeCardProps } from './SummerizeCard';
 
-export interface SummerizeCardProps {
-    inputText: string;
-    setInputText: (text: string) => void;
-    textStats: {
-        characters: number;
-        words: number;
-        sentences: number;
-        paragraphs: number;
-    };
-    error: string;
-    outputText: string;
-    copied: boolean;
-    setCopied: (copied: boolean) => void;
-    copyToClipboard: (text: string) => void;
-    ButtonWithIcon: React.FC<{
-        action: string;
-        icon: React.ElementType;
-        label: string;
-    }>;
-}
-
-export default function SummerizeCard({
+export default function RephraseCard({
     inputText,
     setInputText,
     textStats,
@@ -51,8 +31,6 @@ export default function SummerizeCard({
     copyToClipboard,
     ButtonWithIcon
 }: SummerizeCardProps) {
-    // Add state for selected AI model
-    // const [selectedModel, setSelectedModel] = useState<string>("");
     const selectedAiModel = useAppSelector((state) => state.promptTextAi.aiModel);
     const dispatch = useAppDispatch() ;
 
@@ -60,7 +38,7 @@ export default function SummerizeCard({
         <Card className="bg-white dark:bg-gray-700 shadow-lg mt-5">
             <CardHeader className=''>
                 <div className="flex justify-between items-center">
-                    <CardTitle className="text-2xl font-bold text-gray-800 dark:text-gray-200 tracking-tight">Transform Your Text with AI-Powered Summarization</CardTitle>
+                    <CardTitle className="text-2xl font-bold text-gray-800 dark:text-gray-200 tracking-tight">Elevate Your Writtings with Advanced AI Text Enhancement</CardTitle>
                     <div>
                         <Select value={selectedAiModel} onValueChange={(value)=>dispatch(selectAiModel(value))}>
                             <SelectTrigger className="flex justify-start items-center gap-3 shadow-sm">
@@ -138,10 +116,7 @@ export default function SummerizeCard({
                 {/* Action Buttons */}
                 <div className="space-y-2">
                     <div className="flex flex-wrap gap-2">
-                        <ButtonWithIcon action="summarize" icon={BookOpen} label="Summarize" />
-                        {/* <ButtonWithIcon action="rephrase" icon={RefreshCw} label="Rephrase" />
-                        <ButtonWithIcon action="analyze" icon={Search} label="Analyze" />
-                        <ButtonWithIcon action="grammar" icon={PenLine} label="Check Grammar" /> */}
+                        <ButtonWithIcon action="rephrase" icon={RefreshCw} label="Rephrase" />
                     </div>
                     <div className="flex flex-wrap gap-2">
                         {/* <ButtonWithIcon action="keywords" icon={MessageSquareQuote} label="Extract Keywords" />

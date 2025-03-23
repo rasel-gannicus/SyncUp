@@ -1,16 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { set } from "date-fns";
 
 export interface TPromptAction {
   finalPromptText: string ;
   outputText : string ;
   isProcessing : boolean ; 
+  aiModel : string ;
 }
 
 const initialState: TPromptAction = {
   finalPromptText: '',
   outputText : '',
-  isProcessing : false
+  isProcessing : false,
+  aiModel : '',
 };
 
 const promptAiSlice = createSlice({
@@ -57,9 +58,12 @@ const promptAiSlice = createSlice({
     setIsProcessing(state, action) {
       state.isProcessing = action.payload;
     },
+    selectAiModel(state, action) {
+      state.aiModel = action.payload;
+    },
   },
 });
 
 export default promptAiSlice.reducer;
 
-export const { addPromptText, setOutputText, setIsProcessing } = promptAiSlice.actions;
+export const { addPromptText, setOutputText, setIsProcessing, selectAiModel } = promptAiSlice.actions;

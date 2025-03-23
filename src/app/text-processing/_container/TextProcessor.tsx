@@ -16,6 +16,9 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs"
 import SummerizeCard from './Card/SummerizeCard';
+import RephraseCard from './Card/RephraseCard';
+import AnalyzeCard from './Card/AnalyzeCard';
+import CheckGrammerCard from './Card/CheckGrammerCard';
 
 const TextProcessor = () => {
   const [inputText, setInputText] = useState('');
@@ -58,7 +61,7 @@ const TextProcessor = () => {
     }
   }, [promptState.finalPromptText]);
 
-
+  // console.log(promptState);
 
   const processText = async (action: string) => {
     dispatch(setIsProcessing(true));
@@ -89,7 +92,7 @@ const TextProcessor = () => {
   return (
     <div className="max-w-5xl mx-auto p-4 space-y-4">
       <Tabs defaultValue="summerize" className="">
-        <TabsList className="grid w-full grid-cols-4 bg-gray-300">
+        <TabsList className="grid w-full grid-cols-1 md:grid-cols-4 bg-gray-300">
           <TabsTrigger value="summerize">Summerize</TabsTrigger>
           <TabsTrigger value="rephrase">Rephrase</TabsTrigger>
           <TabsTrigger value="analyze">Analyze</TabsTrigger>
@@ -97,6 +100,45 @@ const TextProcessor = () => {
         </TabsList>
         <TabsContent value="summerize">
           <SummerizeCard
+            inputText={inputText}
+            setInputText={setInputText}
+            textStats={textStats}
+            error={error}
+            outputText={outputText}
+            copied={copied}
+            setCopied={setCopied}
+            copyToClipboard={copyToClipboard}
+            ButtonWithIcon={ButtonWithIcon}
+          />
+        </TabsContent>
+        <TabsContent value="rephrase">
+          <RephraseCard
+            inputText={inputText}
+            setInputText={setInputText}
+            textStats={textStats}
+            error={error}
+            outputText={outputText}
+            copied={copied}
+            setCopied={setCopied}
+            copyToClipboard={copyToClipboard}
+            ButtonWithIcon={ButtonWithIcon}
+          />
+        </TabsContent>
+        <TabsContent value="analyze">
+          <AnalyzeCard
+            inputText={inputText}
+            setInputText={setInputText}
+            textStats={textStats}
+            error={error}
+            outputText={outputText}
+            copied={copied}
+            setCopied={setCopied}
+            copyToClipboard={copyToClipboard}
+            ButtonWithIcon={ButtonWithIcon}
+          />
+        </TabsContent>
+        <TabsContent value="grammer">
+          <CheckGrammerCard
             inputText={inputText}
             setInputText={setInputText}
             textStats={textStats}
