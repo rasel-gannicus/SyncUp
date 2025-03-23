@@ -180,7 +180,9 @@ export default function SummerizeCard({
                             </Button>
                         </div>
                         <div className="p-4 bg-gray-50 dark:bg-gray-500 dark:text-black rounded-lg whitespace-pre-wrap">
-                            {outputText}
+                            <div className="prose prose-sm dark:prose-invert max-w-none">
+                                <div dangerouslySetInnerHTML={{ __html: outputText.replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} />
+                            </div>
                         </div>
                     </div>
                 )}
