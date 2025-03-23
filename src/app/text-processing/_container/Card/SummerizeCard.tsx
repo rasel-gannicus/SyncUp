@@ -139,9 +139,6 @@ export default function SummerizeCard({
                 <div className="space-y-2">
                     <div className="flex flex-wrap gap-2">
                         <ButtonWithIcon action="summarize" icon={BookOpen} label="Summarize" />
-                        {/* <ButtonWithIcon action="rephrase" icon={RefreshCw} label="Rephrase" />
-                        <ButtonWithIcon action="analyze" icon={Search} label="Analyze" />
-                        <ButtonWithIcon action="grammar" icon={PenLine} label="Check Grammar" /> */}
                     </div>
                     <div className="flex flex-wrap gap-2">
                         {/* <ButtonWithIcon action="keywords" icon={MessageSquareQuote} label="Extract Keywords" />
