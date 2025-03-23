@@ -10,6 +10,13 @@ import { useGeminiAi } from './AI_Api_calling/useGeminiAi';
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import {
   Tabs,
   TabsContent,
   TabsList,
@@ -89,15 +96,35 @@ const TextProcessor = () => {
     </Button>
   );
 
-  return (
-    <div className="max-w-5xl mx-auto p-4 space-y-4">
-      <Tabs defaultValue="summerize" className="">
-        <TabsList className="grid w-full grid-cols-1 md:grid-cols-4 bg-gray-300">
-          <TabsTrigger value="summerize">Summerize</TabsTrigger>
-          <TabsTrigger value="rephrase">Rephrase</TabsTrigger>
-          <TabsTrigger value="analyze">Analyze</TabsTrigger>
-          <TabsTrigger value="grammer">Check Grammer</TabsTrigger>
-        </TabsList>
+  const [activeTab, setActiveTab] = useState("summerize");
+
+    return (
+      <div className="max-w-5xl mx-auto p-4 space-y-4">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="">
+          {/* Select for mobile and small devices */}
+          <div className="md:hidden w-full mb-4">
+            <Select value={activeTab} onValueChange={setActiveTab}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select option" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="summerize">Summerize</SelectItem>
+                <SelectItem value="rephrase">Rephrase</SelectItem>
+                <SelectItem value="analyze">Analyze</SelectItem>
+                <SelectItem value="grammer">Check Grammer</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+  
+          {/* TabsList for medium and larger devices */}
+          <TabsList className="hidden md:grid w-full grid-cols-4 bg-gray-300">
+            <TabsTrigger value="summerize">Summerize</TabsTrigger>
+            <TabsTrigger value="rephrase">Rephrase</TabsTrigger>
+            <TabsTrigger value="analyze">Analyze</TabsTrigger>
+            <TabsTrigger value="grammer">Check Grammer</TabsTrigger>
+          </TabsList>
+  
+          {/* Rest of your TabsContent remains the same */}
         <TabsContent value="summerize">
           <SummerizeCard
             inputText={inputText}
