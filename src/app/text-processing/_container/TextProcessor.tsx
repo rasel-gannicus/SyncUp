@@ -1,31 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Loader2, Copy, CheckCheck, RefreshCw, Wand2, MessageSquareQuote, Search, BookOpen, PenLine } from 'lucide-react';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { useAppDispatch, useAppSelector } from '@/Redux/hooks';
 import { addPromptText, setIsProcessing } from '@/Redux/features/PromptForAi/PromptAiSlice';
+import { useAppDispatch, useAppSelector } from '@/Redux/hooks';
+import { Loader2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useGeminiAi } from './AI_Api_calling/useGeminiAi';
 
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@/components/ui/tabs"
-import SummerizeCard from './Card/SummerizeCard';
-import RephraseCard from './Card/RephraseCard';
+} from "@/components/ui/tabs";
 import AnalyzeCard from './Card/AnalyzeCard';
 import CheckGrammerCard from './Card/CheckGrammerCard';
+import RephraseCard from './Card/RephraseCard';
+import SummerizeCard from './Card/SummerizeCard';
+import { useOpenRouterApi } from './AI_Api_calling/useOpenRouterApi';
 
 const TextProcessor = () => {
   const [inputText, setInputText] = useState('');
@@ -33,6 +30,7 @@ const TextProcessor = () => {
   const [textStats, setTextStats] = useState({ characters: 0, words: 0, sentences: 0, paragraphs: 0 });
   const [copied, setCopied] = useState(false);
   const { processWithGemini } = useGeminiAi();
+  const { processWithOpenRouter } = useOpenRouterApi();
 
   const dispatch = useAppDispatch();
   const promptState = useAppSelector((state) => state.promptTextAi);
@@ -79,7 +77,9 @@ const TextProcessor = () => {
   // Separate API call logic
   const handleApiCall = async (prompt: string) => {
     try {
-      await processWithGemini();
+      // await processWithGemini();
+      await processWithOpenRouter();
+
     } catch (err: any) {
       setError(err.message || 'Failed to process text');
     }

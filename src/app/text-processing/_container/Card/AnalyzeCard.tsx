@@ -21,6 +21,7 @@ import { selectAiModel } from '@/Redux/features/PromptForAi/PromptAiSlice';
 import { SummerizeCardProps } from './SummerizeCard';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import OutPutResult from '../OutPutResult';
 
 
 export default function AnalyzeCard({
@@ -161,23 +162,7 @@ export default function AnalyzeCard({
                                 )}
                             </Button>
                         </div>
-                        <div className="p-4 bg-gray-50 dark:bg-gray-500 dark:text-black rounded-lg whitespace-pre-wrap">
-                            <div className="prose prose-sm dark:prose-invert max-w-none">
-                                <div className="p-4 bg-gray-50 dark:bg-gray-500 dark:text-black rounded-lg">
-                                    <div className="prose prose-sm dark:prose-invert max-w-none">
-                                        <ReactMarkdown
-                                            remarkPlugins={[remarkGfm]}
-                                            components={{
-                                                p: ({ children }) => <p className="markdown-body">{children}</p>
-                                            }}
-                                        >
-                                            {outputText}
-                                        </ReactMarkdown>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
+                        <OutPutResult />
                     </div>
                 )}
             </CardContent>

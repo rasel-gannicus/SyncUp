@@ -21,6 +21,7 @@ import { selectAiModel } from '@/Redux/features/PromptForAi/PromptAiSlice';
 import { SummerizeCardProps } from './SummerizeCard';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import OutPutResult from '../OutPutResult';
 
 
 export default function CheckGrammerCard({
@@ -137,41 +138,7 @@ export default function CheckGrammerCard({
                 )}
 
                 {/* Output Section */}
-                {outputText && (
-                    <div className="space-y-2">
-                        <div className="flex justify-between items-center">
-                            <h3 className="text-lg font-semibold">Result:</h3>
-                            <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => copyToClipboard(outputText)}
-                                className="flex items-center gap-2"
-                            >
-                                {copied ? (
-                                    <>
-                                        <CheckCheck className="h-4 w-4" />
-                                        Copied!
-                                    </>
-                                ) : (
-                                    <>
-                                        <Copy className="h-4 w-4" />
-                                        Copy
-                                    </>
-                                )}
-                            </Button>
-                        </div>
-                        <div className="prose prose-sm dark:prose-invert max-w-none">
-                            <ReactMarkdown
-                                remarkPlugins={[remarkGfm]}
-                                components={{
-                                    p: ({ children }) => <p className="markdown-body">{children}</p>
-                                }}
-                            >
-                                {outputText}
-                            </ReactMarkdown>
-                        </div>
-                    </div>
-                )}
+                <OutPutResult />
             </CardContent>
         </Card>
     );
