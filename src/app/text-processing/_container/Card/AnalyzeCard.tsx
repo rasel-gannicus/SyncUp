@@ -161,7 +161,8 @@ export default function AnalyzeCard({
                         </div>
                         <div className="p-4 bg-gray-50 dark:bg-gray-500 dark:text-black rounded-lg whitespace-pre-wrap">
                             <div className="prose prose-sm dark:prose-invert max-w-none">
-                                <div dangerouslySetInnerHTML={{ __html: outputText.replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} />
+                                <div dangerouslySetInnerHTML={{ __html: outputText.replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<span class="bg-gray-200 rounded-sm my-5 px-2 "><strong>$1</strong></span>') }} />
+                                
                             </div>
                         </div>
                     </div>
