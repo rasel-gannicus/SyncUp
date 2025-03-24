@@ -22,7 +22,7 @@ export const useOpenRouterApi = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: 'deepseek/deepseek-r1-zero:free',
+          model: 'qwen/qwq-32b:free',
           messages: [
             {
               role: 'user',
