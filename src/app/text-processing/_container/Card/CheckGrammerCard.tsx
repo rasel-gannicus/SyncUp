@@ -22,6 +22,7 @@ import { SummerizeCardProps } from './SummerizeCard';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import OutPutResult from '../OutPutResult';
+import SelectAiModel from './components/SelectAiModel';
 
 
 export default function CheckGrammerCard({
@@ -43,48 +44,8 @@ export default function CheckGrammerCard({
             <CardHeader className=''>
                 <div className="flex justify-between items-center">
                     <CardTitle className="text-2xl font-bold text-gray-800 dark:text-gray-200 tracking-tight">Check Your Grammar with AI</CardTitle>
-                    <div>
-                        <Select value={selectedAiModel} onValueChange={(value) => dispatch(selectAiModel(value))}>
-                            <SelectTrigger className="flex justify-start items-center gap-3 shadow-sm">
-                                {!selectedAiModel && <Image
-                                    src={bulbAi}
-                                    width={30}
-                                    height={30}
-                                    alt="bulbAi"
-                                />}
-                                <SelectValue placeholder="Select Ai Model" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectGroup>
-                                    <SelectItem value="gemini" >
-                                        <div className='flex justify-start items-center gap-3'>
-                                            <Image
-                                                src={geminiPng}
-                                                width={30}
-                                                height={30}
-                                                alt="geminiPng"
-
-                                            />
-                                            <span>Gemini</span>
-                                        </div>
-                                    </SelectItem>
-                                    <SelectItem value="deepseek" >
-                                        <div className='flex justify-start items-center gap-3'>
-                                            <Image
-                                                src={deepseekPng}
-                                                width={30}
-                                                height={30}
-                                                alt="deepseekPng"
-
-                                            />
-                                            <span>Deepseek</span>
-                                        </div>
-                                    </SelectItem>
-
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
-                    </div>
+                    {/* Select Ai model */}
+                    <SelectAiModel />
                 </div>
 
             </CardHeader>
@@ -122,12 +83,7 @@ export default function CheckGrammerCard({
                     <div className="flex flex-wrap gap-2">
                         <ButtonWithIcon action="grammar" icon={PenLine} label="Check Grammar" />
                     </div>
-                    <div className="flex flex-wrap gap-2">
-                        {/* <ButtonWithIcon action="keywords" icon={MessageSquareQuote} label="Extract Keywords" />
-      <ButtonWithIcon action="simplify" icon={Wand2} label="Simplify" /> */}
-                        {/* <ButtonWithIcon action="translate" icon={RefreshCw} label="Translate" />
-      <ButtonWithIcon action="expand" icon={MessageSquareQuote} label="Expand" /> */}
-                    </div>
+                    <div className="flex flex-wrap gap-2"></div>
                 </div>
 
                 {/* Error Alert */}

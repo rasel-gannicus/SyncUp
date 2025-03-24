@@ -1,26 +1,23 @@
+import bulbAi from '@/assets/img/bulb.png';
+import deepseekPng from '@/assets/img/deepseek-logo-icon.png';
+import geminiPng from '@/assets/img/google-gemini-icon.png';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BookOpen, CheckCheck, Copy, PenLine, RefreshCw, Search } from 'lucide-react';
 import {
     Select,
     SelectContent,
     SelectGroup,
     SelectItem,
-    SelectLabel,
     SelectTrigger,
-    SelectValue,
+    SelectValue
 } from "@/components/ui/select";
-import Image from 'next/image';
-import bulbAi from '@/assets/img/bulb.png';
-import geminiPng from '@/assets/img/google-gemini-icon.png';
-import deepseekPng from '@/assets/img/deepseek-logo-icon.png';
-import { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '@/Redux/hooks';
 import { selectAiModel } from '@/Redux/features/PromptForAi/PromptAiSlice';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import { useAppDispatch, useAppSelector } from '@/Redux/hooks';
+import { BookOpen, RefreshCw } from 'lucide-react';
+import Image from 'next/image';
 import OutPutResult from '../OutPutResult';
+import SelectAiModel from './components/SelectAiModel';
 
 export interface SummerizeCardProps {
     inputText: string;
@@ -54,58 +51,13 @@ export default function SummerizeCard({
     copyToClipboard,
     ButtonWithIcon
 }: SummerizeCardProps) {
-    // Add state for selected AI model
-    // const [selectedModel, setSelectedModel] = useState<string>("");
-    const selectedAiModel = useAppSelector((state) => state.promptTextAi.aiModel);
-    const dispatch = useAppDispatch();
 
     return (
         <Card className="bg-white dark:bg-gray-700 shadow-lg mt-5">
             <CardHeader className=''>
                 <div className="flex justify-between items-center">
                     <CardTitle className="text-2xl font-bold text-gray-800 dark:text-gray-200 tracking-tight">Transform Your Text with AI-Powered Summarization</CardTitle>
-                    <div>
-                        <Select value={selectedAiModel} onValueChange={(value) => dispatch(selectAiModel(value))}>
-                            <SelectTrigger className="flex justify-start items-center gap-3 shadow-sm">
-                                {!selectedAiModel && <Image
-                                    src={bulbAi}
-                                    width={30}
-                                    height={30}
-                                    alt="bulbAi"
-                                />}
-                                <SelectValue placeholder="Select Ai Model" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectGroup>
-                                    <SelectItem value="gemini" >
-                                        <div className='flex justify-start items-center gap-3'>
-                                            <Image
-                                                src={geminiPng}
-                                                width={30}
-                                                height={30}
-                                                alt="geminiPng"
-
-                                            />
-                                            <span>Gemini</span>
-                                        </div>
-                                    </SelectItem>
-                                    <SelectItem value="deepseek" >
-                                        <div className='flex justify-start items-center gap-3'>
-                                            <Image
-                                                src={deepseekPng}
-                                                width={30}
-                                                height={30}
-                                                alt="deepseekPng"
-
-                                            />
-                                            <span>Deepseek</span>
-                                        </div>
-                                    </SelectItem>
-
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
-                    </div>
+                    <SelectAiModel />
                 </div>
 
             </CardHeader>
@@ -143,11 +95,7 @@ export default function SummerizeCard({
                     <div className="flex flex-wrap gap-2">
                         <ButtonWithIcon action="summarize" icon={BookOpen} label="Summarize" />
                     </div>
-                    <div className="flex flex-wrap gap-2">
-                        {/* <ButtonWithIcon action="keywords" icon={MessageSquareQuote} label="Extract Keywords" />
-      <ButtonWithIcon action="simplify" icon={Wand2} label="Simplify" /> */}
-                        {/* <ButtonWithIcon action="translate" icon={RefreshCw} label="Translate" />
-      <ButtonWithIcon action="expand" icon={MessageSquareQuote} label="Expand" /> */}
+                    <div className="flex flex-wrap gap-2">                        
                     </div>
                 </div>
 
