@@ -56,7 +56,7 @@ export default function SummerizeCard({
     // Add state for selected AI model
     // const [selectedModel, setSelectedModel] = useState<string>("");
     const selectedAiModel = useAppSelector((state) => state.promptTextAi.aiModel);
-    const dispatch = useAppDispatch() ;
+    const dispatch = useAppDispatch();
 
     return (
         <Card className="bg-white dark:bg-gray-700 shadow-lg mt-5">
@@ -64,7 +64,7 @@ export default function SummerizeCard({
                 <div className="flex justify-between items-center">
                     <CardTitle className="text-2xl font-bold text-gray-800 dark:text-gray-200 tracking-tight">Transform Your Text with AI-Powered Summarization</CardTitle>
                     <div>
-                        <Select value={selectedAiModel} onValueChange={(value)=>dispatch(selectAiModel(value))}>
+                        <Select value={selectedAiModel} onValueChange={(value) => dispatch(selectAiModel(value))}>
                             <SelectTrigger className="flex justify-start items-center gap-3 shadow-sm">
                                 {!selectedAiModel && <Image
                                     src={bulbAi}
@@ -182,13 +182,15 @@ export default function SummerizeCard({
                             </Button>
                         </div>
                         <div className="prose prose-sm dark:prose-invert max-w-none">
-                                        <ReactMarkdown
-                                            remarkPlugins={[remarkGfm]}
-                                        // className="markdown-body"
-                                        >
-                                            {outputText}
-                                        </ReactMarkdown>
-                                    </div>
+                            <ReactMarkdown
+                                remarkPlugins={[remarkGfm]}
+                            components={{
+                                p: ({ children }) => <p className="markdown-body">{children}</p>
+                            }}
+                            >
+                                {outputText}
+                            </ReactMarkdown>
+                        </div>
                     </div>
                 )}
             </CardContent>

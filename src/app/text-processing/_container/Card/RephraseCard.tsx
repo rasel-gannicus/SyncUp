@@ -162,7 +162,9 @@ export default function RephraseCard({
                         <div className="prose prose-sm dark:prose-invert max-w-none">
                             <ReactMarkdown
                                 remarkPlugins={[remarkGfm]}
-                            // className="markdown-body"
+                            components={{
+                                p: ({ children }) => <p className="markdown-body">{children}</p>
+                            }}
                             >
                                 {outputText}
                             </ReactMarkdown>
