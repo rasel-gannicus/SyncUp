@@ -18,6 +18,8 @@ import deepseekPng from '@/assets/img/deepseek-logo-icon.png';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/Redux/hooks';
 import { selectAiModel } from '@/Redux/features/PromptForAi/PromptAiSlice';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 export interface SummerizeCardProps {
     inputText: string;
@@ -179,11 +181,14 @@ export default function SummerizeCard({
                                 )}
                             </Button>
                         </div>
-                        <div className="p-4 bg-gray-50 dark:bg-gray-500 dark:text-black rounded-lg whitespace-pre-wrap">
-                            <div className="prose prose-sm dark:prose-invert max-w-none">
-                                <div dangerouslySetInnerHTML={{ __html: outputText.replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} />
-                            </div>
-                        </div>
+                        <div className="prose prose-sm dark:prose-invert max-w-none">
+                                        <ReactMarkdown
+                                            remarkPlugins={[remarkGfm]}
+                                        // className="markdown-body"
+                                        >
+                                            {outputText}
+                                        </ReactMarkdown>
+                                    </div>
                     </div>
                 )}
             </CardContent>

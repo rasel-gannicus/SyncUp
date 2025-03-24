@@ -68,6 +68,7 @@ body {
   }
 }
 
+/* for the react markdown package, while showing 'Result' on text processor */
 @layer base {
   * {
     @apply border-border;
@@ -75,4 +76,52 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.markdown-body {
+    @apply text-base leading-7;
+}
+
+.markdown-body h1 {
+    @apply text-3xl font-bold mt-6 mb-4 pb-2 border-b;
+}
+
+.markdown-body h2 {
+    @apply text-2xl font-bold mt-6 mb-4 pb-2 border-b;
+}
+
+.markdown-body h3 {
+    @apply text-xl font-bold mt-6 mb-4;
+}
+
+.markdown-body strong {
+    @apply bg-gray-200 dark:bg-gray-600 px-2 py-0.5 rounded-sm;
+}
+
+.markdown-body p {
+    @apply mb-4;
+}
+
+.markdown-body ul {
+    @apply list-disc pl-6 mb-4;
+}
+
+.markdown-body ol {
+    @apply list-decimal pl-6 mb-4;
+}
+
+.markdown-body li {
+    @apply mb-2;
+}
+
+.markdown-body code {
+    @apply bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded;
+}
+
+.markdown-body pre {
+    @apply bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-4 overflow-x-auto;
+}
+
+.markdown-body blockquote {
+    @apply border-l-4 border-gray-300 pl-4 italic my-4;
 }

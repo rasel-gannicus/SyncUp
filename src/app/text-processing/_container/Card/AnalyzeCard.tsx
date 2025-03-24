@@ -19,6 +19,8 @@ import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/Redux/hooks';
 import { selectAiModel } from '@/Redux/features/PromptForAi/PromptAiSlice';
 import { SummerizeCardProps } from './SummerizeCard';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 
 export default function AnalyzeCard({
@@ -33,7 +35,7 @@ export default function AnalyzeCard({
     ButtonWithIcon
 }: SummerizeCardProps) {
     const selectedAiModel = useAppSelector((state) => state.promptTextAi.aiModel);
-    const dispatch = useAppDispatch() ;
+    const dispatch = useAppDispatch();
 
     return (
         <Card className="bg-white dark:bg-gray-700 shadow-lg mt-5">
@@ -41,7 +43,7 @@ export default function AnalyzeCard({
                 <div className="flex justify-between items-center">
                     <CardTitle className="text-2xl font-bold text-gray-800 dark:text-gray-200 tracking-tight">Analyze Your Writtings with AI</CardTitle>
                     <div>
-                        <Select value={selectedAiModel} onValueChange={(value)=>dispatch(selectAiModel(value))}>
+                        <Select value={selectedAiModel} onValueChange={(value) => dispatch(selectAiModel(value))}>
                             <SelectTrigger className="flex justify-start items-center gap-3 shadow-sm">
                                 {!selectedAiModel && <Image
                                     src={bulbAi}
@@ -161,8 +163,17 @@ export default function AnalyzeCard({
                         </div>
                         <div className="p-4 bg-gray-50 dark:bg-gray-500 dark:text-black rounded-lg whitespace-pre-wrap">
                             <div className="prose prose-sm dark:prose-invert max-w-none">
-                                <div dangerouslySetInnerHTML={{ __html: outputText.replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<span class="bg-gray-200 rounded-sm my-5 px-2 "><strong>$1</strong></span>') }} />
-                                
+                                <div className="p-4 bg-gray-50 dark:bg-gray-500 dark:text-black rounded-lg">
+                                    <div className="prose prose-sm dark:prose-invert max-w-none">
+                                        <ReactMarkdown
+                                            remarkPlugins={[remarkGfm]}
+                                        // className="markdown-body"
+                                        >
+                                            {outputText}
+                                        </ReactMarkdown>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
