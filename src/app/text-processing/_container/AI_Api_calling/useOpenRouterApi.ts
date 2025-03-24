@@ -5,6 +5,7 @@ import { setIsProcessing, setOutputText } from "@/Redux/features/PromptForAi/Pro
 export const useOpenRouterApi = () => {
   const [error, setError] = useState<string | null>(null);
   const promptState = useAppSelector((state) => state.promptTextAi);
+  const modelName = promptState.aiModel;
   const dispatch = useAppDispatch();
 
   const processWithOpenRouter = async () => {
@@ -12,6 +13,7 @@ export const useOpenRouterApi = () => {
     setError(null);
 
     try {
+        console.log('sending request for ', modelName);
       const prompt = promptState.finalPromptText;
       const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
@@ -22,7 +24,7 @@ export const useOpenRouterApi = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: 'qwen/qwq-32b:free',
+          model: `${modelName}`,
           messages: [
             {
               role: 'user',
