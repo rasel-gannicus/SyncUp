@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button';
-import { addPromptText, setIsProcessing } from '@/Redux/features/PromptForAi/PromptAiSlice';
 import { useAppDispatch, useAppSelector } from '@/Redux/hooks';
 import { Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -18,11 +17,11 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs";
+import { useOpenRouterApi } from './AI_Api_calling/useOpenRouterApi';
 import AnalyzeCard from './Card/AnalyzeCard';
 import CheckGrammerCard from './Card/CheckGrammerCard';
 import RephraseCard from './Card/RephraseCard';
 import SummerizeCard from './Card/SummerizeCard';
-import { useOpenRouterApi } from './AI_Api_calling/useOpenRouterApi';
 
 const TextProcessor = () => {
   const [inputText, setInputText] = useState('');

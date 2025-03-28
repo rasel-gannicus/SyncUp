@@ -1,7 +1,6 @@
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useAppDispatch, useAppSelector } from '@/Redux/hooks';
 import { RefreshCw } from 'lucide-react';
 import OutPutResult from '../OutPutResult';
 import SelectAiModel from './components/SelectAiModel';

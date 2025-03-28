@@ -1,28 +1,10 @@
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BookOpen, CheckCheck, Copy, PenLine, RefreshCw, Search } from 'lucide-react';
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
-import Image from 'next/image';
-import bulbAi from '@/assets/img/bulb.png';
-import geminiPng from '@/assets/img/google-gemini-icon.png';
-import deepseekPng from '@/assets/img/deepseek-logo-icon.png';
-import { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '@/Redux/hooks';
-import { selectAiModel } from '@/Redux/features/PromptForAi/PromptAiSlice';
-import { SummerizeCardProps } from './SummerizeCard';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import { PenLine, RefreshCw } from 'lucide-react';
 import OutPutResult from '../OutPutResult';
 import SelectAiModel from './components/SelectAiModel';
+import { SummerizeCardProps } from './SummerizeCard';
 
 
 export default function CheckGrammerCard({

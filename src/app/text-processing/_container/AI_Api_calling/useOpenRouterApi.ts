@@ -4,11 +4,12 @@ import {
   setIsProcessing,
   setOutputText,
 } from "@/Redux/features/PromptForAi/PromptAiSlice";
+import { aiModels } from "../Card/components/SelectAiModel";
 
 export const useOpenRouterApi = () => {
   const [error, setError] = useState<string | null>(null);
   const promptState = useAppSelector((state) => state.promptTextAi);
-  const modelName = promptState.aiModel;
+  const modelName = promptState.aiModel || 'mistralai/mistral-small-3.1-24b-instruct:free';
   const dispatch = useAppDispatch();
 
   const processWithOpenRouter = async (prompt: string) => {

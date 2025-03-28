@@ -15,7 +15,7 @@ import { selectAiModel } from '@/Redux/features/PromptForAi/PromptAiSlice';
 import { useAppDispatch, useAppSelector } from '@/Redux/hooks';
 import Image from 'next/image';
 
-const aiModels = [
+export const aiModels = [
     {
         value: 'mistralai/mistral-small-3.1-24b-instruct:free',
         title: 'Mistral Small 3.1 24B',
