@@ -1,43 +1,24 @@
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BookOpen, CheckCheck, Copy, PenLine, RefreshCw, Search } from 'lucide-react';
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
-import Image from 'next/image';
-import bulbAi from '@/assets/img/bulb.png';
-import geminiPng from '@/assets/img/google-gemini-icon.png';
-import deepseekPng from '@/assets/img/deepseek-logo-icon.png';
-import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/Redux/hooks';
-import { selectAiModel } from '@/Redux/features/PromptForAi/PromptAiSlice';
-import { SummerizeCardProps } from './SummerizeCard';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import { RefreshCw } from 'lucide-react';
 import OutPutResult from '../OutPutResult';
 import SelectAiModel from './components/SelectAiModel';
+import { SummerizeCardProps } from './SummerizeCard';
 
 export default function RephraseCard({
     inputText,
     setInputText,
+    setAction,
     textStats,
     error,
-    outputText,
-    copied,
-    setCopied,
-    copyToClipboard,
     ButtonWithIcon
 }: SummerizeCardProps) {
-    const selectedAiModel = useAppSelector((state) => state.promptTextAi.aiModel);
-    const dispatch = useAppDispatch();
-
+    const handleInputText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setInputText(e.target.value);
+        setAction('rephrase');
+    }
     return (
         <Card className="bg-white dark:bg-gray-700 shadow-lg mt-5">
             <CardHeader className=''>
@@ -57,7 +38,7 @@ export default function RephraseCard({
                             className="w-full h-48 p-4 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 dark:bg-gray-700"
                             placeholder="Enter your text here..."
                             value={inputText}
-                            onChange={(e) => setInputText(e.target.value)}
+                            onChange={handleInputText}
                         />
                         <Button
                             variant="ghost"

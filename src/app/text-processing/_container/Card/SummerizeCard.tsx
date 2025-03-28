@@ -1,21 +1,7 @@
-import bulbAi from '@/assets/img/bulb.png';
-import deepseekPng from '@/assets/img/deepseek-logo-icon.png';
-import geminiPng from '@/assets/img/google-gemini-icon.png';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectTrigger,
-    SelectValue
-} from "@/components/ui/select";
-import { selectAiModel } from '@/Redux/features/PromptForAi/PromptAiSlice';
-import { useAppDispatch, useAppSelector } from '@/Redux/hooks';
 import { BookOpen, RefreshCw } from 'lucide-react';
-import Image from 'next/image';
 import OutPutResult from '../OutPutResult';
 import SelectAiModel from './components/SelectAiModel';
 
@@ -32,6 +18,7 @@ export interface SummerizeCardProps {
     outputText: string;
     copied: boolean;
     setCopied: (copied: boolean) => void;
+    setAction?: any;
     copyToClipboard: (text: string) => void;
     ButtonWithIcon: React.FC<{
         action: string;
@@ -43,15 +30,15 @@ export interface SummerizeCardProps {
 export default function SummerizeCard({
     inputText,
     setInputText,
+    setAction,
     textStats,
     error,
-    outputText,
-    copied,
-    setCopied,
-    copyToClipboard,
     ButtonWithIcon
 }: SummerizeCardProps) {
-
+    const handleInputText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setInputText(e.target.value);
+        setAction('summarize');
+    }
     return (
         <Card className="bg-white dark:bg-gray-700 shadow-lg mt-5">
             <CardHeader className=''>
@@ -69,7 +56,7 @@ export default function SummerizeCard({
                             className="w-full h-48 p-4 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 dark:bg-gray-700"
                             placeholder="Enter your text here..."
                             value={inputText}
-                            onChange={(e) => setInputText(e.target.value)}
+                            onChange={handleInputText}
                         />
                         <Button
                             variant="ghost"

@@ -28,17 +28,15 @@ import SelectAiModel from './components/SelectAiModel';
 export default function CheckGrammerCard({
     inputText,
     setInputText,
+    setAction,
     textStats,
     error,
-    outputText,
-    copied,
-    setCopied,
-    copyToClipboard,
     ButtonWithIcon
 }: SummerizeCardProps) {
-    const selectedAiModel = useAppSelector((state) => state.promptTextAi.aiModel);
-    const dispatch = useAppDispatch();
-
+    const handleInputText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setInputText(e.target.value);
+        setAction('grammar');
+    }
     return (
         <Card className="bg-white dark:bg-gray-700 shadow-lg mt-5">
             <CardHeader className=''>
@@ -57,7 +55,7 @@ export default function CheckGrammerCard({
                             className="w-full h-48 p-4 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 dark:bg-gray-700"
                             placeholder="Enter your text here..."
                             value={inputText}
-                            onChange={(e) => setInputText(e.target.value)}
+                            onChange={handleInputText}
                         />
                         <Button
                             variant="ghost"

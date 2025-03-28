@@ -22,6 +22,7 @@ const promptAiSlice = createSlice({
       const systemPrompt = "You are a highly skilled AI assistant specializing in text processing and analysis. Provide clear, concise, and accurate responses.";
 
       const inputText = action.payload.inputText;
+      // console.log(action.payload);
 
       switch (action.payload.actionType) {
         case 'summarize':
@@ -49,7 +50,7 @@ const promptAiSlice = createSlice({
           state.finalPromptText =  `${systemPrompt}\nPlease expand on the following text by adding more details, examples, and explanations:\n\n${inputText}`;
           return ;
         default:
-          return inputText;
+          return ;
       } 
     },
     setOutputText(state, action) {

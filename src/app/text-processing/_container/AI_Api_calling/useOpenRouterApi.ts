@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/Redux/hooks";
-import { setIsProcessing, setOutputText } from "@/Redux/features/PromptForAi/PromptAiSlice";
+import {
+  setIsProcessing,
+  setOutputText,
+} from "@/Redux/features/PromptForAi/PromptAiSlice";
 
 export const useOpenRouterApi = () => {
   const [error, setError] = useState<string | null>(null);
@@ -8,31 +11,31 @@ export const useOpenRouterApi = () => {
   const modelName = promptState.aiModel;
   const dispatch = useAppDispatch();
 
-  const processWithOpenRouter = async () => {
+  const processWithOpenRouter = async (prompt: string) => {
     dispatch(setIsProcessing(true));
     setError(null);
-
     try {
-        console.log('sending request for ', modelName);
-      const prompt = promptState.finalPromptText;
-      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_OPENROUTER_API_KEY}`,
-          'HTTP-Referer': 'https://syncup-rasel.vercel.app/',
-          'X-Title':  'SyncUp',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: `${modelName}`,
-          messages: [
-            {
-              role: 'user',
-              content: prompt,
-            },
-          ],
-        }),
-      });
+      const response = await fetch(
+        "https://openrouter.ai/api/v1/chat/completions",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENROUTER_API_KEY}`,
+            "HTTP-Referer": "https://syncup-rasel.vercel.app/",
+            "X-Title": "SyncUp",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            model: `${modelName}`,
+            messages: [
+              {
+                role: "user",
+                content: prompt,
+              },
+            ],
+          }),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
