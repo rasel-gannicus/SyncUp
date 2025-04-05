@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BookOpen, RefreshCw } from 'lucide-react';
 import OutPutResult from '../OutPutResult';
 import SelectAiModel from './components/SelectAiModel';
+import Header from './components/Header';
 
 export interface SummerizeCardProps {
     inputText: string;
@@ -41,13 +42,7 @@ export default function SummerizeCard({
     }
     return (
         <Card className="bg-white dark:bg-gray-700 shadow-lg mt-5">
-            <CardHeader className=''>
-                <div className="flex justify-between items-center">
-                    <CardTitle className="text-2xl font-bold text-gray-800 dark:text-gray-200 tracking-tight">Transform Your Text with AI-Powered Summarization</CardTitle>
-                    <SelectAiModel />
-                </div>
-
-            </CardHeader>
+            <Header headerText="Transform Your Text with AI-Powered Summarization" />
             <CardContent className="space-y-6">
                 {/* Input Section with Stats */}
                 <div className="space-y-2">

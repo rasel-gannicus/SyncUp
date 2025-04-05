@@ -116,7 +116,7 @@ const TextProcessor = () => {
     return (<Button
       onClick={handleApiCall}
       disabled={!inputText || isProcessing}
-      className="flex items-center gap-2 bg-teal-600 dark:bg-teal-500 dark:text-black"
+      className="flex w-full md:w-fit items-center gap-2 bg-teal-600 dark:bg-teal-500 dark:text-black"
     >
       {isProcessing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Icon className="h-4 w-4" />}
       {label}

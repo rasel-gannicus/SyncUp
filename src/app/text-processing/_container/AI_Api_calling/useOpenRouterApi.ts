@@ -4,7 +4,6 @@ import {
   setIsProcessing,
   setOutputText,
 } from "@/Redux/features/PromptForAi/PromptAiSlice";
-import { aiModels } from "../Card/components/SelectAiModel";
 
 export const useOpenRouterApi = () => {
   const [error, setError] = useState<string | null>(null);
