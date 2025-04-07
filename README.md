@@ -49,7 +49,7 @@ A comprehensive full-stack web application offering a suite of productivity tool
 ## Key Highlights
 
 - **Unified User Data**: All data for Text Processor, Notepad, TodoList, Expense Tracker, and Habit Tracker is stored under one user document in the database, minimizing complexity and reducing overhead.
-- **AI-Enhanced Text Processing:**: Integrated Google’s Gemini API to provide text summarization, analysis, rephrasing, and grammar-checking capabilities in the Text Processor app.
+- **AI-Enhanced Text Processing:**: Integrated 50+ AI Model's API to provide text summarization, analysis, rephrasing, and grammar-checking capabilities in the Text Processor app.
 - **Scalability**: Designed for scalability with modular components, making it easy to add new apps or features in the future.
 - **Optimized Performance**: Leveraging Next.js for server-side rendering and improved SEO.
 - **Responsive Design**: Fully responsive UI built with Tailwind CSS to ensure seamless usability across devices.
