@@ -6,14 +6,13 @@
 
 # SyncUp - Multi-App Productivity Suite
 
-A comprehensive full-stack web application offering a suite of productivity tools integrated into a single platform. SyncUp includes the new AI-powered Text Processor,Finance Tracker, Habit Tracker, Notepad, and TodoList all organized under each user’s document in a unified database structure.
+A comprehensive full-stack web application offering a suite of productivity tools integrated into a single platform. SyncUp includes a AI powered Text Processor with 50+ AI models, Finance Tracker, Habit Tracker, Notepad, and TodoList all organized under each user’s document in a unified database structure.
 
 ## Features
 
 ### **Text Processor**
 
-- AI-powered tool for text summarization, analysis, rephrasing, and grammar checking.
-- Provides insights and modifications using Google’s Gemini API.
+- Delivered smart text functionalities such as summarization, analysis, rephrasing, and grammar correction by leveraging multiple advanced AI models. Users can access 52 AI models, including Mistral, Deepseek, ChatGPT, Gemini, Meta Llama, Qwen, Olympic Coder, and more.
 - Enhances productivity with intelligent text handling options.
 
 ### **Finance Tracker**
