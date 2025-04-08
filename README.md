@@ -146,35 +146,54 @@ For inquiries or support, reach out at:
 
 ### Previews 
 
+<p align="center">
+  <em>Home page</em><br/>
+  <img src="https://github.com/rasel-gannicus/SyncUp/blob/main/src/assets/Hosting%20for%20github%20readme/homepage.png?raw=true" width="100%" alt="Homepage">
+</p>
 
-*Home page*
-![Homepage](https://github.com/rasel-gannicus/SyncUp/blob/main/src/assets/Hosting%20for%20github%20readme/homepage.png?raw=true)
+<p align="center">
+  <em>Finance Tracker</em><br/>
+  <img src="https://github.com/rasel-gannicus/SyncUp/blob/main/src/assets/Hosting%20for%20github%20readme/syncup%20-%20finance%20tracker.png?raw=true" width="100%" alt="Finance Tracker">
+</p>
 
-*Finance Tracker*
-![Finance Tracker](https://github.com/rasel-gannicus/SyncUp/blob/main/src/assets/Hosting%20for%20github%20readme/syncup%20-%20finance%20tracker.png?raw=true)
+<p align="center">
+  <em>Habit Tracker</em><br/>
+  <img src="https://github.com/rasel-gannicus/SyncUp/blob/main/src/assets/Hosting%20for%20github%20readme/habit%20tracker.png?raw=true" width="100%" alt="Habit Tracker">
+</p>
 
-*Habit Tracker*
-![Habit Tracker](https://github.com/rasel-gannicus/SyncUp/blob/main/src/assets/Hosting%20for%20github%20readme/habit%20tracker.png?raw=true)
+<p align="center">
+  <em>Notepad</em><br/>
+  <img src="https://github.com/rasel-gannicus/SyncUp/blob/main/src/assets/Hosting%20for%20github%20readme/notepad.png?raw=true" width="100%" alt="Notepad">
+</p>
 
-*Notepad*
-![Notepad](https://github.com/rasel-gannicus/SyncUp/blob/main/src/assets/Hosting%20for%20github%20readme/notepad.png?raw=true)
-
-*Todo List*
-![Todo List](https://github.com/rasel-gannicus/SyncUp/blob/main/src/assets/Hosting%20for%20github%20readme/todolist.png?raw=true)
+<p align="center">
+  <em>Todo List</em><br/>
+  <img src="https://github.com/rasel-gannicus/SyncUp/blob/main/src/assets/Hosting%20for%20github%20readme/todolist.png?raw=true" width="100%" alt="Todo List">
+</p>
 
 ### Dark Mode  
 
-*Home page*
-![Homepage](https://github.com/rasel-gannicus/SyncUp/blob/main/src/assets/Hosting%20for%20github%20readme/DarkMode/homepage%20dark.png?raw=true)
+<p align="center">
+  <em>Home page</em><br/>
+  <img src="https://github.com/rasel-gannicus/SyncUp/blob/main/src/assets/Hosting%20for%20github%20readme/DarkMode/homepage%20dark.png?raw=true" width="100%" alt="Homepage Dark">
+</p>
 
-*Finance Tracker*
-![Finance Tracker](https://github.com/rasel-gannicus/SyncUp/blob/main/src/assets/Hosting%20for%20github%20readme/DarkMode/finance%20tracker%20dark%20mode.png?raw=true)
+<p align="center">
+  <em>Finance Tracker</em><br/>
+  <img src="https://github.com/rasel-gannicus/SyncUp/blob/main/src/assets/Hosting%20for%20github%20readme/DarkMode/finance%20tracker%20dark%20mode.png?raw=true" width="100%" alt="Finance Tracker Dark">
+</p>
 
-*Habit Tracker*
-![Habit Tracker](https://github.com/rasel-gannicus/SyncUp/blob/main/src/assets/Hosting%20for%20github%20readme/DarkMode/habit%20tracker%20dark%20mode.png?raw=true)
+<p align="center">
+  <em>Habit Tracker</em><br/>
+  <img src="https://github.com/rasel-gannicus/SyncUp/blob/main/src/assets/Hosting%20for%20github%20readme/DarkMode/habit%20tracker%20dark%20mode.png?raw=true" width="100%" alt="Habit Tracker Dark">
+</p>
 
-*Notepad*
-![Notepad](https://github.com/rasel-gannicus/SyncUp/blob/main/src/assets/Hosting%20for%20github%20readme/DarkMode/notepad%20darkmode.png?raw=true)
+<p align="center">
+  <em>Notepad</em><br/>
+  <img src="https://github.com/rasel-gannicus/SyncUp/blob/main/src/assets/Hosting%20for%20github%20readme/DarkMode/notepad%20darkmode.png?raw=true" width="100%" alt="Notepad Dark">
+</p>
 
-*Todo List*
-![Todo List](https://github.com/rasel-gannicus/SyncUp/blob/main/src/assets/Hosting%20for%20github%20readme/DarkMode/todolist%20darkmode.png?raw=true)
+<p align="center">
+  <em>Todo List</em><br/>
+  <img src="https://github.com/rasel-gannicus/SyncUp/blob/main/src/assets/Hosting%20for%20github%20readme/DarkMode/todolist%20darkmode.png?raw=true" width="100%" alt="Todo List Dark">
+</p>
