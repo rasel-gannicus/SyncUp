@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 import ReduxProvider from "@/Redux/Wrapper/ReduxProvider";
 import { Wrapper } from "@/components/Shared/Wrapper";
 import { AuthWrapper } from "@/components/Shared/AuthWrapper";
+import { Analytics } from "@vercel/analytics/react"
 
 export const metadata: Metadata = {
   title: "SyncUp - All Productivity Apps in One Place",
@@ -33,6 +34,7 @@ export default function RootLayout({
           <Toaster position="bottom-center" />
         </body>
       </html>
+      <Analytics />
     </ReduxProvider>
   );
 }

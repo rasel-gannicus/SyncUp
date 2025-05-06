@@ -20,7 +20,6 @@ export default function SocialLogin({ isLoading }: { isLoading: boolean }) {
   const [addUserToDb] = useAddUserToDbMutation();
 
   const handleUser = async (user: any, provider: string) => {
-    console.log('triggered')
     if (user) {
       try {
         const response = await addUserToDb({
@@ -36,7 +35,6 @@ export default function SocialLogin({ isLoading }: { isLoading: boolean }) {
         if ("error" in response) {
           throw new Error("Failed to save user data to database");
         }
-        console.log({response})
 
         toast.success(`Successfully signed in with ${provider}!`);
       } catch (error) {
@@ -48,7 +46,6 @@ export default function SocialLogin({ isLoading }: { isLoading: boolean }) {
 
   useEffect(() => {
     if (!loading && !gitLoading && (error || gitError)) {
-      console.log({ error, gitError });
       toast.error(gitError?.code || error?.code || "An error happened");
     }
     if (!loading && !gitLoading && !error && !gitError && gitUser) {

@@ -19,7 +19,6 @@ import { useAppSelector } from "@/Redux/hooks";
 import AddNoteModal from "./Modal/AddNoteModal";
 import { NotepadLoading } from "@/utils/Loading Spinner/Loading Skeleton/Skeleton";
 
-// This would typically come from  app's state management or API
 const initialNotes = [
   {
     id: 1,
@@ -75,7 +74,6 @@ export default function NotePad({ user }: { user: any }) {
   const userState = useAppSelector((state) => state.user);
   let userData = userState.user;
   let userLoading = userState.userLoading;
-  console.log("🚀 ~ NotePad ~ userLoading:", userLoading);
 
   const [addNoteToDb, { data, isLoading, error }]: any = useAddNoteMutation();
   const [

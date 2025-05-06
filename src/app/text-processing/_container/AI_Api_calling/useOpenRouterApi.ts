@@ -46,7 +46,6 @@ export const useOpenRouterApi = () => {
 
       const data = await response.json();
       if (data.choices) {
-        console.log(data.choices[0]?.message);
         dispatch(setOutputText(data.choices[0].message.content));
       } else {
         throw new Error("No valid response from the API");

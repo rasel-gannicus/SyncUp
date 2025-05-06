@@ -21,13 +21,12 @@ export const useOptimisticAddTransaction = (email: string | undefined, setData: 
       // Create a deep copy of prevData to avoid mutating the original state
       const newData = prevData.map((month) => ({
         ...month,
-        transactions: [...month.transactions], // Shallow copy of transactions array
+        transactions: [...month.transactions], 
       }));
 
       const latestMonth = newData[newData.length - 1];
 
       if (latestMonth) {
-        // Create a new array for transactions and update income/expenses safely
         latestMonth.transactions = [...latestMonth.transactions, newTransaction];
         latestMonth.income += transaction.type === 'income' ? transaction.amount : 0;
         latestMonth.expenses += transaction.type === 'expenses' ? transaction.amount : 0;
@@ -55,7 +54,6 @@ export const useOptimisticAddTransaction = (email: string | undefined, setData: 
         });
         toast.error(response.error.data.message || "Failed to add transaction.");
       } else {
-        // Update the local state with the server response
         setData(response.data.updatedFinancialData);
         toast.success("Transaction added successfully.");
       }

@@ -58,7 +58,6 @@ const Topbar = () => {
   }, [userFromDB, user, isLoading]);
 
   const handleUser = async (user: any, provider: string) => {
-    // console.log("triggered");
     if (user) {
       try {
         const response = await addUserToDb({

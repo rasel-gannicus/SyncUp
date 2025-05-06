@@ -29,11 +29,7 @@ export const useToggleHabit = (selectedDate:any, setHabits : any, email : string
         const { data, error } = await toggleHabit({ email, habitId, date });
   
         if (error) {
-          console.error("Error toggling habit:", error);
-          // Optionally, revert the optimistic update if needed
         } else {
-          console.log("Habit toggled successfully:", data);
-          // Optionally, refetch habits from the backend to ensure data consistency
         }
       } catch (error) {
         console.error("Error toggling habit:", error);

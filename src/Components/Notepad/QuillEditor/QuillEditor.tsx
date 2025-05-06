@@ -9,7 +9,7 @@ const ReactQuill = dynamic(() => import("react-quill"), {
 interface QuillEditorProps {
   content: string;
   setContent: (content: string) => void;
-  modules: any; // Replace 'any' with the correct type if available
+  modules: any; 
   formats: string[];
 }
 
